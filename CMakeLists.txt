@@ -150,3 +150,4 @@ FIND_PACKAGE ( OpenGL )
 ##########################
 
 ADD_SUBDIRECTORY( AtomShaker )
+ADD_SUBDIRECTORY( PyBindTutorial )
