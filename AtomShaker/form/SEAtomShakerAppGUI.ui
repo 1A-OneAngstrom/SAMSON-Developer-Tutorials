@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SEAtomShakerAppGUIClass</class>
+ <widget class="QWidget" name="SEAtomShakerAppGUIClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>100</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>100</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QPushButton" name="pushButtonShake">
+     <property name="text">
+      <string>Shake Atoms!</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="doubleSpinBoxMaximumDistance">
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="suffix">
+      <string> A</string>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonShake</sender>
+   <signal>pressed()</signal>
+   <receiver>SEAtomShakerAppGUIClass</receiver>
+   <slot>onShakeAtomsPressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>49</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onShakeAtomsPressed()</slot>
+ </slots>
+</ui>
