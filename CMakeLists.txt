@@ -150,8 +150,8 @@ FIND_PACKAGE ( OpenGL )
 ##########################
 
 ADD_SUBDIRECTORY( AtomShaker )
+ADD_SUBDIRECTORY( EXYZImporter )
 
-IF( NOT DEBUG )
-# Python is not supported in Debug
-ADD_SUBDIRECTORY( PyBindTutorial )
+IF( NOT DEBUG ) # Python is not supported in the Debug mode
+#ADD_SUBDIRECTORY( PyBindTutorial )
 ENDIF()
