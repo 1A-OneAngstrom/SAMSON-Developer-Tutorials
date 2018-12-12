@@ -27,12 +27,15 @@ void exposeCustomStructuralGroup(py::module& m) {
 	c.def(py::init<>(), "Constructs a custom structural group");
 	c.def(py::init<std::string&>(), "Constructs a custom structural group with the given name");
 
-	// functions
+	// attributes
 
 	c.def_property_readonly("hasCustomComment", &CustomStructuralGroup::hasCustomComment, "Returns true when the custom group's custom comment is set");
 	c.def_property("customComment", &CustomStructuralGroup::getCustomComment, &CustomStructuralGroup::setCustomComment, "A custom comment");
+
+	// functions
+
 	c.def("clearCustomComment", &CustomStructuralGroup::clearCustomComment, "Clears the custom comment");
 
 }
 
-#endif
+#endif // CREATE_PYTHON_BINDINGS

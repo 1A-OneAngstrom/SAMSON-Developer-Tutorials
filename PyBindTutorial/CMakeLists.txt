@@ -41,90 +41,96 @@ SOURCE_GROUP ( GeneratedFiles FILES ${${OUTPUT_UUID}_MOC_GENERATED} ${${OUTPUT_U
 ####################################################
 #   Python bindings thanks to pybind11
 ####################################################
-SET(PYTHON_VERSION 3.5)
-FIND_PACKAGE( PythonInterp ${PYTHON_VERSION} REQUIRED )
-MESSAGE("PYTHONINTERP_FOUND:        " ${PYTHONINTERP_FOUND})
-MESSAGE("PYTHON_VERSION_STRING:     " ${PYTHON_VERSION_STRING})
-MESSAGE("Include dirs of Python:    " ${PYTHON_INCLUDE_DIRS} )
-MESSAGE("Libs of Python:            " ${PYTHON_LIBRARIES} )
+IF( NOT DEBUG ) # Disable the creation of Python bindings in the Debug mode since Python is not supported in the Debug mode
 
-IF ( PYTHONINTERP_FOUND )
+    FIND_PACKAGE( PythonInterp ${PYTHON_VERSION} REQUIRED )
 
-    # set PYTHON_INSTALL_PREFIX, PYTHON_EXECUTABLE, PYTHON_INCLUDE_DIRS variables using python
+	IF ( PYTHONINTERP_FOUND )
+	    SET(CREATE_PYTHON_BINDINGS TRUE)
+	ENDIF ( PYTHONINTERP_FOUND )
+
+ENDIF()
+
+IF ( CREATE_PYTHON_BINDINGS )
+
+    # Determine the include directory: set PYTHON_INCLUDE_DIR variable
+	# set PYTHON_INCLUDE_DIR variable using python: distutils.sysconfig.get_python_inc()  or  distutils.sysconfig.get_config_var(\"INCLUDEPY\")
 	IF( UNIX )
-	    EXECUTE_PROCESS(COMMAND python3 -c "import sys; print(sys.prefix)"        OUTPUT_VARIABLE PYTHON_INSTALL_PREFIX       OUTPUT_STRIP_TRAILING_WHITESPACE)
-		EXECUTE_PROCESS(COMMAND which python3        OUTPUT_VARIABLE PYTHON_EXECUTABLE           OUTPUT_STRIP_TRAILING_WHITESPACE)
-		# set PYTHON_INCLUDE_DIRS variable using python: distutils.sysconfig.get_python_inc()   or  distutils.sysconfig.get_config_var(\"INCLUDEPY\")
-		EXECUTE_PROCESS(COMMAND python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
-			OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS         OUTPUT_STRIP_TRAILING_WHITESPACE)
+	    EXECUTE_PROCESS(COMMAND
+			python3 -c "import sys; print(sys.prefix)"
+			OUTPUT_VARIABLE  PYTHON_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
+		EXECUTE_PROCESS(COMMAND
+			which python3
+			OUTPUT_VARIABLE  PYTHON_EXECUTABLE  OUTPUT_STRIP_TRAILING_WHITESPACE)
+		EXECUTE_PROCESS(COMMAND
+			python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+			OUTPUT_VARIABLE  PYTHON_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 	ELSE( UNIX )
-	    ### Windows: python3 is named python in Anaconda
-		EXECUTE_PROCESS(COMMAND python  -c "import sys; print(sys.prefix)"        OUTPUT_VARIABLE PYTHON_INSTALL_PREFIX       OUTPUT_STRIP_TRAILING_WHITESPACE)
-		EXECUTE_PROCESS(COMMAND where python         OUTPUT_VARIABLE PYTHON_EXECUTABLE           OUTPUT_STRIP_TRAILING_WHITESPACE)
-		# set PYTHON_INCLUDE_DIRS variable using python: distutils.sysconfig.get_python_inc()   or  distutils.sysconfig.get_config_var(\"INCLUDEPY\")
-		EXECUTE_PROCESS(COMMAND python  -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
-			OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS         OUTPUT_STRIP_TRAILING_WHITESPACE)
+	    # Windows: python3 is named python in Anaconda
+		EXECUTE_PROCESS(COMMAND
+			python -c "import sys; print(sys.prefix)"
+			OUTPUT_VARIABLE  PYTHON_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
+		EXECUTE_PROCESS(COMMAND
+			where python
+			OUTPUT_VARIABLE  PYTHON_EXECUTABLE  OUTPUT_STRIP_TRAILING_WHITESPACE)
+		EXECUTE_PROCESS(COMMAND
+			python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+			OUTPUT_VARIABLE  PYTHON_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 	ENDIF( UNIX )
 
-	# set PYTHON_LIBRARIES variable using python (works only with Anaconda Python installation)
+	# Determine the Python library path: set PYTHON_LIBRARY variable
 	IF( UNIX )
 	    IF( APPLE )
-		    ## for Anaconda installation
+		    # Anaconda installation
 			#EXECUTE_PROCESS(COMMAND python3 -c "import sys; from distutils import sysconfig; sys.stdout.write(\"/\".join(map(sysconfig.get_config_var, (\"LIBDIR\", \"LDLIBRARY\"))))"
-			#    OUTPUT_VARIABLE PYTHON_LIBRARIES        OUTPUT_STRIP_TRAILING_WHITESPACE)
+			#    OUTPUT_VARIABLE PYTHON_LIBRARY        OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-			## for Homebrew installation
-			EXECUTE_PROCESS(COMMAND python3 -c "import sys; from distutils import sysconfig; sys.stdout.write(\"/\".join( [sysconfig.get_config_var(\"LIBDIR\"), \"libpython3.6m.dylib\"] ) )"
-				OUTPUT_VARIABLE PYTHON_LIBRARIES        OUTPUT_STRIP_TRAILING_WHITESPACE)
-			#SET (PYTHON_LIBRARIES "/usr/local/opt/python3/Frameworks/Python.framework/Versions/3.6/lib/libpython3.6m.dylib")
-		ELSE()
-		    EXECUTE_PROCESS(COMMAND python3 -c "import sys; from distutils import sysconfig; sys.stdout.write(\"/\".join(map(sysconfig.get_config_var, (\"LIBDIR\", \"INSTSONAME\"))))"
-				OUTPUT_VARIABLE PYTHON_LIBRARIES        OUTPUT_STRIP_TRAILING_WHITESPACE)
+			# Homebrew installation
+			EXECUTE_PROCESS(COMMAND
+				python3 -c "import sys; from distutils import sysconfig; sys.stdout.write(\"/\".join( [sysconfig.get_config_var(\"LIBDIR\"), \"libpython3.6m.dylib\"] ) )"
+				OUTPUT_VARIABLE  PYTHON_LIBRARY  OUTPUT_STRIP_TRAILING_WHITESPACE)
+		ELSE( APPLE )
+		    EXECUTE_PROCESS(COMMAND
+				python3 -c "import sys; from distutils import sysconfig; sys.stdout.write(\"/\".join(map(sysconfig.get_config_var, (\"LIBDIR\", \"INSTSONAME\"))))"
+				OUTPUT_VARIABLE  PYTHON_LIBRARY  OUTPUT_STRIP_TRAILING_WHITESPACE)
 		ENDIF( APPLE )
 	ELSE( UNIX )
-	    ### Windows: python3 is named python in Anaconda
-		EXECUTE_PROCESS(COMMAND python -c "import sys; from distutils import sysconfig; print(sysconfig.get_config_var(\"VERSION\"))"
-			OUTPUT_VARIABLE PYTHON_CONFIG_VERSION        OUTPUT_STRIP_TRAILING_WHITESPACE)
-		SET (PYTHON_LIBRARIES "${PYTHON_INSTALL_PREFIX}\\libs\\python${PYTHON_CONFIG_VERSION}.lib")
+	    # Windows: python3 is named python in Anaconda
+		EXECUTE_PROCESS(COMMAND
+			python -c "import sys; from distutils import sysconfig; print(sysconfig.get_config_var(\"VERSION\"))"
+			OUTPUT_VARIABLE  PYTHON_CONFIG_VERSION  OUTPUT_STRIP_TRAILING_WHITESPACE)
+		SET (PYTHON_LIBRARY "${PYTHON_INSTALL_PREFIX}\\libs\\python${PYTHON_CONFIG_VERSION}.lib")
 	ENDIF( UNIX )
 
-	MESSAGE("Install prefix of Python: " ${PYTHON_INSTALL_PREFIX} )
-	MESSAGE("Python executable:        " ${PYTHON_EXECUTABLE} )
-	MESSAGE("Include dirs of Python:   " ${PYTHON_INCLUDE_DIRS} )
-	MESSAGE("Libs of Python:           " ${PYTHON_LIBRARIES} )
+	MESSAGE("Python install prefix: " ${PYTHON_INSTALL_PREFIX} )
+	MESSAGE("Python executable:     " ${PYTHON_EXECUTABLE} )
+	MESSAGE("Python include dir:    " ${PYTHON_INCLUDE_DIR} )
+	MESSAGE("Python lib:            " ${PYTHON_LIBRARY} )
 
-	# set path to pybind11 headers
+	# Set path to pybind11 headers
 	SET(PYBIND11_INCLUDE_DIRS "./external/pybind11/include/")
 
 	# include paths to python and pybind11 headers
-	INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS} ${PYBIND11_INCLUDE_DIRS})
+	INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIR} ${PYBIND11_INCLUDE_DIRS})
 
-ENDIF ( PYTHONINTERP_FOUND )
+	# This define is used in the code to determine whether Python bindings should be created or not
+	add_definitions(-DCREATE_PYTHON_BINDINGS)
+
+ELSE ( CREATE_PYTHON_BINDINGS )
+
+    SET (PYTHON_LIBRARY "")
+
+ENDIF ( CREATE_PYTHON_BINDINGS )
 
 ####################################################
 
 ADD_LIBRARY ( ${OUTPUT_NAME} SHARED ${${OUTPUT_UUID}_headers} ${${OUTPUT_UUID}_sources} ${${OUTPUT_UUID}_MOC_GENERATED} ${${OUTPUT_UUID}_UI_GENERATED} ${${OUTPUT_UUID}_RCC_GENERATED} ${${OUTPUT_UUID}_QM} )
 
-IF (PYTHONINTERP_FOUND)
-
-    add_definitions(-DCREATE_PYTHON_BINDINGS) # This define is used in the code to determine whether Python bindings should be created or not
-
-	TARGET_LINK_LIBRARIES (	${OUTPUT_NAME}
-		                    ${QT_LIBRARIES}
-							${PYTHON_LIBRARIES}
-							${OPENGL_LIBRARY}
-							${SAMSON_SDK_LIBRARIES}
-							)
-
-ELSE (PYTHONINTERP_FOUND)
-
-    TARGET_LINK_LIBRARIES (	${OUTPUT_NAME}
-		                    ${QT_LIBRARIES}
-							${OPENGL_LIBRARY}
-							${SAMSON_SDK_LIBRARIES}
-							)
-
-ENDIF (PYTHONINTERP_FOUND)
+TARGET_LINK_LIBRARIES (	${OUTPUT_NAME}
+	                    ${QT_LIBRARIES}
+						${PYTHON_LIBRARY}
+						${OPENGL_LIBRARY}
+						${SAMSON_SDK_LIBRARIES} )
 						
 SET_TARGET_PROPERTIES(${OUTPUT_NAME} PROPERTIES OUTPUT_NAME ${OUTPUT_UUID})		
 						

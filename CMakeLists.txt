@@ -153,6 +153,4 @@ ADD_SUBDIRECTORY( AtomShaker )
 ADD_SUBDIRECTORY( EXYZImporter )
 ADD_SUBDIRECTORY( Springs )
 
-IF( NOT DEBUG ) # Python is not supported in the Debug mode
 #ADD_SUBDIRECTORY( PyBindTutorial )
-ENDIF()

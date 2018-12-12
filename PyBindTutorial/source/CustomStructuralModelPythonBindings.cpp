@@ -17,21 +17,33 @@ void exposeCustomStructuralModel(py::module& m) {
 	 * you do not need to create python bindings for functionality of the SBStructuralModel class,
 	 * because they are already exposed thanks to the Python Scripting Element.
 	 */
-	py::class_<CustomStructuralModel,
-			std::unique_ptr<CustomStructuralModel, py::nodelete>,
-			SBStructuralModel> c(m, "CustomStructuralModel",
-								 R"(This class describes a custom structural model from SEPyBindTutorial Element)");
+
+	// The py::class_ creates bindings for a C++ class
+	py::class_<
+			CustomStructuralModel,									/* the class */
+			std::unique_ptr<CustomStructuralModel, py::nodelete>,	/* the class type */
+			SBStructuralModel										/* the base class */
+			>
+			c(m,													/* pybind11::module */
+			  "CustomStructuralModel",								/* the class name in python*/
+			  R"(This class describes a custom structural model from SEPyBindTutorial Element)" /* the docstring */
+			  );
 
 	// constructors
 
 	c.def(py::init<>(), "Constructs a custom structural model");
 
+	// attributes
+
+	// read-only attributes
+	c.def_property_readonly("hasCustomComment", &CustomStructuralModel::hasCustomComment, "Returns true when the custom model's custom comment is set");
+	// read-and-write attributes
+	c.def_property("customComment", &CustomStructuralModel::getCustomComment, &CustomStructuralModel::setCustomComment, "A custom comment");
+
 	// functions
 
-	c.def_property_readonly("hasCustomComment", &CustomStructuralModel::hasCustomComment, "Returns true when the custom model's custom comment is set");
-	c.def_property("customComment", &CustomStructuralModel::getCustomComment, &CustomStructuralModel::setCustomComment, "A custom comment");
 	c.def("clearCustomComment", &CustomStructuralModel::clearCustomComment, "Clears the custom comment");
 
 }
 
-#endif
+#endif // CREATE_PYTHON_BINDINGS
