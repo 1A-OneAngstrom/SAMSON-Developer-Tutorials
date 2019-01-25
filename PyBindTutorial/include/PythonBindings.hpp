@@ -18,11 +18,12 @@ namespace py = pybind11;
 void exposeSEPyBindTutorialApp(py::module& m);
 void exposeCustomStructuralModel(py::module& m);
 void exposeCustomStructuralGroup(py::module& m);
+void exposeUnitsExample(py::module& m);
 
 /*
 	For now, we recommend naming your python module based on the UUID of your SAMSON Element.
 	In this case, there will be no clashes between modules from different SAMSON Elements named the same.
-	For example, if aSAMSON Element A has an embedded python module named "mymodule" and
+	For example, if a SAMSON Element A has an embedded python module named "mymodule" and
 	a SAMSON Element B has an embedded python module named "mymodule",
 	then there will be a clash and it will not be possible to use one of the modules.
 
@@ -44,6 +45,7 @@ PYBIND11_EMBEDDED_MODULE(SE_F2078F9E_F2CB_BA72_EE86_1E01A10B63D4, m) {
 	exposeSEPyBindTutorialApp(m);
 	exposeCustomStructuralModel(m);
 	exposeCustomStructuralGroup(m);
+	exposeUnitsExample(m);
 
 }
 
