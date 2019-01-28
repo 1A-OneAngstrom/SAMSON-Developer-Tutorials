@@ -248,16 +248,15 @@ void exposeUnitsExample(py::module& m) {
 
 	/*
 	 * Warning:
-	 * Since there is no connection between SBQuantityWrapper object and SBQuantity object that it wraps (the same for SBPhysicalVector3Wrapper, etc),
-	 * for SBQuantityWrapper, SBPhysicalVector3Wrapper, etc getter and setter functions should not be exposed to Python as an attribute via 'def_property()'
+	 * Since there is no connection between a SBQuantityWrapper object and a SBQuantity object that it wraps (the same for SBPhysicalVector3Wrapper, etc),
+	 * getter and setter functions for SBQuantityWrapper, SBPhysicalVector3Wrapper, etc, should not be exposed to Python as an attribute via 'def_property()'
 	 * but as functions via 'def()'
-	 * Bu you may expose getter functions as read-only attributes via 'def_property_readonly'
+	 * But you may expose getter functions as read-only attributes via 'def_property_readonly'
 	 */
 
 	/* Example bindings for functions that return/receive SBQuantity units
 	 * SBQuantity provides you with several different unit systems:
 	 * SI, Dalton, AU, Electronvolt, KilocaloriePerMole
-	 *
 	 */
 	c.def("getDimensionless", &getDimensionlessWrapper);
 	c.def("setDimensionless", &setDimensionlessWrapper);
