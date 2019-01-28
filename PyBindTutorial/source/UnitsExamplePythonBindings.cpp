@@ -10,7 +10,7 @@ namespace py = pybind11;
 
 #include "UnitsExample.hpp"
 
-// include headers with wrappers for SBQuantity, SBType* for use in python
+// include headers with wrappers for SBQuantity, SBType* for use in Python
 #include "SBDQuantityWrapper.hpp"
 #include "SBDTypePhysicalVector3Wrapper.hpp"
 #include "SBDTypePhysicalVector6Wrapper.hpp"

@@ -110,12 +110,12 @@ IF ( CREATE_PYTHON_BINDINGS )
 	# Set path to pybind11 headers
 	SET(PYBIND11_INCLUDE_DIRS "./external/pybind11/include/")
 
-	# Set path to pybind11 headers
-	SET(SAMSONSDKPYTHONWRAPPERS_INCLUDE_DIRS "./external/SAMSON-SDK-wrappers-for-python/include/")
+	# Set path to headers for SAMSON SDK SBQuantity and SBType* wrappers
+	SET(SAMSONSDKWRAPPERS_INCLUDE_DIRS "./external/SAMSON-SDK-wrappers/include/")
 
 	# include paths to python and pybind11 headers
 	INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIR} ${PYBIND11_INCLUDE_DIRS})
-	INCLUDE_DIRECTORIES(${SAMSONSDKPYTHONWRAPPERS_INCLUDE_DIRS})
+	INCLUDE_DIRECTORIES(${SAMSONSDKWRAPPERS_INCLUDE_DIRS})
 
 	# This define is used in the code to determine whether Python bindings should be created or not
 	add_definitions(-DCREATE_PYTHON_BINDINGS)
