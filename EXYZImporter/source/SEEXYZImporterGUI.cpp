@@ -22,7 +22,7 @@ void SEEXYZImporterGUI::loadSettings( SBGSettings *settings ) {
 	
 	// SAMSON Element generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
-	ui.checkBoxCreateCovalentBonds->setChecked( settings->loadBoolValue("createCovalentBonds", true) );
+	ui.checkBoxCreateCovalentBonds->setChecked( settings->loadBoolValue("checkBoxCreateCovalentBonds", true) );
 
 }
 
@@ -32,7 +32,7 @@ void SEEXYZImporterGUI::saveSettings( SBGSettings *settings ) {
 
 	// SAMSON Element generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
-	settings->saveValue("createCovalentBonds", ui.checkBoxCreateCovalentBonds->isChecked());
+	settings->saveValue("checkBoxCreateCovalentBonds", ui.checkBoxCreateCovalentBonds->isChecked());
 
 }
 
