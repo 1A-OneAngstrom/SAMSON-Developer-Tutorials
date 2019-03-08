@@ -50,7 +50,12 @@ public:
 
 	//@}
 
+	/// \name Parameters
+	//@{
+
 	void														getParameters(bool& createCovalentBonds);
+
+	//@}
 
 private:
 

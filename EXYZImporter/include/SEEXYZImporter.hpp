@@ -41,7 +41,7 @@ public :
 private:
 
 	void														initializeParameters(const SBList<std::string>* parameters);			///< Initializes import parameters
-	void														parseParameters(const SBList<std::string>* parameters);
+	void														parseParameters(const SBList<std::string>* parameters);					///< Parse the parameters list
 
 	bool														parseEXYZ(const std::string& fileName, SBDDocumentLayer* preferredLayer = 0);	///< Parse the format
 

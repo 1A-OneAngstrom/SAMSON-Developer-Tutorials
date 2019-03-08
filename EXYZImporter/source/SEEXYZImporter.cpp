@@ -52,7 +52,7 @@ void SEEXYZImporter::parseParameters(const SBList<std::string>* cparameters) {
 /// This function initializes variables for the parser
 void SEEXYZImporter::initializeParameters(const SBList<std::string>* parameters) {
 
-	const int nparams = 1;
+	const int nparams = 1;	// total number of parameters
 
 	// no parameters or only one parameter "default" => take from form
 	if (!parameters || (parameters->size() == 1 && (*parameters->begin()) == "default") || parameters->size() != nparams) {
@@ -109,7 +109,10 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentLayer* pr
 		SBElement::Type element = SAMSON::getElementTypeBySymbol(atomType);
 		if (element != SBElement::Unknown) {
 
-			SBAtom* newAtom = new SBAtom(element, SBQuantity::angstrom(x), SBQuantity::angstrom(y), SBQuantity::angstrom(z));
+			SBAtom* newAtom = new SBAtom(element,
+										 SBQuantity::angstrom(x),
+										 SBQuantity::angstrom(y),
+										 SBQuantity::angstrom(z));
 			newAtom->setSerialNumber(currentSerialNumber++);
 			structuralModel->getStructuralRoot()->addChild(newAtom);
 
@@ -142,17 +145,16 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentLayer* pr
 
 bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocumentLayer* preferredLayer) {
 
-	SAMSON::beginHolding("Add EXYZ model");							// start the undoable operation
+	SAMSON::beginHolding("Import EXYZ model");						// start the undoable operation
 
-	SAMSON::hold(structuralModel);									// the undoable node
+	SAMSON::hold(structuralModel);									// the undoable operation
 
 	// Create the structural model before adding it into the data graph.
 	// This will also create all its children (e.g., atoms).
-	if (structuralModel->isCreated() == false)
-		structuralModel->create();
+	structuralModel->create();
 
 	bool ret = false;
-	if (preferredLayer)
+	if (preferredLayer)												// add to the preferred layer
 		ret = preferredLayer->addChild(structuralModel);
 	else															// if there is no preferred layer, add to the active layer
 		ret = SAMSON::getActiveLayer()->addChild(structuralModel);
@@ -177,14 +179,15 @@ bool SEEXYZImporter::importFromFile(const std::string& fileName, const SBList<st
 
 	// check the file
 
-	if (!(QFileInfo::exists(qfileName)) || !(checkFile.isFile()) || !checkFile.isReadable() || checkFile.size() == 0) {
+	if (!QFileInfo::exists(qfileName) || !checkFile.isFile() ||
+		!checkFile.isReadable() || checkFile.size() == 0) {
 
-		std::string msg = "EXYZImporter: Could not open mmTF file " + fileName;
+		std::string msg = "EXYZImporter: Could not open EXYZ file " + fileName;
 
-		if (!(QFileInfo::exists(qfileName))) msg += " - file does not exist";
-		else if (!(checkFile.isFile())) msg += " - not a file";
-		else if (!(checkFile.isReadable())) msg += " - not readable";
-		else if (checkFile.size() == 0) msg += " - zero size";
+		if (!QFileInfo::exists(qfileName)) msg += " - file does not exist";
+		else if (!checkFile.isFile())      msg += " - not a file";
+		else if (!checkFile.isReadable())  msg += " - not readable";
+		else if (checkFile.size() == 0)    msg += " - zero size";
 
 		std::cerr << msg << "\n";
 		SAMSON::setStatusMessage(QString::fromStdString(msg));
