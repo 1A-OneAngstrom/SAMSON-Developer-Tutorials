@@ -1,6 +1,6 @@
-# EXYZ Importer
+# EXYZ Exporter
 
-This SAMSON Element demonstrates how to implement an importer on an example of a simple XYZ-importer for files of the following format:
+This SAMSON Element demonstrates how to implement an exporter on an example of a simple XYZ-exporter for files of the following format:
 
 1. The 1st line: the number of atoms in the file.
 2. The 2nd line: arbitraty header line.
@@ -10,7 +10,7 @@ element_symbol x-coordinate y-coordinate z-coordinate
 Example of a file in this format:
 ```
 10
-Model name
+SAMSON Export
 C -6.644 9.967 5.557
 C -7.934 9.831 4.773
 C -7.934 10.816 3.617
@@ -23,6 +23,6 @@ H -8.382 9.481 7.521
 H -7.182 10.599 8.021
 ```
 
-To test this importer, you can export any system from SAMSON (*File menu \ Save as...*) in XYZ format and change the extension from `.xyz` to `.exyz`.
+To test this exporter, you can export any system from SAMSON (*File menu \ Save*, *File menu \ Save as...*, *File menu \ Save selection as...*) into this format.
 
-**Note:** SAMSON already has an XYZ Importer which is installed by default. 
+**Note:** SAMSON already has an XYZ Exporter which is installed by default. 
