@@ -53,7 +53,7 @@ public:
 
 public slots:
 
-	void														onShakeAtomsPressed();
+	void														onShakeAtoms();
 
 private:
 

@@ -1,5 +1,7 @@
 # EXYZ Importer
 
+Please, refer to the [Importer tutorial](https://documentation.samson-connect.net/developers/latest/page_tutorial_importing.html).
+
 This SAMSON Element demonstrates how to implement an importer on an example of a simple XYZ-importer for files of the following format:
 
 1. The 1st line: the number of atoms in the file.

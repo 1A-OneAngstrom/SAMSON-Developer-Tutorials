@@ -23,7 +23,7 @@
    <item>
     <widget class="QPushButton" name="pushButtonShake">
      <property name="text">
-      <string>Shake Atoms!</string>
+      <string>Shake atoms</string>
      </property>
     </widget>
    </item>
@@ -33,7 +33,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="suffix">
-      <string> A</string>
+      <string> Å</string>
      </property>
      <property name="value">
       <double>1.000000000000000</double>
@@ -48,7 +48,7 @@
    <sender>pushButtonShake</sender>
    <signal>pressed()</signal>
    <receiver>SEAtomShakerAppGUIClass</receiver>
-   <slot>onShakeAtomsPressed()</slot>
+   <slot>onShakeAtoms()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>149</x>
@@ -62,6 +62,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>onShakeAtomsPressed()</slot>
+  <slot>onShakeAtoms()</slot>
  </slots>
 </ui>

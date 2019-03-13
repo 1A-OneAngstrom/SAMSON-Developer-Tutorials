@@ -63,18 +63,18 @@ int SEAtomShakerAppGUI::getFormat() const {
 
 }
 
-void SEAtomShakerAppGUI::onShakeAtomsPressed() {
-
-	getApp()->shakeAtoms(SBQuantity::angstrom(ui.doubleSpinBoxMaximumDistance->value()));
-
-}
-
 QString	SEAtomShakerAppGUI::getCitation() const {
 
 	return
 		"If you use this app in your work, please cite: <br/>"
 		"<br/>"
 		"[1] <a href=\"https://www.samson-connect.net\">https://www.samson-connect.net</a><br/>";
+
+}
+
+void SEAtomShakerAppGUI::onShakeAtoms() {
+
+	getApp()->shakeAtoms(SBQuantity::angstrom(ui.doubleSpinBoxMaximumDistance->value()));
 
 }
 

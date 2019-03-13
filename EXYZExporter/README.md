@@ -1,5 +1,7 @@
 # EXYZ Exporter
 
+Please, refer to the [Exporter tutorial](https://documentation.samson-connect.net/developers/latest/page_tutorial_exporting.html).
+
 This SAMSON Element demonstrates how to implement an exporter on an example of a simple XYZ-exporter for files of the following format:
 
 1. The 1st line: the number of atoms in the file.
