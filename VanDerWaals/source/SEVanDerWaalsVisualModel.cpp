@@ -37,33 +37,104 @@ SEVanDerWaalsVisualModel::~SEVanDerWaalsVisualModel() {
 
 }
 
- bool SEVanDerWaalsVisualModel::isSerializable() const {
+bool SEVanDerWaalsVisualModel::isSerializable() const {
 
 	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Modify the line below to "return true;" if you want this visual model be serializable (hence copyable, savable, etc.)
 
-	return false;
+	return true;
 	
 }
 
 void SEVanDerWaalsVisualModel::serialize(SBCSerializer* serializer, const SBNodeIndexer& nodeIndexer, const SBVersionNumber& sdkVersionNumber, const SBVersionNumber& classVersionNumber) const {
 
+	// Serialization of the parent class
+
 	SBMVisualModel::serialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 
 	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
-	// Complete this function to serialize your visual model.
+
+	// Write the radius factor
+
+	serializer->writeFloatElement("radiusFactor", radiusFactor);
+
+	// Write the number of atoms to which this visual model is applied
+
+	serializer->writeUnsignedIntElement("numberOfAtoms", atomIndexer.size());
+
+	unsigned int atomIndex = 0; // the index of the atom in the indexer
+
+	// Write indices of the atoms to which this visual model is applied
+
+	SB_FOR(SBPointer<SBAtom> atom, atomIndexer) {
+
+		if (nodeIndexer.getIndex(atom(), atomIndex)) {
+
+			// the atom is indexed
+
+			serializer->writeBoolElement("atomIsIndexed", true);
+			serializer->writeUnsignedIntElement("atomIndex", atomIndex);
+
+		}
+		else {
+
+			// the atom is not indexed, the user must be copying just the visual model
+			// so we serialize the atom address itself
+
+			serializer->writeBoolElement("atomIsIndexed", false);
+			serializer->writeUnsignedLongLongElement("atomIndex", (unsigned long long)atom());
+
+		}
+
+	}
 
 }
 
 void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNodeIndexer& nodeIndexer, const SBVersionNumber& sdkVersionNumber, const SBVersionNumber& classVersionNumber) {
 
+	// Unserialization of the parent class
+
 	SBMVisualModel::unserialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 	
 	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
-	// Complete this function to unserialize your visual model.
+
+	// Read the radius factor
+
+	radiusFactor = serializer->readFloatElement();
+
+	// Read the number of atoms to which this visual model is applied
+
+	unsigned int numberOfAtoms = serializer->readUnsignedIntElement();
+
+	bool atomIsIndexed;
+	unsigned int atomIndex = 0; // the index of the atom in the indexer
+
+	// Read indices of the atoms to which this visual model is applied and
+	// add these node into the atom indexer of the visual model
+
+	for (unsigned int i = 0; i < numberOfAtoms; ++i) {
+
+		atomIsIndexed = serializer->readBoolElement();
+		if (atomIsIndexed) {
+
+			// the atom was serialized too
+
+			atomIndex = serializer->readUnsignedIntElement();
+			atomIndexer.addReferenceTarget(nodeIndexer[atomIndex]);
+
+		}
+		else {
+
+			// the atom was not serialized, it must still exist in memory
+
+			atomIndexer.addReferenceTarget((SBAtom*)serializer->readUnsignedLongLongElement());
+
+		}
+
+	}
 
 }
 
