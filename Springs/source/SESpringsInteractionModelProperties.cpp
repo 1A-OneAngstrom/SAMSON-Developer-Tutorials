@@ -58,7 +58,7 @@ QString SESpringsInteractionModelProperties::getName() const {
 	// SAMSON Element generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your interaction model inside SAMSON
 
-	return "DevTutorial: Spring properties";
+	return "DevTutorial: Springs properties";
 
 }
 
@@ -152,6 +152,8 @@ void SESpringsInteractionModelProperties::onBondSpringStiffnessChanged(double st
 
 void SESpringsInteractionModelProperties::onResetSpringsClicked() {
 
-	interactionModel->setBondSpringsModel();					// reinitialize the spring model with the current bond lengths
+	// Reinitialize the spring model with the current bond lengths
+
+	interactionModel->initializeBondSpringsModel();
 
 }

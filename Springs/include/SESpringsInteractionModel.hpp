@@ -73,23 +73,19 @@ public :
 
 	//@}
 
-	unsigned int 												setBondSpringsModel();
-	void														setBondSpringStiffness(double stiffness);
+	void														initializeBondSpringsModel();											///< set up the bond spring model
+	void														setBondSpringStiffness(double stiffness) { bondSpringStiffness = stiffness; }	///< set the bond spring stiffness parameter
 
 private:
 
-	void														computeBondSpringsInteractions();
+	void														updateBondSpringsInteractions();										///< update the bond spring interactions
 
-	SBPointerIndexer<SBStructuralParticle> const*				particleIndex;
+	SBPointerIndexer<SBStructuralParticle> const*				particleIndexer;
 
-	bool														initializeNeeded;
-	bool														isSpringModelSet;
 	double														bondSpringStiffness;													///< the stiffness of bond springs
 
-	SBQuantity::kJPerMol										energyBondSprings;														///< bond stretch energy
-
 	SBVector<SBQuantity::length>								springLengthVector;														///< the equilibrium length
-	SBVector<SBBond*>											springBondVector;														///< vector of all bonds in the selected system
+	SBVector<SBBond*>											springBondVector;														///< the vector of all bonds in the selected system
 
 };
 
