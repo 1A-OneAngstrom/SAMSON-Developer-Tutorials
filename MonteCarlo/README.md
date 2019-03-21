@@ -1,4 +1,4 @@
-# # State updater: Metropolis Monte Carlo
+# State updater: Metropolis Monte Carlo
 
 This SAMSON Element demonstrates how to create a simple exploration method based on a Metropolis Monte Carlo approach.
 
