@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SEEnergyConverterAppGUIClass</class>
+ <widget class="QWidget" name="SEEnergyConverterAppGUIClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>373</width>
+    <height>70</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>70</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayoutLeft">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="lineEditLeft">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxLeft">
+       <item>
+        <property name="text">
+         <string>eV</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Eh</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>kcal/mol</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>zJ</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelEqualSign">
+     <property name="maximumSize">
+      <size>
+       <width>15</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string> = </string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayoutRight">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="lineEditRight">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxRight">
+       <item>
+        <property name="text">
+         <string>eV</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Eh</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>kcal/mol</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>zJ</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>lineEditLeft</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>SEEnergyConverterAppGUIClass</receiver>
+   <slot>onLeftChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>92</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditRight</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>SEEnergyConverterAppGUIClass</receiver>
+   <slot>onRightChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>280</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBoxLeft</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>SEEnergyConverterAppGUIClass</receiver>
+   <slot>onLeftChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>92</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBoxRight</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>SEEnergyConverterAppGUIClass</receiver>
+   <slot>onLeftChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>280</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onLeftChanged()</slot>
+  <slot>onRightChanged()</slot>
+ </slots>
+</ui>
