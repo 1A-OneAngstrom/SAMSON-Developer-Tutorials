@@ -150,6 +150,7 @@ FIND_PACKAGE ( OpenGL )
 ##########################
 
 ADD_SUBDIRECTORY( AtomShaker )
+ADD_SUBDIRECTORY( AtomPusher )
 ADD_SUBDIRECTORY( EnergyConverter )
 ADD_SUBDIRECTORY( EXYZImporter )
 ADD_SUBDIRECTORY( EXYZExporter )

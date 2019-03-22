@@ -1,9 +1,10 @@
 # SAMSON-Developer-Tutorials
 Sample source code and tutorials for developing SAMSON Elements - modules for the [SAMSON](<https://www.samson-connect.net>) open platform for molecular modeling (<https://www.samson-connect.net>).
 
-List of SAMSON Element samples and their description:
+List of SAMSON Element samples:
 
-- **AtomShaker** - a sample demonstrating how to create a simple App with GUI that shakes atoms in SAMSON.
+- **AtomShaker** - a sample demonstrating how to create a simple App with GUI that shakes atoms.
+- **AtomPusher** - a sample demonstrating how to create a simple Editor that pushes atoms.
 - **EnergyConverter** - a sample demonstrating how to work with SAMSON units through implementing an app that performs energy conversion.
 - **EXYZImporter** - a sample demonstrating how to create a simple Importer for an XYZ format.
 - **EXYZExporter** - a sample demonstrating how to create a simple Exporter for an XYZ format.
