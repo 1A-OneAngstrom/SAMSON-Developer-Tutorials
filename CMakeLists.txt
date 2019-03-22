@@ -150,10 +150,11 @@ FIND_PACKAGE ( OpenGL )
 ##########################
 
 ADD_SUBDIRECTORY( AtomShaker )
+ADD_SUBDIRECTORY( EnergyConverter )
 ADD_SUBDIRECTORY( EXYZImporter )
 ADD_SUBDIRECTORY( EXYZExporter )
-ADD_SUBDIRECTORY( Springs )
 ADD_SUBDIRECTORY( VanDerWaals )
+ADD_SUBDIRECTORY( Springs )
 ADD_SUBDIRECTORY( SteepestDescent )
 ADD_SUBDIRECTORY( MonteCarlo )
 

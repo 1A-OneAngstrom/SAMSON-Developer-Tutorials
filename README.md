@@ -4,6 +4,7 @@ Sample source code and tutorials for developing SAMSON Elements - modules for th
 List of SAMSON Element samples and their description:
 
 - **AtomShaker** - a sample demonstrating how to create a simple App with GUI that shakes atoms in SAMSON.
+- **EnergyConverter** - a sample demonstrating how to work with SAMSON units through implementing an app that performs energy conversion.
 - **EXYZImporter** - a sample demonstrating how to create a simple Importer for an XYZ format.
 - **EXYZExporter** - a sample demonstrating how to create a simple Exporter for an XYZ format.
 - **Springs** - a sample demonstrating how to create a simple Bond Springs Interaction Model.
