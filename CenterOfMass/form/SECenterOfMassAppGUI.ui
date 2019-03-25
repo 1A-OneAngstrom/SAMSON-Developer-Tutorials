@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SECenterOfMassAppGUIClass</class>
+ <widget class="QWidget" name="SECenterOfMassAppGUIClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>312</width>
+    <height>100</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>100</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QPushButton" name="pushButtonComputeCenterOfMass">
+     <property name="text">
+      <string>Compute center of mass</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonComputeCenterOfMass</sender>
+   <signal>clicked()</signal>
+   <receiver>SECenterOfMassAppGUIClass</receiver>
+   <slot>onComputeCenterOfMass()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>155</x>
+     <y>49</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onComputeCenterOfMass()</slot>
+ </slots>
+</ui>
