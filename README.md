@@ -5,6 +5,7 @@ List of SAMSON Element samples:
 
 - **AtomShaker** - a sample demonstrating how to create a simple App with GUI that shakes atoms.
 - **AtomPusher** - a sample demonstrating how to create a simple Editor that pushes atoms.
+- **CenterOfMass** - a sample demonstrating how to process signals and events on an example of an interactive computation of the center of mass.
 - **EnergyConverter** - a sample demonstrating how to work with SAMSON units through implementing an app that performs energy conversion.
 - **EXYZImporter** - a sample demonstrating how to create a simple Importer for an XYZ format.
 - **EXYZExporter** - a sample demonstrating how to create a simple Exporter for an XYZ format.
