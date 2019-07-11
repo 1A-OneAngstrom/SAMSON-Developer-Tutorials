@@ -39,14 +39,6 @@ QString SEAtomPusherEditor::getName() const {
 
 }
 
-QString SEAtomPusherEditor::getText() const {
-
-	// SAMSON Element generator pro tip: modify this function to return a user-friendly string that will be displayed in menus
-
-	return QObject::tr("DevTutorial: Atom pusher");
-
-}
-
 QString SEAtomPusherEditor::getDescription() const {
 
 	// SAMSON Element generator pro tip: modify this function to return a user-friendly string that will be displayed in menus

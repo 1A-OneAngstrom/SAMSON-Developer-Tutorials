@@ -31,7 +31,6 @@ public :
 
 	virtual SBCContainerUUID									getUUID() const;														///< Returns the widget UUID
 	virtual QString												getName() const;														///< Returns the class name
-	virtual QString												getText() const;														///< Returns the menu item text
 	virtual QString												getDescription() const;													///< Returns the menu item text
 	virtual QPixmap												getLogo() const;														///< Returns the pixmap logo
 	virtual QKeySequence										getShortcut() const;													///< Returns the shorcut

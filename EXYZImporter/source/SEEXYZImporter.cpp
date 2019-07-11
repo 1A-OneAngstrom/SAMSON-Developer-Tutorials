@@ -70,7 +70,7 @@ void SEEXYZImporter::initializeParameters(const SBList<std::string>* parameters)
 
 }
 
-bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentLayer* preferredLayer) {
+bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentFolder *preferredFolder) {
 
 	// get file lines
 
@@ -127,7 +127,7 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentLayer* pr
 
 	// add data to the data graph
 
-	if ( !addToDataGraph(structuralModel, preferredLayer) ) {
+	if ( !addToDataGraph(structuralModel, preferredFolder) ) {
 
 		std::string msg = "EXYZImporter: ";
 		msg += "Could not add to the data graph " + fileName;
@@ -143,7 +143,7 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentLayer* pr
 
 }
 
-bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocumentLayer* preferredLayer) {
+bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocumentFolder *preferredFolder) {
 
 	SAMSON::beginHolding("Import EXYZ model");						// start the undoable operation
 
@@ -154,10 +154,10 @@ bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocum
 	structuralModel->create();
 
 	bool ret = false;
-	if (preferredLayer)												// add to the preferred layer
-		ret = preferredLayer->addChild(structuralModel);
-	else															// if there is no preferred layer, add to the active layer
-		ret = SAMSON::getActiveLayer()->addChild(structuralModel);
+	if (preferredFolder)											// add to the preferred folder
+		ret = preferredFolder->addChild(structuralModel);
+	else															// if there is no preferred folder, add to the active document
+		ret = SAMSON::getActiveDocument()->addChild(structuralModel);
 
 	SAMSON::endHolding();											// end the undoable operation
 
@@ -165,7 +165,7 @@ bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocum
 
 }
 
-bool SEEXYZImporter::importFromFile(const std::string& fileName, const SBList<std::string>* parameters, SBDDocumentLayer* preferredLayer) {
+bool SEEXYZImporter::importFromFile(const std::string& fileName, const SBList<std::string>* parameters, SBDDocumentFolder *preferredFolder) {
 
 	// SAMSON Element generator pro tip: modify this function to parse the contents of a file and add new nodes to SAMSON's data graph.
 	// Please refer to tutorials for examples.
@@ -198,7 +198,7 @@ bool SEEXYZImporter::importFromFile(const std::string& fileName, const SBList<st
 
 	// parse the file and add to data graph
 
-	bool ret = parseEXYZ(fileName, preferredLayer);
+	bool ret = parseEXYZ(fileName, preferredFolder);
 
 	std::string msg = "EXYZImporter: ";
 	if (ret)

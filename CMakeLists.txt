@@ -32,11 +32,8 @@ IF( SAMSON_SDK_PATH )
 ELSE( SAMSON_SDK_PATH )
 	IF( DEFINED ENV{SAMSON_SDK_PATH} )
 		FILE( TO_CMAKE_PATH $ENV{SAMSON_SDK_PATH} CMAKE_SAMSON_SDK_PATH )
-		SET ( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SAMSON_SDK_PATH}" )
-		INCLUDE ( CurrentSDKVersion )
-		FILE( TO_CMAKE_PATH ${CMAKE_SAMSON_SDK_PATH}/${SELECTED_SDK_VERSION} CMAKE_SAMSON_SDK_PATH )
 	ELSE( DEFINED ENV{SAMSON_SDK_PATH} )
-		MESSAGE( "SAMSON_SDK_PATH is not defined" )
+		MESSAGE( "SAMSON_SDK_PATH is not defined, should be defined at cmake runtime or in environment variables" )
 	ENDIF( DEFINED ENV{SAMSON_SDK_PATH} )
 ENDIF( SAMSON_SDK_PATH )
 
@@ -51,7 +48,7 @@ ELSE( QT5_CMAKE_INCLUDE_DIR )
 	IF( DEFINED ENV{QT5_CMAKE_INCLUDE_DIR} )
 		FILE( TO_CMAKE_PATH $ENV{QT5_CMAKE_INCLUDE_DIR} CMAKE_QT5_CMAKE_INCLUDE_DIR )
 	ELSE( DEFINED ENV{QT5_CMAKE_INCLUDE_DIR} )
-		MESSAGE( "QT5_CMAKE_INCLUDE_DIR is not defined" )
+		MESSAGE( "QT5_CMAKE_INCLUDE_DIR is not defined, it should be defined at cmake runtime or in environment variables" )
 	ENDIF( DEFINED ENV{QT5_CMAKE_INCLUDE_DIR} )
 ENDIF( QT5_CMAKE_INCLUDE_DIR )
 
@@ -64,17 +61,73 @@ cmake_policy(SET CMP0020 NEW)
 ##############################
 
 IF( WIN32 )
-	IF( DEFINED ENV{WINSDK_LIB_DIR} )
-		FILE( TO_CMAKE_PATH $ENV{WINSDK_LIB_DIR} CMAKE_WINSDK_LIB_DIR )
-	ELSE( DEFINED ENV{WINSDK_LIB_DIR} )
-		MESSAGE( "WINSDK_LIB_DIR is not defined" )		
-	ENDIF( DEFINED ENV{WINSDK_LIB_DIR} )
+	IF( WINSDK_LIB_DIR )
+		FILE( TO_CMAKE_PATH ${WINSDK_LIB_DIR} CMAKE_WINSDK_LIB_DIR )
+	ELSE( QT5_CMAKE_INCLUDE_DIR )
+		IF( DEFINED ENV{WINSDK_LIB_DIR} )
+			FILE( TO_CMAKE_PATH $ENV{WINSDK_LIB_DIR} CMAKE_WINSDK_LIB_DIR )
+		ELSE( DEFINED ENV{WINSDK_LIB_DIR} )
+			MESSAGE( "WINSDK_LIB_DIR is not defined, it should be defined at cmake runtime or in environment variables" )		
+		ENDIF( DEFINED ENV{WINSDK_LIB_DIR} )
+	ENDIF( QT5_CMAKE_INCLUDE_DIR )
 	SET ( CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_WINSDK_LIB_DIR} )
 ENDIF( WIN32 )
 
-SET ( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SAMSON_SDK_PATH}/cmake" "${CMAKE_SAMSON_SDK_PATH}/cmake/Find" )
+SET ( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SAMSON_SDK_PATH}/cmake" "${CMAKE_SAMSON_SDK_PATH}/cmake/Find" ${CMAKE_SOURCE_DIR})
 SET ( SAMSON_LIBRARIES_PATH "${CMAKE_SAMSON_SDK_PATH}/libs" )
 SET ( SAMSON_INCLUDE_PATH "${CMAKE_SAMSON_SDK_PATH}/include/" )
+
+
+# VERSION_HASH information : New since SAMSON 0.8.0
+#
+# The maximum size of this variable is 63 Bytes ie char[63].
+# We can embed into elements file one string to identify it. Usualy we put the git commit hash or the svn revision number inside.
+# The information is relevant only if the working copy is up to date and if everything is commited
+# If you upload your element on samson-connect, you will see this information next to your element inside My SAMSON->My Factory->Edit Element.
+
+# you can choose either git either svn either nothing
+SET ( USE_GIT 1 )
+SET ( USE_SVN 0 )
+
+IF( ${USE_GIT} )
+	# if USE_GIT=1 the next command will get the current commit hash and will store 
+	# it inside VERSION_HASH variable.
+	MESSAGE( "Getting current git commit hash and storing it inside VERSION_HASH variable." )
+	EXECUTE_PROCESS(
+	  COMMAND git log -1 --format=%H
+	  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/SAMSON-Element
+	  OUTPUT_VARIABLE VERSION_HASH
+	  OUTPUT_STRIP_TRAILING_WHITESPACE
+	 )
+ELSE (${USE_GIT})
+	IF (${USE_SVN})
+		# if USE_SVN=1 and USE_GIT=0 the next command will get the current commit revision
+		# of your working copy and will store it inside VERSION_HASH variable.
+		MESSAGE( "Getting current svn revision and storing it inside VERSION_HASH variable." )
+		find_package(Subversion)
+		IF(SUBVERSION_FOUND)
+		  Subversion_WC_INFO(${CMAKE_SOURCE_DIR} REPO)
+		  SET ( VERSION_HASH ${REPO_WC_REVISION} )
+		ENDIF()
+	ELSE (${USE_SVN})
+		# if USE_SVN=0 and USE_GIT=0 we set the variable VERSION_HASH equal to 
+		# "undefined hash" or what you desire.
+		SET(VERSION_HASH "undefined")
+	ENDIF(${USE_SVN})
+ENDIF(${USE_GIT})
+
+# we create ElementVersionHash.cmake file in CMAKE_SOURCE_DIR folder containing the corresponding VERSION_HASH
+# This file just creates add definition of SB_ELEMENT_VERSION_HASH accessible throught the code.
+FILE ( WRITE ElementVersionHash.cmake "ADD_DEFINITIONS\(-DSB_ELEMENT_VERSION_HASH=\"${VERSION_HASH}\"\)\n" )
+
+MESSAGE( "CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR}")
+MESSAGE( "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
+
+
+INCLUDE ( ElementVersionHash )
+
+# End off VERSION_HASH information
+
 
 INCLUDE ( SDKConfiguration )
 
@@ -90,13 +143,12 @@ INCLUDE ( SDKFunctions )
 INCLUDE ( SDKVersion )
 
 MESSAGE( " " )
-MESSAGE( "====================================  CMAKE REGISTER THESE PATHS  ====================================" )
-MESSAGE( "     SAMSON_SDK_PATH                     = ${CMAKE_SAMSON_SDK_PATH} ")
-MESSAGE( "     CMAKE_QT5_CMAKE_INCLUDE_DIR         = ${CMAKE_QT5_CMAKE_INCLUDE_DIR}" )
+MESSAGE( "=======================================  CMAKE SUMMARY PATHS  ========================================" )
+MESSAGE( "     SAMSON_SDK_PATH            = ${CMAKE_SAMSON_SDK_PATH} ")
+MESSAGE( "     QT5_CMAKE_INCLUDE_DIR      = ${CMAKE_QT5_CMAKE_INCLUDE_DIR}" )
 IF( WIN32 )
-MESSAGE( "     CMAKE_WINSDK_LIB_DIR                = ${CMAKE_WINSDK_LIB_DIR}" )
+MESSAGE( "     WINSDK_LIB_DIR             = ${CMAKE_WINSDK_LIB_DIR}" )
 ENDIF( WIN32 )
-MESSAGE( "     CMAKE_SAMSON_DEVELOPPER_DATA_PATH   = ${CMAKE_SAMSON_DEVELOPPER_DATA_PATH}")
 MESSAGE( "======================================================================================================" )
 MESSAGE( " " )
 

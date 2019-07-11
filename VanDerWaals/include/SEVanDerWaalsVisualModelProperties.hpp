@@ -82,8 +82,8 @@ public slots:
 private:
 
 	friend class SEVanDerWaalsVisualModel;
-	Ui::SEVanDerWaalsVisualModelPropertiesClass							ui;
-	SBPointer<SEVanDerWaalsVisualModel>									visualModel;
+	Ui::SEVanDerWaalsVisualModelPropertiesClass					ui;
+	SBPointer<SEVanDerWaalsVisualModel>							visualModel;
 
 	SBPointer<Observer>											observer;
 

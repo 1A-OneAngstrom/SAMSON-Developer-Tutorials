@@ -10,7 +10,7 @@
 
 SB_ELEMENT_DESCRIPTION("This SAMSON Element implements a simple editor for pushing atoms.");
 SB_ELEMENT_DOCUMENTATION("Resource/Documentation/doc.html");
-SB_ELEMENT_VERSION_NUMBER("0.7.0");
+SB_ELEMENT_VERSION_NUMBER("0.8.0");
 
 SB_ELEMENT_CLASSES_BEGIN;
 
