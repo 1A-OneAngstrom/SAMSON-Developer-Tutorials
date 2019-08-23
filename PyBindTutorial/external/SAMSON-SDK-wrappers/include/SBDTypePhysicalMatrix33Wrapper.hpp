@@ -141,7 +141,7 @@ public:
 
     /// \brief Returns the first column of this physical matrix
 
-	SBPhysicalVector3Wrapper<Units>									getE1() const {
+	SBPhysicalVector3Wrapper<Units>								getE1() const {
 
 		return SBPhysicalVector3Wrapper<Units>(m[0][0], m[1][0], m[2][0]);
 
@@ -149,7 +149,7 @@ public:
 
     /// \brief Returns the second column of this physical matrix
 
-	SBPhysicalVector3Wrapper<Units>									getE2() const {
+	SBPhysicalVector3Wrapper<Units>								getE2() const {
 
 		return SBPhysicalVector3Wrapper<Units>(m[0][1], m[1][1], m[2][1]);
 
@@ -157,7 +157,7 @@ public:
 
     /// \brief Returns the third column of this physical matrix
 
-	SBPhysicalVector3Wrapper<Units>									getE3() const {
+	SBPhysicalVector3Wrapper<Units>								getE3() const {
 
 		return SBPhysicalVector3Wrapper<Units>(m[0][2], m[1][2], m[2][2]);
 
@@ -165,9 +165,9 @@ public:
 
     /// \brief Returns the row \p r of this physical matrix
 
-	SBPhysicalVector3Wrapper<Units>									getRow(const unsigned int r) const {
+	SBPhysicalVector3Wrapper<Units>								getRow(const unsigned int r) const {
 
-        if (r > 3) throw std::runtime_error("Index out of range");
+		if (r > 3) throw std::runtime_error("Index out of range");
 
 		return SBPhysicalVector3Wrapper<Units>(m[r][0], m[r][1], m[r][1]);
 
@@ -175,9 +175,9 @@ public:
 
     /// \brief Returns the column \p c of this physical matrix
 
-	SBPhysicalVector3Wrapper<Units>									getColumn(const unsigned int c) const {
+	SBPhysicalVector3Wrapper<Units>								getColumn(const unsigned int c) const {
 
-        if (c > 3) throw std::runtime_error("Index out of range");
+		if (c > 3) throw std::runtime_error("Index out of range");
 
 		return SBPhysicalVector3Wrapper<Units>(m[0][c], m[1][c], m[1][c]);
 
@@ -185,7 +185,7 @@ public:
 
     /// \brief Returns a dimensionless physical matrix whose components are equal to those of this physical matrix
 
-    std::vector<std::vector<double>>			getValue() const {
+	std::vector<std::vector<double>>							getValue() const {
 
         std::vector<std::vector<double>> ret = {{m[0][0].getValue(), m[0][1].getValue(), m[0][2].getValue()},
                                                 {m[1][0].getValue(), m[1][1].getValue(), m[1][2].getValue()},
@@ -200,7 +200,7 @@ public:
     void														setValue(const std::vector<std::vector<double>>& u) {
 
         if (u.size() != 3) throw std::runtime_error("The size of the input matrix should be 3x3");
-        for (auto v: u)
+		for (auto v: u)
 			if (v.size() != 3) throw std::runtime_error("The size of the input matrix should be 3x3");
 
         m[0][0].setValue(u[0][0]); m[0][1].setValue(u[0][1]); m[0][2].setValue(u[0][2]);
@@ -212,7 +212,7 @@ public:
     /// \brief Returns the arbitraty SBPhysicalMatrix33
 
     template<typename Quantity, typename System = SBUnitSystemSI>
-    SBPhysicalMatrix33<Quantity> toSBPhysicalMatrix33 () const {
+	SBPhysicalMatrix33<Quantity>								toSBPhysicalMatrix33 () const {
 
         return SBPhysicalMatrix33<Quantity>(
                     getSBQuantity<Quantity>(m[0][0]), getSBQuantity<Quantity>(m[0][1]), getSBQuantity<Quantity>(m[0][2]),
@@ -223,13 +223,21 @@ public:
 
     /// \brief Returns the i-th j-th component of the matrix
 
-    Units                       getComponent(const unsigned int i, const unsigned int j) const {
+	Units														getComponent(const unsigned int i, const unsigned int j) const {
 
-        if (i >= 3 || j >= 3)   throw std::runtime_error("Index is out of range");
+		if (i >= 3 || j >= 3)   throw std::runtime_error("Index is out of range");
 
         return m[i][j];
 
     }
+
+	/// \brief Returns true if the matrix is dimensionless
+
+	bool														isDimensionless() const {
+
+		return m[0][0].isDimensionless();
+
+	}
 
     //@}
 
@@ -239,7 +247,7 @@ public:
 
     /// \brief Returns the sum of this physical matrix with physical matrix \p mat
 
-	SBDTypePhysicalMatrix33Wrapper<Units>							operator+(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator+(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) const {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
                     m[0][0] + mat.m[0][0], m[0][1] + mat.m[0][1], m[0][2] + mat.m[0][2],
@@ -250,7 +258,7 @@ public:
 
     /// \brief Returns the difference of this physical matrix with physical matrix \p mat
 
-	SBDTypePhysicalMatrix33Wrapper<Units>							operator-(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator-(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) const {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
                     m[0][0] - mat.m[0][0], m[0][1] - mat.m[0][1], m[0][2] - mat.m[0][2],
@@ -261,7 +269,7 @@ public:
 
     /// \brief Returns the product of this physical matrix with physical matrix \p mat
 
-	SBDTypePhysicalMatrix33Wrapper<Units>                          operator*(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator*(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) const {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
                     m[0][0] * mat.m[0][0] + m[0][1] * mat.m[1][0] + m[0][2] * mat.m[2][0],
@@ -274,24 +282,36 @@ public:
                     m[2][0] * mat.m[0][1] + m[2][1] * mat.m[1][1] + m[2][2] * mat.m[2][1],
                     m[2][0] * mat.m[0][2] + m[2][1] * mat.m[1][2] + m[2][2] * mat.m[2][2]);
 
-    }
+	}
 
-    /// \brief Returns the product of this physical matrix with double \p d
+	/// \brief Returns the product of this physical matrix with double \p d
 
-	SBDTypePhysicalMatrix33Wrapper<Units>							operator*(const double d) const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator*(const double d) const {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
-            m[0][0] * d, m[0][1] * d, m[0][2] * d,
-            m[1][0] * d, m[1][1] * d, m[1][2] * d,
-            m[2][0] * d, m[2][1] * d, m[2][2] * d
-            );
+			m[0][0] * d, m[0][1] * d, m[0][2] * d,
+			m[1][0] * d, m[1][1] * d, m[1][2] * d,
+			m[2][0] * d, m[2][1] * d, m[2][2] * d
+			);
 
-    }
+	}
+
+	/// \brief Returns the division of this physical matrix by double \p d
+
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator/(const double d) const {
+
+		return SBDTypePhysicalMatrix33Wrapper<Units>(
+			m[0][0] / d, m[0][1] / d, m[0][2] / d,
+			m[1][0] / d, m[1][1] / d, m[1][2] / d,
+			m[2][0] / d, m[2][1] / d, m[2][2] / d
+			);
+
+	}
 
     /* // makes multiplication by another matrix ambiguous
     /// \brief Multiplies this dimensionless physical matrix with physical quantity \p d
 
-	SBDTypePhysicalMatrix33Wrapper<Units>							operator*(const Units& d) {
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator*(const Units& d) {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
             m[0][0] * d, m[0][1] * d, m[0][2] * d,
@@ -303,7 +323,7 @@ public:
 
     /// \brief Adds physical matrix \p mat to this physical matrix
 
-	SBDTypePhysicalMatrix33Wrapper<Units>&                         operator+=(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) {
+	SBDTypePhysicalMatrix33Wrapper<Units>&						operator+=(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) {
 
         m[0][0] += mat.m[0][0]; m[0][1] += mat.m[0][1]; m[0][2] += mat.m[0][2];
         m[1][0] += mat.m[1][0]; m[1][1] += mat.m[1][1]; m[1][2] += mat.m[1][2];
@@ -314,7 +334,7 @@ public:
 
     /// \brief Subtracts physical matrix \p mat from this physical matrix
 
-	SBDTypePhysicalMatrix33Wrapper<Units>&                         operator-=(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) {
+	SBDTypePhysicalMatrix33Wrapper<Units>&						operator-=(const SBDTypePhysicalMatrix33Wrapper<Units>& mat) {
 
         m[0][0] -= mat.m[0][0]; m[0][1] -= mat.m[0][1]; m[0][2] -= mat.m[0][2];
         m[1][0] -= mat.m[1][0]; m[1][1] -= mat.m[1][1]; m[1][2] -= mat.m[1][2];
@@ -325,7 +345,7 @@ public:
 
     /// \brief Returns the opposite of this physical matrix
 
-	SBDTypePhysicalMatrix33Wrapper<Units>							operator-() const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						operator-() const {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
             -m[0][0], -m[0][1], -m[0][2],
@@ -337,30 +357,44 @@ public:
 
     /// \brief Multiplies this physical matrix with double \p d
 
-	SBDTypePhysicalMatrix33Wrapper<Units>&                         operator*=(const double d) {
+	SBDTypePhysicalMatrix33Wrapper<Units>&						operator*=(const double d) {
 
         m[0][0] *= d; m[0][1] *= d; m[0][2] *= d;
         m[1][0] *= d; m[1][1] *= d; m[1][2] *= d;
         m[2][0] *= d; m[2][1] *= d; m[2][2] *= d;
         return *this;
 
-    }
+	}
 
-    /// \brief Multiplies this dimensionless physical matrix with physical quantity \p d
+	/// \brief Multiplies this dimensionless physical matrix with physical quantity \p d
 
-	SBDTypePhysicalMatrix33Wrapper<Units>&                         operator*=(const Units& d) {
+	SBDTypePhysicalMatrix33Wrapper<Units>&						operator*=(const Units& d) {
 
-        m[0][0] *= d; m[0][1] *= d; m[0][2] *= d;
-        m[1][0] *= d; m[1][1] *= d; m[1][2] *= d;
-        m[2][0] *= d; m[2][1] *= d; m[2][2] *= d;
-        return *this;
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
 
-    }
+		m[0][0] *= d; m[0][1] *= d; m[0][2] *= d;
+		m[1][0] *= d; m[1][1] *= d; m[1][2] *= d;
+		m[2][0] *= d; m[2][1] *= d; m[2][2] *= d;
+		return *this;
+
+	}
+
+	/// \brief Divides this dimensionless physical matrix by physical quantity \p d
+
+	SBDTypePhysicalMatrix33Wrapper<Units>&						operator/=(const Units& d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
+
+		m[0][0] /= d; m[0][1] /= d; m[0][2] /= d;
+		m[1][0] /= d; m[1][1] /= d; m[1][2] /= d;
+		m[2][0] /= d; m[2][1] /= d; m[2][2] /= d;
+		return *this;
+
+	}
 
     /// \brief Returns the product of this physical matrix with physical vector \p v
 
-	SBPhysicalVector3Wrapper<Units>
-	operator*(const SBPhysicalVector3Wrapper<Units>& v) const {
+	SBPhysicalVector3Wrapper<Units>								operator*(const SBPhysicalVector3Wrapper<Units>& v) const {
 
         Units res0 (m[0][0] * v.v[0] + m[0][1] * v.v[1] + m[0][2] * v.v[2] );
         Units res1 (m[1][0] * v.v[0] + m[1][1] * v.v[1] + m[1][2] * v.v[2] );
@@ -400,7 +434,7 @@ public:
 
     /// \brief Returns the trace m[0][0] + m[1][1] + m[2][2] of this physical matrix
 
-    Units                                                       trace() const {
+	Units														trace() const {
 
         return m[0][0] + m[1][1] + m[2][2];
 
@@ -408,7 +442,7 @@ public:
 
     /// \brief Sets this physical matrix to the identity matrix
 
-    void														setIdentity() {
+	void														setIdentity() {
 
         m[0][0].setValue(1.0);
         m[0][1].setValue(0.0);
@@ -440,7 +474,7 @@ public:
 
     /// \brief Returns the transpose of this physical matrix
 
-	SBDTypePhysicalMatrix33Wrapper<Units>              transpose() const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						transpose() const {
 
 		return SBDTypePhysicalMatrix33Wrapper<Units>(
                     m[0][0], m[1][0], m[2][0],
@@ -453,10 +487,9 @@ public:
     /// \brief Computes the quaternion [ \p w \p x \p y \p z ] corresponding to this physical matrix
 
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
-	std::vector<SBDQuantityWrapperSI>    toQuaternion() const {
+	std::vector<SBDQuantityWrapperSI>							toQuaternion() const {
 
-		for (auto ei: m[0][0].getExponent())
-			if ( ei != 0) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
+		if (!isDimensionless()) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
 
         SBQuantity::dimensionless w, x, y, z;
 
@@ -472,12 +505,12 @@ public:
     /// \brief Returns the dimensionless physical matrix corresponding to quaternion [ \p w \p x \p y \p z ]
 
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
-	static SBDTypePhysicalMatrix33Wrapper<Units>	fromQuaternion(const Units& uw, const Units& ux, const Units& uy, const Units& uz) {
+	static SBDTypePhysicalMatrix33Wrapper<Units>				fromQuaternion(const Units& uw, const Units& ux, const Units& uy, const Units& uz) {
 
-        for (auto ei: uw.getExponent()) if ( ei != 0) throw std::runtime_error("This function can be invoked only with dimensionless units");
-        for (auto ei: ux.getExponent()) if ( ei != 0) throw std::runtime_error("This function can be invoked only with dimensionless units");
-        for (auto ei: uy.getExponent()) if ( ei != 0) throw std::runtime_error("This function can be invoked only with dimensionless units");
-        for (auto ei: uz.getExponent()) if ( ei != 0) throw std::runtime_error("This function can be invoked only with dimensionless units");
+		if (!uw.isDimensionless()) throw std::runtime_error("This function can be used only with dimensionless units");
+		if (!ux.isDimensionless()) throw std::runtime_error("This function can be used only with dimensionless units");
+		if (!uy.isDimensionless()) throw std::runtime_error("This function can be used only with dimensionless units");
+		if (!uz.isDimensionless()) throw std::runtime_error("This function can be used only with dimensionless units");
 
         SBQuantity::dimensionless w = uw.template toSBQuantity<SBQuantity::dimensionless>();
         SBQuantity::dimensionless x = ux.template toSBQuantity<SBQuantity::dimensionless>();
@@ -493,10 +526,9 @@ public:
     /// \brief Computes the rotation vector corresponding to this dimensionless physical matrix
 
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
-	SBDTypePhysicalVector3WrapperSI    toRotationVector() const {
+	SBDTypePhysicalVector3WrapperSI								toRotationVector() const {
 
-		for (auto ei: m[0][0].getExponent())
-			if ( ei != 0) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
+		if (!isDimensionless()) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
 
         SBPhysicalMatrix33<SBQuantity::dimensionless> sm = this->template toSBPhysicalMatrix33<SBQuantity::dimensionless>();
 
@@ -513,8 +545,7 @@ public:
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
     void														orthonormalize() {
 
-		for (auto ei: m[0][0].getExponent())
-			if ( ei != 0) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
+		if (!isDimensionless()) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
 
         SBPhysicalMatrix33<SBQuantity::dimensionless> sm = this->template toSBPhysicalMatrix33<SBQuantity::dimensionless>();
 
@@ -555,15 +586,14 @@ public:
     /// Note that this function may only be used with dimensionless physical matrices.
 
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
-    void quasiStaticUpdate(const Units& wx, const Units& wy, const Units& wz,
+	void quasiStaticUpdate(const Units& wx, const Units& wy, const Units& wz,
                                  Units &rotAngle,
 								 SBDTypePhysicalVector3Wrapper<Units> &rotAxis,
 								 SBDTypePhysicalMatrix33Wrapper<Units> &rotA,
 								 SBDTypePhysicalMatrix33Wrapper<Units> &rotB,
 								 SBDTypePhysicalMatrix33Wrapper<Units> &rotC) {
 
-		for (auto ei: m[0][0].getExponent())
-			if ( ei != 0) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
+		if (!isDimensionless()) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
 
         SBQuantity::dimensionless swx = wx.template toSBQuantity<SBQuantity::dimensionless>();
         SBQuantity::dimensionless swy = wy.template toSBQuantity<SBQuantity::dimensionless>();
@@ -606,10 +636,9 @@ public:
     /// Note that this function may only be used with dimensionless physical matrices.
 
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
-    std::vector<Units>    computeEulerDecompositionZYZ() {
+	std::vector<Units>											computeEulerDecompositionZYZ() {
 
-		for (auto ei: m[0][0].getExponent())
-			if ( ei != 0) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
+		if (!isDimensionless()) throw std::runtime_error("This function can be applied only to a dimensionless matrix");
 
         SBQuantity::dimensionless sphi   ;
         SBQuantity::dimensionless stheta ;
@@ -631,7 +660,7 @@ public:
 
     /// \brief Returns the dimensionless physical matrix corresponding to rotation axis \p axis and rotation angle \p angle (in radians)
 
-	static SBDTypePhysicalMatrix33Wrapper<Units> fromAxisAngle(const SBDTypePhysicalVector3WrapperSI& axis, const Units& angle) {
+	static SBDTypePhysicalMatrix33Wrapper<Units>				fromAxisAngle(const SBDTypePhysicalVector3WrapperSI& axis, const Units& angle) {
 
 		SBVector3 saxis = getSBPhysicalVector3<SBQuantity::dimensionless>(axis);
         SBQuantity::dimensionless sangle = angle.template toSBQuantity<SBQuantity::dimensionless>();
@@ -644,7 +673,7 @@ public:
 
     /// \brief Returns the dimensionless physical matrix corresponding to rotation axis \p axis and a rotation angle equal to Pi
 
-	static SBDTypePhysicalMatrix33Wrapper<Units> fromAxisAnglePi(const SBDTypePhysicalVector3WrapperSI& axis) {
+	static SBDTypePhysicalMatrix33Wrapper<Units>				fromAxisAnglePi(const SBDTypePhysicalVector3WrapperSI& axis) {
 
 		SBVector3 saxis = getSBPhysicalVector3<SBQuantity::dimensionless>(axis);
 
@@ -657,7 +686,7 @@ public:
 
     /// \brief Sets this physical matrix to an orthonormal matrix whose third column is \p axis
 
-	void    revoluteJointZAxisMatrix(const SBDTypePhysicalVector3WrapperSI &axis) {
+	void														revoluteJointZAxisMatrix(const SBDTypePhysicalVector3WrapperSI &axis) {
 
 		SBVector3 saxis = getSBPhysicalVector3<SBQuantity::dimensionless>(axis);
 
@@ -683,7 +712,7 @@ public:
     ///
     /// \sa \ref pageUnits "SAMSON's unit system"
 
-	void    diagonalize(SBDTypePhysicalVector3Wrapper<Units>& ev, SBDTypePhysicalMatrix33Wrapper<Units>& p) const {
+	void														diagonalize(SBDTypePhysicalVector3Wrapper<Units>& ev, SBDTypePhysicalMatrix33Wrapper<Units>& p) const {
 
         // NB : M=Pdiag(e)PINVERSE (and PINVERSE=PTRANSPOSE)
         // NB : From Numerical Recipes
@@ -707,9 +736,9 @@ public:
 
         // initialization
 
-        for (i = 0; i<3; i++) {
+		for (i = 0; i < 3; i++) {
 
-            for (j = 0; j<3; j++) {
+			for (j = 0; j < 3; j++) {
 
                 a[i][j] = m[i][j];
                 v[i][j] = 0.0;
@@ -720,7 +749,7 @@ public:
 
         }
 
-        for (i = 0; i<3; i++) {
+		for (i = 0; i < 3; i++) {
 
             b[i] = a[i][i];
             d[i] = a[i][i];
@@ -736,9 +765,9 @@ public:
 
             if (sm == uzero) {
 
-                for (ip = 0; ip<3; ip++) {
+				for (ip = 0; ip < 3; ip++) {
 
-                    for (iq = 0; iq<3; iq++) p.m[ip][iq] = v[ip][iq];
+					for (iq = 0; iq < 3; iq++) p.m[ip][iq] = v[ip][iq];
                     ev.v[ip] = d[ip];
 
                 }
@@ -747,16 +776,16 @@ public:
 
             }
 
-            if (i<4) tresh = 0.2*sm / 9.0;
+			if (i < 4) tresh = 0.2 * sm / 9.0;
             else tresh = uzero;
 
-            for (ip = 0; ip<2; ip++) {
+			for (ip = 0; ip < 2; ip++) {
 
-                for (iq = ip + 1; iq<3; iq++) {
+				for (iq = ip + 1; iq < 3; iq++) {
 
-                    g = 100.0*fabs(a[ip][iq]);
+					g = 100.0 * fabs(a[ip][iq]);
 
-                    if ((i>4) && (fabs(d[ip] + g) == fabs(d[ip])) && (fabs(d[iq] + g) == fabs(d[iq]))) a[ip][iq] = uzero;
+					if ((i > 4) && (fabs(d[ip] + g) == fabs(d[ip])) && (fabs(d[iq] + g) == fabs(d[iq]))) a[ip][iq] = uzero;
                     else if (fabs(a[ip][iq])>tresh) {
 
                         h = d[iq] - d[ip];
@@ -840,7 +869,7 @@ public:
 
     /// \brief Returns the determinant of this physical matrix
 
-    Units   det() const {
+	Units														det() const {
 
         return (m[0][0] * m[1][1] * m[2][2] + m[1][0] * m[2][1] * m[0][2] + m[2][0] * m[0][1] * m[1][2]) - (m[2][0] * m[1][1] * m[0][2] + m[0][0] * m[2][1] * m[1][2] + m[1][0] * m[0][1] * m[2][2]);
 
@@ -848,7 +877,7 @@ public:
 
     /// \brief Returns the 2-norm of this physical matrix
 
-    Units   norm() const {
+	Units														norm() const {
 
 		SBDTypePhysicalMatrix33Wrapper<Units> t = transpose();
 		SBDTypePhysicalMatrix33Wrapper<Units> A = *this;
@@ -870,7 +899,7 @@ public:
     ///
     /// This function assumes this physical matrix is a rotation matrix, and returns the cosine of the corresponding rotation angle
 
-    Units   cosphi() const {
+	Units														cosphi() const {
 
 		SBDTypePhysicalMatrix33Wrapper<Units> A = *this;
 
@@ -892,7 +921,7 @@ public:
     ///
     /// This function assumes the physical matrix is invertible and returns its inverse.
 
-	SBDTypePhysicalMatrix33Wrapper<Units>  inverse() const {
+	SBDTypePhysicalMatrix33Wrapper<Units>						inverse() const {
 
 		SBDTypePhysicalMatrix33Wrapper<Units> mat = *this;
 
@@ -932,7 +961,7 @@ public:
 	//template<typename t = Units, typename std::enable_if<std::is_same<t, SBDQuantityWrapperSI>::value, int>::type = 0>
     void														makeEulerRotationZYZ(const Units& phi, const Units& theta, const Units& psi) {
 
-        for (auto ei: m[0][0].getExponent()) if ( ei != 0) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
+		if (!m[0][0].isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
 
         m[0][0] = -sin(psi)*sin(phi) + cos(theta)*cos(phi)*cos(psi);
         m[0][1] = sin(psi)*cos(phi) + cos(theta)*sin(phi)*cos(psi);
@@ -979,7 +1008,7 @@ public:
 
     /// \brief Returns the string representation of the matrix (with a full unit name when fullName is true)
 
-    std::string                                         toStdString(bool fullName = false) const {
+	std::string													toStdString(bool fullName = false) const {
 
         std::string ret =   "[" + m[0][0].toStdString(fullName) + "\t" + m[0][1].toStdString(fullName) + "\t" + m[0][2].toStdString(fullName) + "]" + "\n"
                             "[" + m[1][0].toStdString(fullName) + "\t" + m[1][1].toStdString(fullName) + "\t" + m[1][2].toStdString(fullName) + "]" + "\n"
@@ -993,17 +1022,16 @@ public:
 
 public:
 
-    std::vector< std::vector<Units> >               m;																///< The components of the physical matrix
+	std::vector< std::vector<Units> >							m;																///< The components of the physical matrix
 
 };
 
 /// \name Shortnames
 //@{
 
-#define		SBPhysicalMatrix33Wrapper		SBDTypePhysicalMatrix33Wrapper
+#define		SBPhysicalMatrix33Wrapper									SBDTypePhysicalMatrix33Wrapper
 
 typedef     SBDTypePhysicalMatrix33Wrapper<SBDQuantityWrapperSI>		SBDTypePhysicalMatrix33WrapperSI;
-
 typedef     SBDTypePhysicalMatrix33Wrapper<SBDQuantityWrapperSI>		SBPhysicalMatrix33WrapperSI;
 
 //@}
@@ -1014,7 +1042,7 @@ typedef     SBDTypePhysicalMatrix33Wrapper<SBDQuantityWrapperSI>		SBPhysicalMatr
 /// \brief Returns the SBPhysicalMatrix33<Quantity> from Unit \p u
 
 template<typename Quantity, typename T>
-SBPhysicalMatrix33<Quantity>	getSBPhysicalMatrix33(const T& a) {
+SBPhysicalMatrix33<Quantity>				getSBPhysicalMatrix33(const T& a) {
 
 	return a.template toSBPhysicalMatrix33<Quantity>();
 
@@ -1028,7 +1056,7 @@ SBPhysicalMatrix33<Quantity>	getSBPhysicalMatrix33(const T& a) {
 /// \brief Returns the product of double \p d and matrix \p u
 
 template<typename Units>
-SBDTypePhysicalMatrix33Wrapper<Units>       operator*(const double d, const SBDTypePhysicalMatrix33Wrapper<Units>& u) {
+SBDTypePhysicalMatrix33Wrapper<Units>		operator*(const double d, const SBDTypePhysicalMatrix33Wrapper<Units>& u) {
 
 	return SBDTypePhysicalMatrix33Wrapper<Units>(
         u.m[0][0] * d, u.m[0][1] * d, u.m[0][2] * d,

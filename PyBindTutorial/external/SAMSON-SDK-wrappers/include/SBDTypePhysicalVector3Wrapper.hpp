@@ -92,16 +92,16 @@ public:
 
     /// \brief Returns a dimensionless vector whose components are equal to those of this physical vector
 
-    std::vector<double>         getValue() const {
+	std::vector<double>										getValue() const {
 
-		std::vector<double> ret = {v[0].getValue(), v[1].getValue(), v[2].getValue()};
+		std::vector<double> ret = {(double)v[0].getValue(), (double)v[1].getValue(), (double)v[2].getValue()};
 		return ret;
 
     }
 
     /// \brief Sets the components of this physical vector equal to those of the vector \p u
 
-    void                        setValue(const std::vector<double>& u) {
+	void													setValue(const std::vector<double>& u) {
 
         if (u.size() != 3) throw std::runtime_error("The size of the input vector should be 3");
 
@@ -114,7 +114,7 @@ public:
     /// \brief Returns the arbitraty SBPhysicalVector3
 
     template<typename Quantity, typename System = SBUnitSystemSI>
-	SBPhysicalVector3<Quantity> toSBPhysicalVector3 () const {
+	SBPhysicalVector3<Quantity>								toSBPhysicalVector3 () const {
 
         return SBPhysicalVector3<Quantity>( getSBQuantity<Quantity>(v[0]), getSBQuantity<Quantity>(v[1]), getSBQuantity<Quantity>(v[2]) );
 
@@ -122,13 +122,21 @@ public:
 
     /// \brief Returns the i-th component of the vector
 
-    Units                       getComponent(const unsigned int i) const {
+	Units													getComponent(const unsigned int i) const {
 
 		if (i >= v.size()) throw std::runtime_error("Index is out of range");
 
         return v[i];
 
     }
+
+	/// \brief Returns true if the physical vector is dimensionless
+
+	bool													isDimensionless() const {
+
+		return v[0].isDimensionless();
+
+	}
 
     //@}
 
@@ -137,7 +145,7 @@ public:
 
     /// \brief Returns the dot product of this physical vector with physical vector \p u
 
-    Units                                                   operator|(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	Units													operator|(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return v[0] * u.v[0] + v[1] * u.v[1] + v[2] * u.v[2];
 
@@ -145,7 +153,7 @@ public:
 
     /// \brief Returns the cross product of this physical vector with physical vector \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator^(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator^(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return SBDTypePhysicalVector3Wrapper<Units>(v[1] * u.v[2] - v[2] * u.v[1], v[2] * u.v[0] - v[0] * u.v[2], v[0] * u.v[1] - v[1] * u.v[0]);
 
@@ -153,7 +161,7 @@ public:
 
     /// \brief Returns the sum of this physical vector with physical vector \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator+(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator+(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return SBDTypePhysicalVector3Wrapper<Units>(v[0] + u.v[0], v[1] + u.v[1], v[2] + u.v[2]);
 
@@ -161,42 +169,44 @@ public:
 
     /// \brief Returns the difference of this physical vector with physical vector \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator-(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator-(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return SBDTypePhysicalVector3Wrapper<Units>(v[0] - u.v[0], v[1] - u.v[1], v[2] - u.v[2]);
 
     }
 
+	/// \brief Returns the product of this physical vector with double \p d
+
+	SBDTypePhysicalVector3Wrapper<Units>					operator*(const double d) const {
+
+		return SBDTypePhysicalVector3Wrapper<Units>(v[0] * d, v[1] * d, v[2] * d);
+
+	}
+
+	/// \brief Multiplies this physical vector with double \p d
+
+	SBDTypePhysicalVector3Wrapper<Units>&					operator*=(const double d) {
+
+		v[0] *= d;
+		v[1] *= d;
+		v[2] *= d;
+		return *this;
+
+	}
+
     /// \brief Returns the product of this physical vector with physical quantity \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator*(const Units& u) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator*(const Units& u) const {
 
-        return SBDTypePhysicalVector3Wrapper<Units>(u*v[0], u*v[1], u*v[2]);
+		return SBDTypePhysicalVector3Wrapper<Units>(u * v[0], u * v[1], u * v[2]);
 
-    }
-
-    /// \brief Returns the product of this physical vector with double \p d
-
-    SBDTypePhysicalVector3Wrapper<Units>           operator*(const double d) const {
-
-        return SBDTypePhysicalVector3Wrapper<Units>(v[0] * d, v[1] * d, v[2] * d);
-
-    }
-
-    /// \brief Multiplies this physical vector with double \p d
-
-    SBDTypePhysicalVector3Wrapper<Units>&          operator*=(const double d) {
-
-        v[0] *= d;
-        v[1] *= d;
-        v[2] *= d;
-        return *this;
-
-    }
+	}
 
     /// \brief Multiplies this physical vector with physical quantity \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>&          operator*=(const Units& u) {
+	SBDTypePhysicalVector3Wrapper<Units>&					operator*=(const Units& u) {
+
+		if (!isDimensionless() || !u.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
 
         v[0] *= u;
         v[1] *= u;
@@ -210,15 +220,34 @@ public:
     /// This operator returns the component-wise product of this physical vector with physical vector \p u, <em>i.e.</em>
     /// a physical vector in which each component is the product of the corresponding components in this physical vector and physical vector \p u.
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator*(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator*(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return SBDTypePhysicalVector3Wrapper<Units>(v[0] * u.v[0], v[1] * u.v[1], v[2] * u.v[2]);
 
     }
 
+	/// \brief Returns the division of this physical vector by double \p d
+
+	SBDTypePhysicalVector3Wrapper<Units>					operator/(const double d) const {
+
+		return SBDTypePhysicalVector3Wrapper<Units>(v[0] / d, v[1] / d, v[2] / d);
+
+	}
+
+	/// \brief Divides this physical vector by double \p d
+
+	SBDTypePhysicalVector3Wrapper<Units>&					operator/=(const double d) {
+
+		v[0] /= d;
+		v[1] /= d;
+		v[2] /= d;
+		return *this;
+
+	}
+
     /// \brief Returns the division of this physical vector by physical quantity \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator/(const Units& u) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator/(const Units& u) const {
 
         return SBDTypePhysicalVector3Wrapper<Units>(v[0] / u, v[1] / u, v[2] / u);
 
@@ -226,37 +255,31 @@ public:
 
     /// \brief Divides this physical vector by physical quantity \p u
 
-    SBDTypePhysicalVector3Wrapper<Units>&          operator/=(const Units& u) {
+	SBDTypePhysicalVector3Wrapper<Units>&					operator/=(const Units& u) {
+
+		if (!isDimensionless() || !u.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
 
         v[0] /= u;
         v[1] /= u;
         v[2] /= u;
         return *this;
 
-    }
+	}
 
-    /// \brief Returns the division of this physical vector by double \p d
+	/// \brief Returns the component-wise division of this physical vector by physical vector \p u
+	///
+	/// This operator returns the component-wise division of this physical vector by physical vector \p u, <em>i.e.</em>
+	/// a physical vector in which each component is the division of the corresponding components in this physical vector and physical vector \p u.
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator/(const double d) const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator/(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
-        return SBDTypePhysicalVector3Wrapper<Units>(v[0] / d, v[1] / d, v[2] / d);
+		return SBDTypePhysicalVector3Wrapper<Units>(v[0] / u.v[0], v[1] / u.v[1], v[2] / u.v[2]);
 
-    }
-
-    /// \brief Divides this physical vector by double \p d
-
-    SBDTypePhysicalVector3Wrapper<Units>&          operator/=(const double d) {
-
-        v[0] /= d;
-        v[1] /= d;
-        v[2] /= d;
-        return *this;
-
-    }
+	}
 
     /// \brief Returns the opposite of this physical vector
 
-    SBDTypePhysicalVector3Wrapper<Units>           operator-() const {
+	SBDTypePhysicalVector3Wrapper<Units>					operator-() const {
 
         return SBDTypePhysicalVector3Wrapper<Units>(-v[0], -v[1], -v[2]);
 
@@ -264,7 +287,7 @@ public:
 
     /// \brief Adds physical vector \p u to this physical vector
 
-    SBDTypePhysicalVector3Wrapper<Units>&          operator+=(const SBDTypePhysicalVector3Wrapper<Units>& u) {
+	SBDTypePhysicalVector3Wrapper<Units>&					operator+=(const SBDTypePhysicalVector3Wrapper<Units>& u) {
 
         v[0] += u.v[0]; v[1] += u.v[1]; v[2] += u.v[2];
         return *this;
@@ -273,7 +296,7 @@ public:
 
     /// \brief Subtracts physical vector \p u from this physical vector
 
-    SBDTypePhysicalVector3Wrapper<Units>&          operator-=(const SBDTypePhysicalVector3Wrapper<Units>& u) {
+	SBDTypePhysicalVector3Wrapper<Units>&					operator-=(const SBDTypePhysicalVector3Wrapper<Units>& u) {
 
         v[0] -= u.v[0]; v[1] -= u.v[1]; v[2] -= u.v[2];
         return *this;
@@ -282,7 +305,7 @@ public:
 
     /// \brief Returns true if this physical vector is equal to physical vector \p u (component-wise)
 
-    bool                                                    operator==(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool													operator==(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return (v[0] == u.v[0]) && (v[1] == u.v[1]) && (v[2] == u.v[2]);
 
@@ -290,7 +313,7 @@ public:
 
     /// \brief Returns true if this physical vector is different from physical vector \p u (component-wise)
 
-    bool                                                    operator!=(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool													operator!=(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         return (v[0] != u.v[0]) || (v[1] != u.v[1]) || (v[2] != u.v[2]);
 
@@ -298,7 +321,7 @@ public:
 
     /// \brief Returns true if this physical vector is smaller than physical vector \p u (lexicographic comparison)
 
-    bool                                                    operator<(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool													operator<(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         if (v[0] >= u.v[0]) return false;
         if (v[1] >= u.v[1]) return false;
@@ -309,7 +332,7 @@ public:
 
     /// \brief Returns true if this physical vector is larger than physical vector \p u (lexicographic comparison)
 
-    bool                                                    operator>(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool													operator>(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         if (v[0] <= u.v[0]) return false;
         if (v[1] <= u.v[1]) return false;
@@ -320,7 +343,7 @@ public:
 
     /// \brief Returns true if this physical vector is smaller or equal than physical vector \p u (lexicographic comparison)
 
-    bool                                                    operator<=(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool													operator<=(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         if (v[0] > u.v[0]) return false;
         if (v[1] > u.v[1]) return false;
@@ -331,7 +354,7 @@ public:
 
     /// \brief Returns true if this physical vector is larger or equal than physical vector \p u (lexicographic comparison)
 
-    bool                                                    operator>=(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool													operator>=(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         if (v[0] < u.v[0]) return false;
         if (v[1] < u.v[1]) return false;
@@ -342,11 +365,11 @@ public:
 
     /// \brief Returns a reference to component \p index
 
-    Units&                                                  operator[](const int index) { return v[index]; }
+	Units&													operator[](const int index) { return v[index]; }
 
     /// \brief Returns a reference to component \p index (const version)
 
-    const Units&                                            operator[](const int index) const { return v[index]; }
+	const Units&											operator[](const int index) const { return v[index]; }
 
 
     //@}
@@ -356,7 +379,7 @@ public:
 
     /// \brief Sets all components to zero
 
-    void														setZero() {
+	void													setZero() {
 
         v[0].setValue(0.0);
         v[1].setValue(0.0);
@@ -366,7 +389,7 @@ public:
 
     /// \brief Returns the norm of this physical vector
 
-    Units                                                       norm() const {
+	Units													norm() const {
 
         return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 
@@ -374,7 +397,7 @@ public:
 
     /// \brief Returns the squared norm of this physical vector
 
-    Units                                                       norm2()	const {
+	Units													norm2()	const {
 
         return (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 
@@ -382,7 +405,7 @@ public:
 
     /// \brief Returns the dimensionless normalized version of this physical vector
 
-    SBDTypePhysicalVector3Wrapper<Units>               normalizedVersion()	const {
+	SBDTypePhysicalVector3Wrapper<Units>					normalizedVersion()	const {
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
         if (norm == 0) return SBDTypePhysicalVector3Wrapper<Units>(0.0, 0.0, 0.0);
@@ -392,19 +415,19 @@ public:
 
     /// \brief Returns the normalized version of this physical vector, but with preserved units
 
-    SBDTypePhysicalVector3Wrapper<Units>               normalizedVersionWithUnits() const {
+	SBDTypePhysicalVector3Wrapper<Units>					normalizedVersionWithUnits() const {
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
-        if (norm == 0) return SBDTypePhysicalVector3Wrapper<Units>(Units(0.0, v[0].getScale(), v[0].getExponent()),
-                                                                            Units(0.0, v[1].getScale(), v[1].getExponent()),
-                                                                            Units(0.0, v[2].getScale(), v[2].getExponent()));
+		if (norm == 0) return SBDTypePhysicalVector3Wrapper<Units>( Units(0.0, v[0].getScale(), v[0].getExponent()),
+																	Units(0.0, v[1].getScale(), v[1].getExponent()),
+																	Units(0.0, v[2].getScale(), v[2].getExponent()));
         return SBDTypePhysicalVector3Wrapper<Units>(v[0] / norm, v[1] / norm, v[2] / norm);
 
     }
 
     /// \brief Normalizes this physical vector while preserving units
 
-    void														normalizeWithUnits() {
+	void													normalizeWithUnits() {
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
 
@@ -418,12 +441,11 @@ public:
 
     }
 
-    /*/// \brief Normalizes this dimensionless physical vector
+	/// \brief Normalizes this dimensionless physical vector
 
-    void														normalize() {
+	void													normalize() {
 
-        if (v[0].getExponent() != v[0].getZerosVector() && v[1].getExponent() != v[1].getZerosVector() && v[2].getExponent() != v[2].getZerosVector())
-            throw std::runtime_error("Error, this function may only be called for dimensionless quantities");
+		if (!isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
 
@@ -435,11 +457,11 @@ public:
 
         }
 
-    }*/
+	}
 
     /// \brief Swaps components \p i and \pj of this physical vector
 
-    void														swap(unsigned int i, unsigned j) {
+	void													swap(unsigned int i, unsigned j) {
 
         Units s = v[i];
         v[i] = v[j];
@@ -454,7 +476,7 @@ public:
 
     /// \brief Returns the string representation of the physical vector (with a full unit name when fullName is true)
 
-    std::string                                         toStdString(bool fullName = false) const {
+	std::string												toStdString(bool fullName = false) const {
 
         std::string ret = "(" + v[0].toStdString(fullName) + ", " +
                                 v[1].toStdString(fullName) + ", " +
@@ -464,11 +486,11 @@ public:
 
     }
 
-    //@}
+	//@}
 
 public:
 
-	std::vector<Units>													v;                  ///< The components of the physical vector
+	std::vector<Units>										v;                  ///< The components of the physical vector
 
 };
 
@@ -497,7 +519,7 @@ typedef     SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperKilocaloriePerMole> 
 /// \brief Returns the getSBPhysicalVector3<Quantity> from Unit \p u
 
 template<typename Quantity, typename T>
-SBPhysicalVector3<Quantity>	getSBPhysicalVector3(const T& a) {
+SBPhysicalVector3<Quantity>						getSBPhysicalVector3(const T& a) {
 
 	return a.template toSBPhysicalVector3<Quantity>();
 
@@ -511,25 +533,25 @@ SBPhysicalVector3<Quantity>	getSBPhysicalVector3(const T& a) {
 /// \brief Returns the product of physical quantity \p d and physical vector \p u
 
 template<typename Units>
-SBDTypePhysicalVector3Wrapper<Units>       operator*(const Units d, const SBDTypePhysicalVector3Wrapper<Units>& u) {
+SBDTypePhysicalVector3Wrapper<Units>			operator*(const Units d, const SBDTypePhysicalVector3Wrapper<Units>& u) {
 
-    return SBDTypePhysicalVector3Wrapper<Units>(d*u.v[0], d*u.v[1], d*u.v[2]);
+	return SBDTypePhysicalVector3Wrapper<Units>(d * u.v[0], d * u.v[1], d * u.v[2]);
 
 }
 
 /// \brief Returns the product of double \p d and physical vector \p u
 
 template<typename Units>
-SBDTypePhysicalVector3Wrapper<Units>       operator*(const double d, const SBDTypePhysicalVector3Wrapper<Units>& u) {
+SBDTypePhysicalVector3Wrapper<Units>			operator*(const double d, const SBDTypePhysicalVector3Wrapper<Units>& u) {
 
-        return SBDTypePhysicalVector3Wrapper<Units>(d*u.v[0], d*u.v[1], d*u.v[2]);
+	return SBDTypePhysicalVector3Wrapper<Units>(d * u.v[0], d * u.v[1], d * u.v[2]);
 
 }
 
 /// \brief Inserts the physical vector \p u in the output stream \p s
 
 template <typename Units>
-std::ostream&                                       operator<<(std::ostream &s, const  SBDTypePhysicalVector3Wrapper<Units>& u) {
+std::ostream&									operator<<(std::ostream &s, const  SBDTypePhysicalVector3Wrapper<Units>& u) {
 
     s << "(" << u[0] << ", " << u[1] << ", " << u[2] << ")";
     return s;

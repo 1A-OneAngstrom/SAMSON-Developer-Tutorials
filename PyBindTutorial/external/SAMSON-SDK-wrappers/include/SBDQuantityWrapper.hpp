@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-#include "SBQuantity.hpp"
+#include "SBDQuantity.hpp"
 #include "SBDQuantityType.hpp"
 #include "SBDQuantityUnitType.hpp"
 #include "SBDQuantityUnitSystem.hpp"
@@ -152,7 +152,7 @@ public:
 
     /// \brief Compares \p exponent to \p UnitTypeExponent
 
-    bool                        compareExponent(const std::vector<int>& unitTypeExponent) const {
+	bool							compareExponent(const std::vector<int>& unitTypeExponent) const {
 
 		return unitTypeExponent == exponent;
 
@@ -160,15 +160,23 @@ public:
 
     /// \brief Compares \p exponent to \p exponent for Unit \p q
 
-	bool                        compareExponent(const SBDQuantityWrapper<System>& q) const {
+	bool							compareExponent(const SBDQuantityWrapper<System>& q) const {
 
 		return q.exponent == exponent;
 
     }
 
+	/// \brief Returns true if the physical quantity is dimensionless
+
+	bool							isDimensionless() const {
+
+		return (exponent == zeros);
+
+	}
+
     /// \brief Returns scaling factor to \p UnitTypeScale without checking for \p exponent
 
-    double                      getScalingFactorToOtherUnit(const std::vector<int> &other_scale) const {
+	double							getScalingFactorToOtherUnit(const std::vector<int> &other_scale) const {
 
 		if (scale == other_scale) return 1.0;
 
@@ -184,11 +192,11 @@ public:
 
     /// \brief Returns value scaled to \p UnitTypeScale without checking for \p exponent
 
-    double                      getScaledValue(const std::vector<int>& UnitTypeScale) const { return value * getScalingFactorToOtherUnit(UnitTypeScale); }
+	double							getScaledValue(const std::vector<int>& UnitTypeScale) const { return value * getScalingFactorToOtherUnit(UnitTypeScale); }
 
     /// \brief Returns value scaled to \p UnitTypeScale with checking for \p exponent
 
-    double                      scaleToUnitType(const std::vector<int>& UnitTypeScale, const std::vector<int>& UnitTypeExponent) const {
+	double							scaleToUnitType(const std::vector<int>& UnitTypeScale, const std::vector<int>& UnitTypeExponent) const {
 
 		if (! compareExponent(UnitTypeExponent)) throw std::runtime_error("Units are not of the same type");
 
@@ -198,7 +206,7 @@ public:
 
     /// \brief Returns Unit scaled to Unit \p u
 
-	SBDQuantityWrapper<System>               getUnitScaledTo(const SBDQuantityWrapper<System>& u) const {
+	SBDQuantityWrapper<System>		getUnitScaledTo(const SBDQuantityWrapper<System>& u) const {
 
 		if (! compareExponent(u.getExponent())) throw std::runtime_error("Units are not of the same type");
 
@@ -215,11 +223,11 @@ public:
 
     /// \brief Returns the value
 
-    double const&               getValue () const { return value; }
+	double const&					getValue () const { return value; }
 
     /// \brief Sets the value, scale and exponent to be the same as for Unit \p u
 
-	void                        setToUnit (const SBDQuantityWrapper<System>& u) {
+	void							setToUnit (const SBDQuantityWrapper<System>& u) {
 
         value    = u.getValue();
         scale    = u.getScale();
@@ -236,23 +244,23 @@ public:
 
     /// \brief Sets the value to \p v
 
-	void                        setValue (const double &v) { value = v; }
+	void							setValue (const double &v) { value = v; }
 
     /// \brief Returns the scale
 
-    const std::vector<int>&     getScale () const { return scale; }
+	const std::vector<int>&			getScale () const { return scale; }
 
     /// \brief Returns the exponent
 
-    const std::vector<int>&     getExponent () const { return exponent; }
+	const std::vector<int>&			getExponent () const { return exponent; }
 
     /// \brief Returns the zeros vector with size as exponent and scale for comparison reasons
 
-    const std::vector<int>&     getZerosVector () const { return zeros; }
+	const std::vector<int>&			getZerosVector () const { return zeros; }
 
     /// \brief Returns the reference scale for the current unit system
 
-    static std::vector<int>     getRefScale() {
+	static std::vector<int>			getRefScale() {
 
         if (std::is_same<System, SBUnitSystemSI>::value)
             return {    SBQuantity::length::UnitType::scale1,
@@ -279,12 +287,12 @@ public:
 
     /// \brief Returns the size of the Unit system
 
-    int                             getUnitSystemSize () const { return System::size; }
+	int								getUnitSystemSize () const { return System::size; }
 
     /// \brief Returns the SBQuantity::Quantity
 
     template<typename Quantity>
-    Quantity                        toSBQuantity() const {
+	Quantity						toSBQuantity() const {
 
 		return Quantity( scaleToUnitType(QuantityScaleExponent<Quantity>::scale, QuantityScaleExponent<Quantity>::exponent) );
 
@@ -294,7 +302,7 @@ public:
 
     template<typename Quantity, typename t = System,
              typename std::enable_if<std::is_same<t, SBUnitSystemSI>::value, int>::type = 0>
-    double                          toSBQuantityValue() const {
+	double							toSBQuantityValue() const {
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 7) throw std::runtime_error("The unit system has a wrong size");
 
@@ -313,7 +321,7 @@ public:
 
     template<typename Quantity, typename t = System,
              typename std::enable_if<std::is_same<t, SBUnitSystemAU>::value, int>::type = 0>
-    double                          toSBQuantityValue() const {
+	double							toSBQuantityValue() const {
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 4) throw std::runtime_error("The unit system has a wrong size");
 
@@ -329,7 +337,7 @@ public:
 
     template<typename Quantity, typename t = System,
              typename std::enable_if<std::is_same<t, SBUnitSystemDalton>::value, int>::type = 0>
-    double                          toSBQuantityValue() const {
+	double							toSBQuantityValue() const {
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 1) throw std::runtime_error("The unit system has a wrong size");
 
@@ -373,7 +381,7 @@ public:
 
     /// \brief Copy the physical quantity \p q
 
-	SBDQuantityWrapper<System>& operator=(const SBDQuantityWrapper<System>& q) {
+	SBDQuantityWrapper<System>&		operator=(const SBDQuantityWrapper<System>& q) {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot copy different units");
 
@@ -384,9 +392,9 @@ public:
 
     /// \brief Assign the double \p d to the physical quantity (for dimensionless physical quantities only)
 
-	SBDQuantityWrapper<System>& operator=(const double d) {
+	SBDQuantityWrapper<System>&		operator=(const double d) {
 
-		if (exponent != zeros) throw std::runtime_error("Assigning a double to a quantity is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Assigning a double to a quantity is only allowed for dimensionless quantities.");
 
         value = d;
         return *this;
@@ -395,11 +403,11 @@ public:
 
     /// \brief Returns the opposite of the physical quantity
 
-	SBDQuantityWrapper<System>   operator-() const { return SBDQuantityWrapper(-value, scale, exponent); }
+	SBDQuantityWrapper<System>		operator-() const { return SBDQuantityWrapper(-value, scale, exponent); }
 
     /// \brief Returns the sum of this physical quantity with physical quantity \p q
 
-	SBDQuantityWrapper<System>   operator+(const SBDQuantityWrapper<System>& q) const {
+	SBDQuantityWrapper<System>		operator+(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot add different units");
 
@@ -409,9 +417,9 @@ public:
 
     /// \brief Returns the sum of this physical quantity with double \p d (for dimensionless physical quantities only)
 
-	SBDQuantityWrapper<System>   operator+(const double d) const {
+	SBDQuantityWrapper<System>		operator+(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Adding a double to a quantity is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Adding a double to a quantity is only allowed for dimensionless quantities.");
 
 		return SBDQuantityWrapper<System>(value + d);
 
@@ -419,7 +427,7 @@ public:
 
     /// \brief Adds physical quantity \p q to this physical quantity
 
-	SBDQuantityWrapper<System>&  operator+=(const SBDQuantityWrapper<System>& q) {
+	SBDQuantityWrapper<System>&		operator+=(const SBDQuantityWrapper<System>& q) {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot add different units");
 
@@ -430,9 +438,9 @@ public:
 
     /// \brief Add double \p d to this physical quantity (for dimensionless physical quantities only)
 
-	SBDQuantityWrapper<System>&  operator+=(const double d) {
+	SBDQuantityWrapper<System>&		operator+=(const double d) {
 
-		if (exponent != zeros) throw std::runtime_error("Assigning a double to a quantity is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Assigning a double to a quantity is only allowed for dimensionless quantities.");
 
         value += d;
         return *this;
@@ -441,7 +449,7 @@ public:
 
     /// \brief Returns the difference between this physical quantity and physical quantity \p q
 
-	SBDQuantityWrapper<System>   operator-(const SBDQuantityWrapper<System>& q) const {
+	SBDQuantityWrapper<System>		operator-(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot subtract different units");
 
@@ -451,9 +459,9 @@ public:
 
     /// \brief Returns the difference between this physical quantity and double \p d (for dimensionless physical quantities only)
 
-	SBDQuantityWrapper<System>   operator-(const double d) const {
+	SBDQuantityWrapper<System>		operator-(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Subtracting a double to a quantity is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Subtracting a double to a quantity is only allowed for dimensionless quantities.");
 
 		return SBDQuantityWrapper<System>(value - d);
 
@@ -461,7 +469,7 @@ public:
 
     /// \brief Subtracts physical quantity \p q from this physical quantity
 
-	SBDQuantityWrapper<System>&  operator-=(const SBDQuantityWrapper<System>& q) {
+	SBDQuantityWrapper<System>&		operator-=(const SBDQuantityWrapper<System>& q) {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot subtract different units");
 
@@ -472,9 +480,9 @@ public:
 
     /// \brief Subtracts double \p d from this physical quantity (for dimensionless physical quantities only)
 
-	SBDQuantityWrapper<System>&  operator-=(const double d) {
+	SBDQuantityWrapper<System>&		operator-=(const double d) {
 
-		if (exponent != zeros) throw std::runtime_error("Subtracting a double to a quantity is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Subtracting a double to a quantity is only allowed for dimensionless quantities.");
 
         value -= d;
         return *this;
@@ -483,15 +491,15 @@ public:
 
     /// \brief Returns the product of this physical quantity with double \p d
 
-	SBDQuantityWrapper<System>   operator*(const double d) const { return SBDQuantityWrapper<System>(d * value, scale, exponent); }
+	SBDQuantityWrapper<System>		operator*(const double d) const { return SBDQuantityWrapper<System>(d * value, scale, exponent); }
 
     /// \brief Multiplies this physical quantity with double \p d
 
-	SBDQuantityWrapper<System>&  operator*=(const double d) { value *= d; return *this; }
+	SBDQuantityWrapper<System>&		operator*=(const double d) { value *= d; return *this; }
 
     /// \brief Returns the product of this physical quantity with physical quantity \p q
 
-	SBDQuantityWrapper<System>   operator* (const SBDQuantityWrapper<System>& q) const {
+	SBDQuantityWrapper<System>		operator* (const SBDQuantityWrapper<System>& q) const {
 
 		SBDQuantityWrapper<System> result;
 
@@ -508,7 +516,7 @@ public:
 
     /// \brief Multiplies this physical quantity with physical quantity \p q
 
-	SBDQuantityWrapper<System>&  operator*=(const SBDQuantityWrapper<System>& q) {
+	SBDQuantityWrapper<System>&		operator*=(const SBDQuantityWrapper<System>& q) {
 
 		std::vector<int> result_scale(System::size, 0);
 
@@ -527,15 +535,15 @@ public:
 
     /// \brief Returns the division of this physical quantity by double \p d
 
-	SBDQuantityWrapper<System>   operator/(const double d) const { return SBDQuantityWrapper<System>(value / d, scale, exponent); }
+	SBDQuantityWrapper<System>		operator/(const double d) const { return SBDQuantityWrapper<System>(value / d, scale, exponent); }
 
     /// \brief Divides this physical quantity by double \p d
 
-	SBDQuantityWrapper<System>&  operator/=(const double d) { value /= d; return *this; }
+	SBDQuantityWrapper<System>&		operator/=(const double d) { value /= d; return *this; }
 
     /// \brief Returns the division of this physical quantity by physical quantity \p q
 
-	SBDQuantityWrapper<System>   operator/ (const SBDQuantityWrapper<System>& q) const {
+	SBDQuantityWrapper<System>		operator/ (const SBDQuantityWrapper<System>& q) const {
 
 		SBDQuantityWrapper<System> result;
 
@@ -553,7 +561,7 @@ public:
 
     /// \brief Divides this physical quantity by physical quantity \p q (for dimensionless physical quantities only)
 
-	SBDQuantityWrapper<System>&  operator/=(const SBDQuantityWrapper<System>& q) {
+	SBDQuantityWrapper<System>&		operator/=(const SBDQuantityWrapper<System>& q) {
 
 		std::vector<int> result_scale(System::size, 0);
 
@@ -572,7 +580,7 @@ public:
 
     /// \brief Returns true if this physical quantity is equal to physical quantity \p q
 
-	bool    operator==(const SBDQuantityWrapper<System>& q) const {
+	bool							operator==(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) return false;
 
@@ -582,7 +590,7 @@ public:
 
     /// \brief Returns true if this physical quantity is different from physical quantity \p q
 
-	bool    operator!=(const SBDQuantityWrapper<System>& q) const {
+	bool							operator!=(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) return true;
 
@@ -592,7 +600,7 @@ public:
 
     /// \brief Returns true if this physical quantity is smaller than physical quantity \p q
 
-	bool    operator<(const SBDQuantityWrapper<System>& q) const {
+	bool							operator<(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot compare different units");
 
@@ -602,7 +610,7 @@ public:
 
     /// \brief Returns true if this physical quantity is larger than physical quantity \p q
 
-	bool    operator>(const SBDQuantityWrapper<System>& q) const {
+	bool							operator>(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot compare different units");
 
@@ -612,7 +620,7 @@ public:
 
     /// \brief Returns true if this physical quantity is smaller than or equal to physical quantity \p q
 
-	bool    operator<=(const SBDQuantityWrapper<System>& q) const {
+	bool							operator<=(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot compare different units");
 
@@ -622,7 +630,7 @@ public:
 
     /// \brief Returns true if this physical quantity is larger or equal to than physical quantity \p q
 
-	bool    operator>=(const SBDQuantityWrapper<System>& q) const {
+	bool							operator>=(const SBDQuantityWrapper<System>& q) const {
 
 		if (q.getExponent() != exponent) throw std::runtime_error("Cannot compare different units");
 
@@ -633,9 +641,9 @@ public:
 
     /// \brief Returns true if this physical quantity is equal to double \p d (for dimensionless physical quantities only)
 
-    bool operator==(const double d) const {
+	bool							operator==(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
         return value == d;
 
@@ -643,9 +651,9 @@ public:
 
     /// \brief Returns true if this physical quantity is different from double \p d (for dimensionless physical quantities only)
 
-    bool operator!=(const double d) const {
+	bool							operator!=(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
         return value != d;
 
@@ -653,9 +661,9 @@ public:
 
     /// \brief Returns true if this physical quantity is smaller than double \p d (for dimensionless physical quantities only)
 
-    bool operator<(const double d) const {
+	bool							operator<(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
         return value < d;
 
@@ -663,9 +671,9 @@ public:
 
     /// \brief Returns true if this physical quantity is larger than double \p d (for dimensionless physical quantities only)
 
-    bool operator>(const double d) const {
+	bool							operator>(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
         return value > d;
 
@@ -673,9 +681,9 @@ public:
 
     /// \brief Returns true if this physical quantity is smaller than or equal to double \p d (for dimensionless physical quantities only)
 
-    bool operator<=(const double d) const {
+	bool							operator<=(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
         return value <= d;
 
@@ -683,9 +691,9 @@ public:
 
     /// \brief Returns true if this physical quantity is larger than or equal to double \p d (for dimensionless physical quantities only)
 
-    bool operator>=(const double d) const {
+	bool							operator>=(const double d) const {
 
-		if (exponent != zeros) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+		if (!isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
         return value >= d;
 
@@ -706,7 +714,7 @@ public:
     /// \brief Returns string representation of the unit
 
 	/*template<typename t = System, typename std::enable_if<!std::is_same<t, SBUnitSystemAU>::value, int>::type = 0>*/
-    std::string                             toStdString (const bool fullName = false) const {
+	std::string						toStdString (const bool fullName = false) const {
 
 		if      (std::is_same<System, SBUnitSystemSI>::value)
             return toStdString_SI(fullName);
@@ -724,7 +732,7 @@ public:
     }
 
 	/*template<typename t = System, typename std::enable_if<std::is_same<t, SBUnitSystemAU>::value, int>::type = 0>*/
-    std::string                             toStdString_AU(const bool fullName = false) const {
+	std::string						toStdString_AU(const bool fullName = false) const {
 
         if (System::size != 4) throw std::runtime_error("Changed size of AU unit system");
 
@@ -787,7 +795,7 @@ public:
 
     }
 
-    std::string                             toStdString_Dalton(const bool fullName = false) const {
+	std::string						toStdString_Dalton(const bool fullName = false) const {
 
         if (System::size != 1) throw std::runtime_error("Changed size of Dalton unit system");
 
@@ -819,7 +827,7 @@ public:
 
     }
 
-    std::string                             toStdString_Electronvolt(const bool fullName = false) const {
+	std::string						toStdString_Electronvolt(const bool fullName = false) const {
 
         if (System::size != 1) throw std::runtime_error("Changed size of Electronvolt unit system");
 
@@ -844,7 +852,7 @@ public:
 
     }
 
-    std::string                             toStdString_KilocaloriePerMole(const bool fullName = false) const {
+	std::string						toStdString_KilocaloriePerMole(const bool fullName = false) const {
 
         if (System::size != 1) throw std::runtime_error("Changed size of KilocaloriePerMole unit system");
 
@@ -870,7 +878,7 @@ public:
 
     }
 
-    std::string                             toStdString_SI(const bool fullName = false) const {
+	std::string						toStdString_SI(const bool fullName = false) const {
 
         if (System::size != 7) throw std::runtime_error("Changed size of SI unit system");
 
@@ -878,7 +886,7 @@ public:
 		std::vector<int> scaleForStr = ref_scale;
 
         // dimensionless
-        if (exponent == zeros && scale == zeros) {
+		if (isDimensionless()) {
 
             ret = std::to_string(value) + " (dimensionless)";
             return ret;
@@ -1087,7 +1095,7 @@ public:
 
     }
 
-    std::string                             toDebugStdString () const {
+	std::string						toDebugStdString () const {
 
         std::string ret = std::to_string(value) + " ";
         for (int i = 0; i < System::size; ++i)
@@ -1101,21 +1109,21 @@ public:
 
 private:
 
-    double                                  value;          ///> value
-    std::vector<int>                        scale;          ///> scale
-	std::vector<int>                        exponent;       ///> exponent
+	double							value;          ///> value
+	std::vector<int>				scale;          ///> scale
+	std::vector<int>				exponent;       ///> exponent
 
-    static const std::vector<int>           ref_scale;      ///> reference scale: base units for the current UnitSystem
+	static const std::vector<int>	ref_scale;      ///> reference scale: base units for the current UnitSystem
 
-    static const std::vector<int>           zeros;          ///> array for comparisons
+	static const std::vector<int>	zeros;          ///> array for comparisons
 
 };
 
 template <typename System>
-const std::vector<int>              SBDQuantityWrapper<System>::ref_scale = SBDQuantityWrapper<System>::getRefScale();
+const std::vector<int>				SBDQuantityWrapper<System>::ref_scale = SBDQuantityWrapper<System>::getRefScale();
 
 template <typename System>
-const std::vector<int>              SBDQuantityWrapper<System>::zeros(System::size, 0);
+const std::vector<int>				SBDQuantityWrapper<System>::zeros(System::size, 0);
 
 /// \name Common types and shortnames
 //@{
@@ -1142,7 +1150,7 @@ typedef     SBDQuantityWrapperKilocaloriePerMole                         SBQuant
 /// \brief Returns the SBQuantity::Quantity from Unit \p u
 
 template<typename Quantity, typename Units>
-Quantity                        getSBQuantity(const Units& a) {
+Quantity							getSBQuantity(const Units& a) {
 
 	return a.template toSBQuantity<Quantity>();
 
@@ -1151,7 +1159,7 @@ Quantity                        getSBQuantity(const Units& a) {
 /// \brief Returns the value of SBQuantity::Quantity for Unit \p u
 
 template<typename Quantity, typename Units>
-double                          getSBQuantityValue (const Units &a) {
+double								getSBQuantityValue (const Units &a) {
 
 	return a.template toSBQuantityValue<Quantity>();
 
@@ -1160,7 +1168,7 @@ double                          getSBQuantityValue (const Units &a) {
 /// \brief Converts UnitsA to UnitsB: UnitsA -> SBQuantityA -> SBQuantityB -> UnitsB
 
 template<typename UnitSystemA, typename UnitSystemB, typename QuantityA, typename QuantityB>
-SBDQuantityWrapper<UnitSystemB>    convertUnitAToUnitB(const SBDQuantityWrapper<UnitSystemA>& q) {
+SBDQuantityWrapper<UnitSystemB>		convertUnitAToUnitB(const SBDQuantityWrapper<UnitSystemA>& q) {
 
 	return SBDQuantityWrapper<UnitSystemB>( QuantityB( getSBQuantity<QuantityA, SBDQuantityWrapper<UnitSystemA>>(q) ) );
 
@@ -1173,7 +1181,7 @@ SBDQuantityWrapper<UnitSystemB>    convertUnitAToUnitB(const SBDQuantityWrapper<
 
 /// \brief Returns the product of double \p d with physical quantity \p q
 template <typename System>
-SBDQuantityWrapper<System>   operator*(const double d, const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			operator*(const double d, const SBDQuantityWrapper<System>& q) {
 
 	return SBDQuantityWrapper<System>(d * q.getValue(), q.getScale(), q.getExponent());
 
@@ -1181,10 +1189,9 @@ SBDQuantityWrapper<System>   operator*(const double d, const SBDQuantityWrapper<
 
 /// \brief Returns the sum of double \p d with physical quantity \p q (for dimensionless physical quantities only)
 template <typename System>
-SBDQuantityWrapper<System>   operator+(const double d, const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			operator+(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Adding a quantity to a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Adding a quantity to a double is only allowed for dimensionless quantities.");
 
 	return SBDQuantityWrapper<System>(d + q.getValue(), q.getScale(), q.getExponent());
 
@@ -1192,10 +1199,9 @@ SBDQuantityWrapper<System>   operator+(const double d, const SBDQuantityWrapper<
 
 /// \brief Returns the difference between double \p d with physical quantity \p q (for dimensionless physical quantities only)
 template <typename System>
-SBDQuantityWrapper<System>   operator-(const double d, const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			operator-(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Subtracting a quantity from a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Subtracting a quantity from a double is only allowed for dimensionless quantities.");
 
 	return SBDQuantityWrapper<System>(d - q.getValue(), q.getScale(), q.getExponent());
 
@@ -1203,10 +1209,9 @@ SBDQuantityWrapper<System>   operator-(const double d, const SBDQuantityWrapper<
 
 /// \brief Returns true when double \p d and physical quantity \p q are equal (for dimensionless physical quantities only)
 template <typename System>
-bool    operator==(const double d, const SBDQuantityWrapper<System>& q) {
+bool								operator==(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
     return d == q.getValue();
 
@@ -1214,10 +1219,9 @@ bool    operator==(const double d, const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns true when double \p d and physical quantity \p q are different (for dimensionless physical quantities only)
 template <typename System>
-bool    operator!=(const double d, const SBDQuantityWrapper<System>& q) {
+bool								operator!=(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
     return d != q.getValue();
 
@@ -1225,10 +1229,9 @@ bool    operator!=(const double d, const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns true when double \p d is smaller than physical quantity \p q (for dimensionless physical quantities only)
 template <typename System>
-bool    operator<(const double d, const SBDQuantityWrapper<System>& q) {
+bool								operator<(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
     return d < q.getValue();
 
@@ -1236,10 +1239,9 @@ bool    operator<(const double d, const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns true when double \p d is larger than physical quantity \p q (for dimensionless physical quantities only)
 template <typename System>
-bool    operator>(const double d, const SBDQuantityWrapper<System>& q) {
+bool								operator>(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
     return d > q.getValue();
 
@@ -1247,10 +1249,9 @@ bool    operator>(const double d, const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns true when double \p d is smaller than or equal to physical quantity \p q (for dimensionless physical quantities only)
 template <typename System>
-bool    operator<=(const double d, const SBDQuantityWrapper<System>& q) {
+bool								operator<=(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
     return d <= q.getValue();
 
@@ -1258,10 +1259,9 @@ bool    operator<=(const double d, const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns true when double \p d is larger than or equal to physical quantity \p q (for dimensionless physical quantities only)
 template <typename System>
-bool    operator>=(const double d, const SBDQuantityWrapper<System>& q) {
+bool								operator>=(const double d, const SBDQuantityWrapper<System>& q) {
 
-    if (q.getExponent() != q.getZerosVector())
-		throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
+	if (!q.isDimensionless()) throw std::runtime_error("Comparing a quantity with a double is only allowed for dimensionless quantities.");
 
     return d >= q.getValue();
 
@@ -1269,7 +1269,7 @@ bool    operator>=(const double d, const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns the division of double \p d by physical quantity \p q
 template <typename System>
-SBDQuantityWrapper<System>   operator/(const double d, const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			operator/(const double d, const SBDQuantityWrapper<System>& q) {
 
     std::vector<int> exponent = q.getExponent();
     for(size_t i = 0; i < exponent.size(); ++i)
@@ -1282,7 +1282,7 @@ SBDQuantityWrapper<System>   operator/(const double d, const SBDQuantityWrapper<
 /// \brief Inserts the physical quantity \p q in the output stream \p s
 
 template <typename System>
-std::ostream&   operator<<(std::ostream &s, const SBDQuantityWrapper<System>& q) {
+std::ostream&						operator<<(std::ostream &s, const SBDQuantityWrapper<System>& q) {
 
     s << q.toStdString();
     return s;
@@ -1297,7 +1297,7 @@ std::ostream&   operator<<(std::ostream &s, const SBDQuantityWrapper<System>& q)
 /// \brief Returns the absolute value of physical quantity \p q
 
 template <typename System>
-SBDQuantityWrapper<System> fabs(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			fabs(const SBDQuantityWrapper<System>& q) {
 
 	return SBDQuantityWrapper<System>(fabs(q.getValue()), q.getScale(), q.getExponent());
 
@@ -1306,38 +1306,63 @@ SBDQuantityWrapper<System> fabs(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the floor value of physical quantity \p q
 
 template <typename System>
-SBDQuantityWrapper<System> floor(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			floor(const SBDQuantityWrapper<System>& q) {
 
 	return SBDQuantityWrapper<System>(floor(q.getValue()), q.getScale(), q.getExponent());
 
 }
 
+/// \brief Returns the ceil value of physical quantity \p q
+
+template <typename System>
+SBDQuantityWrapper<System>			ceil(const SBDQuantityWrapper<System>& q) {
+
+	return SBDQuantityWrapper<System>(ceil(q.getValue()), q.getScale(), q.getExponent());
+
+}
+
+/// \brief Returns the round value of physical quantity \p q
+
+template <typename System>
+SBDQuantityWrapper<System>			round(const SBDQuantityWrapper<System>& q) {
+
+	return SBDQuantityWrapper<System>(round(q.getValue()), q.getScale(), q.getExponent());
+
+}
+
+/// \brief Returns the trunc value of physical quantity \p q
+
+template <typename System>
+SBDQuantityWrapper<System>			trunc(const SBDQuantityWrapper<System>& q) {
+
+	return SBDQuantityWrapper<System>(trunc(q.getValue()), q.getScale(), q.getExponent());
+
+}
+
 /// \brief Returns the \p p th power of physical quantity \p q
 
-template <int p, typename System>
-SBDQuantityWrapper<System> pow(const SBDQuantityWrapper<System>& q) {
+template <typename System>
+SBDQuantityWrapper<System>			pow(const SBDQuantityWrapper<System>& q, int p) {
 
-	static_assert(p != 0, "Error, the exponent cannot be zero");
+	if (p == 0) throw std::runtime_error("Error, the exponent cannot be zero");
 
     std::vector<int> e = q.getExponent();
-	for (auto& ei: e)
-		ei *= p;
+	for (auto& ei: e) ei *= p;
 
-	return SBDQuantityWrapper<System>(pow(q.getValue(),(double)p), q.getScale(), e);
+	return SBDQuantityWrapper<System>(pow(q.getValue(), (double)p), q.getScale(), e);
 
 }
 
 /// \brief Returns the square root of physical quantity \p q
 
 template <typename System>
-SBDQuantityWrapper<System>   sqrt(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			sqrt(const SBDQuantityWrapper<System>& q) {
 
     std::vector<int> e = q.getExponent();
     for (auto& ei: e)
 		if (ei % 2 != 0) throw std::runtime_error("Error, cannot take the square root of a quantity with non-even unit exponents");
 
-    for (auto& ei: e)
-        ei /= 2;
+	for (auto& ei: e) ei /= 2;
 
 	return SBDQuantityWrapper<System>(sqrt(q.getValue()), q.getScale(), e);
 
@@ -1345,19 +1370,18 @@ SBDQuantityWrapper<System>   sqrt(const SBDQuantityWrapper<System>& q) {
 
 /// \brief Returns the \p p th root of physical quantity \p q
 
-template <int p, typename System>
-SBDQuantityWrapper<System>   root(const SBDQuantityWrapper<System>& q) {
+template <typename System>
+SBDQuantityWrapper<System>			root(const SBDQuantityWrapper<System>& q, int p) {
 
-	static_assert(p != 0, "Error, the root exponent cannot be zero");
+	if (p == 0) throw std::runtime_error("Error, the root exponent cannot be zero");
 
     std::vector<int> e = q.getExponent();
     for (auto& ei: e)
 		if (ei % p != 0) throw std::runtime_error("Error, cannot take the root of a quantity for which the unit exponents are not multiples of the root exponent");
 
-    for (auto& ei: e)
-        ei /= p;
+	for (auto& ei: e) ei /= p;
 
-	return SBDQuantityWrapper<System>(pow(q.getValue(),1.0/(double)p), q.getScale(), e);
+	return SBDQuantityWrapper<System>(pow(q.getValue(), 1.0 / (double)p), q.getScale(), e);
 
 }
 
@@ -1365,11 +1389,9 @@ SBDQuantityWrapper<System>   root(const SBDQuantityWrapper<System>& q) {
 
 //template<typename t = System, typename std::enable_if<std::is_same<t, SBUnitSystemSI>::value, int>::type = 0>
 template <typename System>
-SBDQuantityWrapper<System> exp(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			exp(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the exponential function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the exponential function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<System>(exp(q.getValue()));
 
@@ -1378,11 +1400,9 @@ SBDQuantityWrapper<System> exp(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the logarithm of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> log(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			log(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the log function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the log function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(log(q.getValue()));
 
@@ -1391,11 +1411,9 @@ SBDQuantityWrapper<System> log(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the sin of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> sin(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			sin(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the sin function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the sin function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(sin(q.getValue()));
 
@@ -1404,11 +1422,9 @@ SBDQuantityWrapper<System> sin(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the asin of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> asin(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			asin(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the asin function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the asin function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(asin(q.getValue()));
 
@@ -1417,11 +1433,9 @@ SBDQuantityWrapper<System> asin(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the cos of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> cos(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			cos(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the cos function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the cos function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(cos(q.getValue()));
 
@@ -1430,11 +1444,9 @@ SBDQuantityWrapper<System> cos(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the acos of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> acos(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			acos(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the acos function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the acos function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(acos(q.getValue()));
 
@@ -1443,11 +1455,9 @@ SBDQuantityWrapper<System> acos(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the tan of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> tan(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			tan(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the tan function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the tan function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(tan(q.getValue()));
 
@@ -1456,11 +1466,9 @@ SBDQuantityWrapper<System> tan(const SBDQuantityWrapper<System>& q) {
 /// \brief Returns the atan of physical quantity \p q (for dimensionless physical quantities only)
 
 template <typename System>
-SBDQuantityWrapper<System> atan(const SBDQuantityWrapper<System>& q) {
+SBDQuantityWrapper<System>			atan(const SBDQuantityWrapper<System>& q) {
 
-    std::vector<int> e = q.getExponent();
-    for (auto& ei: e)
-		if (ei != 0) throw std::runtime_error("Error, cannot apply the atan function to non-dimensionless quantities");
+	if (!q.isDimensionless()) throw std::runtime_error("Error, cannot apply the atan function to non-dimensionless quantities");
 
 	return SBDQuantityWrapper<SBUnitSystemSI>(atan(q.getValue()));
 
