@@ -184,7 +184,7 @@ public:
 
     /// \brief Returns a dimensionless physical interval vector whose bounds are equal to those of this physical interval vector
 
-    std::vector<std::vector<double>>                                    getValue() const {
+	std::vector<std::vector<double>>					getValue() const {
 
 		std::vector<std::vector<double>> ret = {i[0].getValue(), i[1].getValue(), i[2].getValue()};
 		return ret;
@@ -193,7 +193,7 @@ public:
 
     /// \brief Sets the bounds of this physical interval vector equal to those of the dimensionless physical interval vector \p v
 
-    void                                                                setValue(const std::vector<std::vector<double>>& v) {
+	void												setValue(const std::vector<std::vector<double>>& v) {
 
 		if (v.size() != 3) throw std::runtime_error("The size of the input array should be 3x2");
 
@@ -220,7 +220,7 @@ public:
 
     /// \brief Returns the i-th component of the vector
 
-	SBDTypePhysicalIntervalWrapper<Units>                      getComponent(const unsigned int& j) const {
+	SBDTypePhysicalIntervalWrapper<Units>				getComponent(const unsigned int& j) const {
 
 		if (j >= i.size()) throw std::runtime_error("Index is out of range");
 
@@ -230,13 +230,21 @@ public:
 
     /// \brief Returns the k-th component of the i-th interval
 
-    Units                                                               getComponent(const unsigned int& j, const unsigned int& k) const {
+	Units												getComponent(const unsigned int& j, const unsigned int& k) const {
 
 		if (j >= i.size() || k >= 2) throw std::runtime_error("Index is out of range");
 
         return i[j][k];
 
     }
+
+	/// \brief Returns true if the physical interval is dimensionless
+
+	bool												isDimensionless() const {
+
+		return i[0].isDimensionless();
+
+	}
 
     //@}
 
@@ -248,7 +256,7 @@ public:
 
 	SBPhysicalIntervalWrapper<Units>                   operator|(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
-        return i[0]*u.i[0]+i[1]*u.i[1]+i[2]*u.i[2];
+		return i[0] * u.i[0] + i[1] * u.i[1] + i[2] * u.i[2];
 
     }
 
@@ -256,7 +264,7 @@ public:
 
 	SBDTypePhysicalIAVector3Wrapper<Units>             operator^(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[1]*u.i[2]-i[2]*u.i[1],i[2]*u.i[0]-i[0]*u.i[2],i[0]*u.i[1]-i[1]*u.i[0]);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[1] * u.i[2] - i[2] * u.i[1], i[2] * u.i[0] - i[0] * u.i[2], i[0] * u.i[1] - i[1] * u.i[0]);
 
     }
 
@@ -264,7 +272,7 @@ public:
 
 	SBDTypePhysicalIAVector3Wrapper<Units>             operator+(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0]+u.i[0],i[1]+u.i[1],i[2]+u.i[2]);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] + u.i[0], i[1] + u.i[1], i[2] + u.i[2]);
 
     }
 
@@ -272,7 +280,7 @@ public:
 
 	SBDTypePhysicalIAVector3Wrapper<Units>             operator-(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0]-u.i[0],i[1]-u.i[1],i[2]-u.i[2]);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] - u.i[0], i[1] - u.i[1], i[2] - u.i[2]);
 
     }
 
@@ -288,6 +296,8 @@ public:
 
 	SBDTypePhysicalIAVector3Wrapper<Units>&            operator*=(Units d) {
 
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
 		i[0] *= d;
 		i[1] *= d;
 		i[2] *= d;
@@ -299,56 +309,71 @@ public:
 
 	SBDTypePhysicalIAVector3Wrapper<Units>             operator*(const double d) const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0]*d,i[1]*d,i[2]*d);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] * d, i[1] * d, i[2] * d);
 
-    }
+	}
 
-    /// \brief Multiplies this physical interval vector with double \p d
+	/// \brief Multiplies this physical interval vector with double \p d
 
 	SBDTypePhysicalIAVector3Wrapper<Units>&            operator*=(const double d) {
 
 		i[0] *= d;
 		i[1] *= d;
 		i[2] *= d;
-        return *this;
+		return *this;
 
-    }
+	}
+
+	/// \brief Returns the product of this physical interval vector with physical interval \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>				operator*(const SBDTypePhysicalIntervalWrapper<Units>& d) const {
+
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] * d, i[1] * d, i[2] * d);
+
+	}
 
     /// \brief Returns the component-wise product of this physical interval vector with physical interval vector \p u
     ///
     /// This operator returns the component-wise product of this physical interval vector with physical interval vector \p u, <em>i.e.</em>
     /// a physical interval vector in which each component is the product of the corresponding components in this physical interval vector and physical interval vector \p u.
 
-	SBDTypePhysicalIAVector3Wrapper<Units>             operator*(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
+	SBDTypePhysicalIAVector3Wrapper<Units>				operator*(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0]*u.i[0],i[1]*u.i[1],i[2]*u.i[2]);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] * u.i[0], i[1] * u.i[1], i[2] * u.i[2]);
 
-    }
+	}
 
-    /// \brief Returns the division of this physical interval vector by physical quantity \p d
+	/// \brief Multiplies this physical interval vector with physical interval \p d
 
-	SBDTypePhysicalIAVector3Wrapper<Units>             operator/(const Units d) const {
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator*=(const SBDTypePhysicalIntervalWrapper<Units>& d) {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0]/d,i[1]/d,i[2]/d);
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
 
-    }
+		i[0] *= d;
+		i[1] *= d;
+		i[2] *= d;
+		return *this;
 
-    /// \brief Divides this physical interval vector by physical quantity \p d
+	}
 
-	SBDTypePhysicalIAVector3Wrapper<Units>&            operator/=(const Units d) {
+	/// \brief Multiplies this physical interval vector with physical interval vector \p u
 
-		i[0] /= d;
-		i[1] /= d;
-		i[2] /= d;
-        return *this;
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator*=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
-    }
+		if (!isDimensionless() || !u.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		i[0] *= u.i[0];
+		i[1] *= u.i[1];
+		i[2] *= u.i[2];
+		return *this;
+
+	}
 
     /// \brief Returns the division of this physical interval vector by double \p d
 
 	SBDTypePhysicalIAVector3Wrapper<Units>             operator/(const double d) const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0]/d,i[1]/d,i[2]/d);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] / d, i[1] / d, i[2] / d);
 
     }
 
@@ -363,17 +388,80 @@ public:
 
     }
 
+	/// \brief Returns the division of this physical interval vector by physical quantity \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>				operator/(const Units d) const {
+
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] / d, i[1] / d, i[2] / d);
+
+	}
+
+	/// \brief Divides this physical interval vector by physical quantity \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator/=(const Units d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		i[0] /= d;
+		i[1] /= d;
+		i[2] /= d;
+		return *this;
+
+	}
+
+	/// \brief Returns the division of this physical interval vector by physical interval \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>				operator/(const SBDTypePhysicalIntervalWrapper<Units>& d) const {
+
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] / d, i[1] / d, i[2] / d);
+
+	}
+
+	/// \brief Divides this physical interval vector with physical interval \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator/=(const SBDTypePhysicalIntervalWrapper<Units>& d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		i[0] /= d;
+		i[1] /= d;
+		i[2] /= d;
+		return *this;
+
+	}
+
+	/// \brief Returns the division of this physical interval vector by physical interval vector \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>				operator/(const SBDTypePhysicalIAVector3Wrapper<Units>& d) const {
+
+		return SBDTypePhysicalIAVector3Wrapper<Units>(i[0] / d.i[0], i[1] / d.i[1], i[2] / d.i[2]);
+
+	}
+
+	/// \brief Divides this physical interval vector with physical interval vector \p d
+
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator/=(const SBDTypePhysicalIAVector3Wrapper<Units>& d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		i[0] /= d.i[0];
+		i[1] /= d.i[1];
+		i[2] /= d.i[2];
+		return *this;
+
+	}
+
     /// \brief Returns the opposite of this physical interval vector
 
-	SBDTypePhysicalIAVector3Wrapper<Units>             operator-() const {
+	SBDTypePhysicalIAVector3Wrapper<Units>				operator-() const {
 
-		return SBDTypePhysicalIAVector3Wrapper<Units>(-i[0],-i[1],-i[2]);
+		return SBDTypePhysicalIAVector3Wrapper<Units>(-i[0], -i[1], -i[2]);
 
     }
 
     /// \brief Adds physical interval vector \p u to this physical interval vector
 
-	SBDTypePhysicalIAVector3Wrapper<Units>&            operator+=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator+=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
 		i[0] += u.i[0];
 		i[1] += u.i[1];
@@ -384,7 +472,7 @@ public:
 
     /// \brief Subtracts physical interval vector \p u from this physical interval vector
 
-	SBDTypePhysicalIAVector3Wrapper<Units>&            operator-=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+	SBDTypePhysicalIAVector3Wrapper<Units>&				operator-=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
 		i[0] -= u.i[0];
 		i[1] -= u.i[1];
@@ -395,7 +483,7 @@ public:
 
     /// \brief Returns true if this physical interval vector is equal to physical interval vector \p u (component-wise)
 
-	bool                                                        operator==(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
+	bool												operator==(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
 		return (i[0] == u.i[0]) && (i[1] == u.i[1]) && (i[2] == u.i[2]);
 
@@ -403,7 +491,7 @@ public:
 
     /// \brief Returns true if this physical interval vector is different from physical interval vector \p u (component-wise)
 
-	bool                                                        operator!=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
+	bool												operator!=(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
 		return (i[0] != u.i[0]) || (i[1] != u.i[1]) || (i[2] != u.i[2]);
 
@@ -411,11 +499,11 @@ public:
 
     /// \brief Returns a reference to component \p index
 
-	SBDTypePhysicalIntervalWrapper<Units>&             operator[](const int index) { return i[index]; }
+	SBDTypePhysicalIntervalWrapper<Units>&				operator[](const int index) { return i[index]; }
 
     /// \brief Returns a reference to component \p index (const version)
 
-	const SBDTypePhysicalIntervalWrapper<Units>&       operator[](const int index) const { return i[index]; }
+	const SBDTypePhysicalIntervalWrapper<Units>&		operator[](const int index) const { return i[index]; }
 
     //@}
 
@@ -425,7 +513,7 @@ public:
 
     /// \brief Sets all components to [0,0]
 
-    void														setZero() {
+	void												setZero() {
 
         i[0].setZero();
         i[1].setZero();
@@ -435,23 +523,23 @@ public:
 
     /// \brief Returns the center [ 0.5*(i[0].i[0]+i[0].i[1]) 0.5*(i[1].i[0]+i[1].i[1]) 0.5*(i[2].i[0]+i[2].i[1]) ] of the physical interval vector
 
-	SBDTypePhysicalVector3Wrapper<Units>                       center() const {
+	SBDTypePhysicalVector3Wrapper<Units>				center() const {
 
-		return SBDTypePhysicalVector3Wrapper<Units>(i[0].center(),i[1].center(),i[2].center());
+		return SBDTypePhysicalVector3Wrapper<Units>(i[0].center(), i[1].center(), i[2].center());
 
     }
 
     /// \brief Returns the diameter [ 0.5*(i[0].i[1]-i[0].i[0]) 0.5*(i[1].i[1]-i[1].i[0]) 0.5*(i[2].i[1]-i[2].i[0]) ] of the physical interval vector
 
-	SBDTypePhysicalVector3Wrapper<Units>                       diameter() const {
+	SBDTypePhysicalVector3Wrapper<Units>				diameter() const {
 
-		return SBDTypePhysicalVector3Wrapper<Units>(i[0].diameter(),i[1].diameter(),i[2].diameter());
+		return SBDTypePhysicalVector3Wrapper<Units>(i[0].diameter(), i[1].diameter(), i[2].diameter());
 
     }
 
     /// \brief Returns the volume (i[0].i[1]-i[0].i[0])*(i[1].i[1]-i[1].i[0])*(i[2].i[1]-i[2].i[0]) of the physical interval vector
 
-    Units                                                               volume() const {
+	Units												volume() const {
 
 		return i[0].diameter() * i[1].diameter() * i[2].diameter();
 
@@ -459,15 +547,15 @@ public:
 
     /// \brief Returns the area 2.0*((i[0].i[1]-i[0].i[0])*(i[0].i[1]-i[0].i[0])+(i[1].i[1]-i[1].i[0])*(i[1].i[1]-i[1].i[0])+(i[2].i[1]-i[2].i[0])*(i[2].i[1]-i[2].i[0])) of the physical interval vector
 
-    Units                                                               area() const {
+	Units												area() const {
 
-		return 2.0*((i[0].i[1]-i[0].i[0])*(i[0].i[1]-i[0].i[0]) + (i[1].i[1]-i[1].i[0])*(i[1].i[1]-i[1].i[0]) + (i[2].i[1]-i[2].i[0])*(i[2].i[1]-i[2].i[0]));
+		return 2.0 * ((i[0].i[1]-i[0].i[0])*(i[0].i[1]-i[0].i[0]) + (i[1].i[1]-i[1].i[0])*(i[1].i[1]-i[1].i[0]) + (i[2].i[1]-i[2].i[0])*(i[2].i[1]-i[2].i[0]));
 
     }
 
     /// \brief Returns the sum i[0].diameter()+i[1].diameter()+i[2].diameter() of the components diameters of the physical interval vector
 
-    Units                                                               lengthsSum() const {
+	Units												lengthsSum() const {
 
 		return i[0].diameter() + i[1].diameter() + i[2].diameter();
 
@@ -475,7 +563,7 @@ public:
 
     /// \brief Returns the lower bound [ i[0].i[0] i[1].i[0] i[2].i[0] ] of the physical interval vector
 
-	SBDTypePhysicalVector3Wrapper<Units>                       lowerBound() const {
+	SBDTypePhysicalVector3Wrapper<Units>				lowerBound() const {
 
 		return SBDTypePhysicalVector3Wrapper<Units>(i[0].i[0], i[1].i[0], i[2].i[0]);
 
@@ -483,7 +571,7 @@ public:
 
     /// \brief Returns the upper bound [ i[0].i[1] i[1].i[1] i[2].i[1] ] of the physical interval vector
 
-	SBDTypePhysicalVector3Wrapper<Units>                       upperBound() const {
+	SBDTypePhysicalVector3Wrapper<Units>				upperBound() const {
 
 		return SBDTypePhysicalVector3Wrapper<Units>(i[0].i[1], i[1].i[1], i[2].i[1]);
 
@@ -491,7 +579,7 @@ public:
 
     /// \brief Sets the upper bounds of the intervals equal to the lower bounds
 
-    void                                                                collapseToUpperBound() {
+	void												collapseToUpperBound() {
 
         i[0].i[1] = i[0].i[0];
         i[1].i[1] = i[1].i[0];
@@ -501,7 +589,7 @@ public:
 
     /// \brief Sets the lower bounds of the intervals equal to the upper bounds
 
-    void                                                                collapseToLowerBound() {
+	void												collapseToLowerBound() {
 
         i[0].i[0] = i[0].i[1];
         i[1].i[0] = i[1].i[1];
@@ -511,7 +599,7 @@ public:
 
     /// \brief Returns true when this physical interval vector overlaps physical interval vector \p u
 
-	bool														overlaps(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
+	bool												overlaps(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
 		if (u.i[0].i[1] < i[0].i[0]) return false;
 		if (u.i[0].i[0] > i[0].i[1]) return false;
@@ -526,7 +614,7 @@ public:
 
     /// \brief Returns true when the Manhattan distance between this physical interval vector and physical interval vector \p u is smaller than \p cutoffDistance
 
-	bool 														overlaps(const SBDTypePhysicalIAVector3Wrapper<Units>& u, const Units& cutoffDistance) const {
+	bool												overlaps(const SBDTypePhysicalIAVector3Wrapper<Units>& u, const Units& cutoffDistance) const {
 
 		if (u.i[0].i[1] + cutoffDistance < i[0].i[0]) return false;
 		if (u.i[0].i[0] > i[0].i[1] + cutoffDistance) return false;
@@ -541,7 +629,7 @@ public:
 /*
     /// \brief Returns true when this physical interval vector overlaps physical interval vector \p u transformed by \p t
 
-	bool 														overlaps(const SBDTypePhysicalIAVector3Wrapper<Units>& u, const SBDTypeSymmetryTransform& t) const {
+	bool												overlaps(const SBDTypePhysicalIAVector3Wrapper<Units>& u, const SBDTypeSymmetryTransform& t) const {
 
         if (t.orthorhombic) {
 
@@ -572,7 +660,7 @@ public:
 */
     /// \brief Returns the OverlapType between this physical interval vector and physical interval vector \p u
 
-	OverlapType 												overlapsAdvanced(const SBDTypePhysicalIAVector3Wrapper<Units>& u, const Units& cutoff, const Units& cutoff2) const {
+	OverlapType											overlapsAdvanced(const SBDTypePhysicalIAVector3Wrapper<Units>& u, const Units& cutoff, const Units& cutoff2) const {
 
         bool signA, signB;
         Units max2(0.0);
@@ -720,7 +808,7 @@ public:
 */
     /// \brief Returns true when this physical interval vector contains the physical vector \p u
 
-	bool														contains(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	bool												contains(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
 		if (i[0].i[0] > u.v[0]) return false;
 		if (i[0].i[1] < u.v[0]) return false;
@@ -735,7 +823,7 @@ public:
 
     /// \brief Returns true when this physical interval vector contains in physical interval vector \p u
 
-	bool														contains(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
+	bool												contains(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
 		if (u.i[0].i[0] < i[0].i[0]) return false;
 		if (u.i[0].i[1] > i[0].i[1]) return false;
@@ -750,7 +838,7 @@ public:
 
     /// \brief Returns true when this physical interval vector is contained in physical interval vector \p u
 
-	bool														isContainedIn(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
+	bool												isContainedIn(const SBDTypePhysicalIAVector3Wrapper<Units>& u) const {
 
 		if (i[0].i[0] < u.i[0].i[0]) return false;
 		if (i[0].i[1] > u.i[0].i[1]) return false;
@@ -765,69 +853,69 @@ public:
 
     /// \brief Returns the squared euclidean distance between this physical interval vector and physical vector \p u
 
-	Units                                                       distance2ToPoint(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
+	Units												distance2ToPoint(const SBDTypePhysicalVector3Wrapper<Units>& u) const {
 
         Units x,y,z;
 
-        if (u.v[0]<=i[0].i[0]) x=i[0].i[0];
-        else if (u.v[0]>=i[0].i[1]) x=i[0].i[1];
-        else x=u.v[0];
+		if      (u.v[0] <= i[0].i[0]) x = i[0].i[0];
+		else if (u.v[0] >= i[0].i[1]) x = i[0].i[1];
+		else x = u.v[0];
 
-        if (u.v[1]<=i[1].i[0]) y=i[1].i[0];
-        else if (u.v[1]>=i[1].i[1]) y=i[1].i[1];
-        else y=u.v[1];
+		if      (u.v[1] <= i[1].i[0]) y = i[1].i[0];
+		else if (u.v[1] >= i[1].i[1]) y = i[1].i[1];
+		else y = u.v[1];
 
-        if (u.v[2]<=i[2].i[0]) z=i[2].i[0];
-        else if (u.v[2]>=i[2].i[1]) z=i[2].i[1];
-        else z=u.v[2];
+		if      (u.v[2] <= i[2].i[0]) z = i[2].i[0];
+		else if (u.v[2] >= i[2].i[1]) z = i[2].i[1];
+		else z = u.v[2];
 
-        return (x-u.v[0])*(x-u.v[0])+(y-u.v[1])*(y-u.v[1])+(z-u.v[2])*(z-u.v[2]);
+		return (x - u.v[0]) * (x - u.v[0]) + (y - u.v[1]) * (y - u.v[1]) + (z - u.v[2]) * (z - u.v[2]);
 
     }
 
     /// \brief Splits this physical interval vector along the longest axis into physical interval vectors
 
-	std::vector<SBDTypePhysicalIAVector3Wrapper<Units>>            split() const {
+	std::vector<SBDTypePhysicalIAVector3Wrapper<Units>>	split() const {
 
         // split along the longest axis
 
 		std::vector<SBDTypePhysicalIAVector3Wrapper<Units>> u1u2;
 		SBDTypePhysicalIAVector3Wrapper<Units> u1, u2;
 
-        int axis=0;
-        Units maxLength=i[0].diameter();
+		int axis = 0;
+		Units maxLength = i[0].diameter();
         Units m;
 
-        if (i[1].diameter()>maxLength) { axis=1;maxLength=i[1].diameter(); }
-        if (i[2].diameter()>maxLength) { axis=2;maxLength=i[2].diameter(); }
+		if (i[1].diameter() > maxLength) { axis = 1; maxLength = i[1].diameter(); }
+		if (i[2].diameter() > maxLength) { axis = 2; maxLength = i[2].diameter(); }
 
         switch (axis) {
 
         case 0:
 
-            m=i[0].center();
-            u1.i[0].i[0]=i[0].i[0];u1.i[0].i[1]=m;
-            u2.i[0].i[1]=i[0].i[1];u2.i[0].i[0]=m;
-            u1.i[1]=i[1];u2.i[1]=i[1];
-            u1.i[2]=i[2];u2.i[2]=i[2];
+			m = i[0].center();
+			u1.i[0].i[0] = i[0].i[0]; u1.i[0].i[1] = m;
+			u2.i[0].i[1] = i[0].i[1]; u2.i[0].i[0] = m;
+			u1.i[1] = i[1]; u2.i[1] = i[1];
+			u1.i[2] = i[2]; u2.i[2] = i[2];
             break;
 
         case 1:
 
-            m=i[1].center();
-            u1.i[1].i[0]=i[1].i[0];u1.i[1].i[1]=m;
-            u2.i[1].i[1]=i[1].i[1];u2.i[1].i[0]=m;
-            u1.i[0]=i[0];u2.i[0]=i[0];
-            u1.i[2]=i[2];u2.i[2]=i[2];
+			m = i[1].center();
+			u1.i[1].i[0] = i[1].i[0]; u1.i[1].i[1] = m;
+			u2.i[1].i[1] = i[1].i[1]; u2.i[1].i[0] = m;
+			u1.i[0] = i[0]; u2.i[0] = i[0];
+			u1.i[2] = i[2]; u2.i[2] = i[2];
             break;
 
         case 2:
 
-            m=i[2].center();
-            u1.i[2].i[0]=i[2].i[0];u1.i[2].i[1]=m;
-            u2.i[2].i[1]=i[2].i[1];u2.i[2].i[0]=m;
-            u1.i[0]=i[0];u2.i[0]=i[0];
-            u1.i[1]=i[1];u2.i[1]=i[1];
+			m = i[2].center();
+			u1.i[2].i[0] = i[2].i[0]; u1.i[2].i[1] = m;
+			u2.i[2].i[1] = i[2].i[1]; u2.i[2].i[0] = m;
+			u1.i[0] = i[0]; u2.i[0] = i[0];
+			u1.i[1] = i[1]; u2.i[1] = i[1];
             break;
 
         }
@@ -840,7 +928,7 @@ public:
 
     /// \brief Expands all components of this physical interval vector by offset \p r
 
-    void														expand(Units r) {
+	void												expand(Units r) {
 
         i[0].expand(r);
         i[1].expand(r);
@@ -850,7 +938,7 @@ public:
 
     /// \brief Srinks all components of this physical interval vector by offset \p r
 
-    void														shrink(Units r) {
+	void												shrink(Units r) {
 
         i[0].shrink(r);
         i[1].shrink(r);
@@ -860,7 +948,7 @@ public:
 
     /// \brief Sets this physical interval vector to [ [\p u.v[0], \p u.v[0]] [\p u.v[1], \p u.v[1]] [\p u.v[2], \p u.v[2]] ]
 
-	void														reset(const SBDTypePhysicalVector3Wrapper<Units>& u) {
+	void												reset(const SBDTypePhysicalVector3Wrapper<Units>& u) {
 
         i[0].i[0] = i[0].i[1] = u.v[0];
         i[1].i[0] = i[1].i[1] = u.v[1];
@@ -870,7 +958,7 @@ public:
 
     /// \brief Enlarges this physical interval vector to contain the physical vector \p u
 
-	void														bound(const SBDTypePhysicalVector3Wrapper<Units>& u) {
+	void												bound(const SBDTypePhysicalVector3Wrapper<Units>& u) {
 
         i[0].bound(u.v[0]);
         i[1].bound(u.v[1]);
@@ -880,7 +968,7 @@ public:
 
     /// \brief Enlarges this physical interval vector to contain the physical interval vector \p u
 
-	void														bound(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+	void												bound(const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
         i[0].bound(u.i[0]);
         i[1].bound(u.i[1]);
@@ -890,25 +978,25 @@ public:
 
     /// \brief Sets the components of this physical interval vector to exactly bound both physical interval vectors \p a and \p b
 
-	void														fit(const SBDTypePhysicalIAVector3Wrapper<Units>& a, const SBDTypePhysicalIAVector3Wrapper<Units>& b) {
+	void												fit(const SBDTypePhysicalIAVector3Wrapper<Units>& a, const SBDTypePhysicalIAVector3Wrapper<Units>& b) {
 
-        if (a.i[0].i[0]<b.i[0].i[0]) i[0].i[0]=a.i[0].i[0];
-        else i[0].i[0]=b.i[0].i[0];
+		if (a.i[0].i[0] < b.i[0].i[0]) i[0].i[0] = a.i[0].i[0];
+		else i[0].i[0] = b.i[0].i[0];
 
-        if (a.i[1].i[0]<b.i[1].i[0]) i[1].i[0]=a.i[1].i[0];
-        else i[1].i[0]=b.i[1].i[0];
+		if (a.i[1].i[0] < b.i[1].i[0]) i[1].i[0] = a.i[1].i[0];
+		else i[1].i[0] = b.i[1].i[0];
 
-        if (a.i[2].i[0]<b.i[2].i[0]) i[2].i[0]=a.i[2].i[0];
-        else i[2].i[0]=b.i[2].i[0];
+		if (a.i[2].i[0] < b.i[2].i[0]) i[2].i[0] = a.i[2].i[0];
+		else i[2].i[0] = b.i[2].i[0];
 
-        if (a.i[0].i[1]>b.i[0].i[1]) i[0].i[1]=a.i[0].i[1];
-        else i[0].i[1]=b.i[0].i[1];
+		if (a.i[0].i[1] > b.i[0].i[1]) i[0].i[1] = a.i[0].i[1];
+		else i[0].i[1] = b.i[0].i[1];
 
-        if (a.i[1].i[1]>b.i[1].i[1]) i[1].i[1]=a.i[1].i[1];
-        else i[1].i[1]=b.i[1].i[1];
+		if (a.i[1].i[1] > b.i[1].i[1]) i[1].i[1] = a.i[1].i[1];
+		else i[1].i[1] = b.i[1].i[1];
 
-        if (a.i[2].i[1]>b.i[2].i[1]) i[2].i[1]=a.i[2].i[1];
-        else i[2].i[1]=b.i[2].i[1];
+		if (a.i[2].i[1] > b.i[2].i[1]) i[2].i[1] = a.i[2].i[1];
+		else i[2].i[1] = b.i[2].i[1];
 
     }
 
@@ -932,7 +1020,7 @@ public:
     //@}
 
 
-	std::vector<SBDTypePhysicalIntervalWrapper<Units>>                                          i;                  ///< The components of the physical interval vector
+	std::vector<SBDTypePhysicalIntervalWrapper<Units>>	i;                  ///< The components of the physical interval vector
 
 };
 
@@ -961,7 +1049,7 @@ typedef     SBDTypePhysicalIAVector3Wrapper<SBDQuantityWrapperKilocaloriePerMole
 /// \brief Returns the SBPhysicalIAVector3<Quantity> from Unit \p u
 
 template<typename Quantity, typename T>
-SBPhysicalIAVector3<Quantity>	getSBPhysicalIAVector3(const T& a) {
+SBPhysicalIAVector3<Quantity>				getSBPhysicalIAVector3(const T& a) {
 
 	return a.template toSBPhysicalIAVector3<Quantity>();
 
@@ -975,30 +1063,30 @@ SBPhysicalIAVector3<Quantity>	getSBPhysicalIAVector3(const T& a) {
 /// \brief Returns the product of physical quantity \p d with physical interval vector \p u
 
 template<typename Units>
-SBDTypePhysicalIAVector3Wrapper<Units>     operator*(const Units d, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+SBDTypePhysicalIAVector3Wrapper<Units>		operator*(const Units d, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
-	return SBDTypePhysicalIAVector3Wrapper<Units>(d*u.i[0],d*u.i[1],d*u.i[2]);
+	return SBDTypePhysicalIAVector3Wrapper<Units>(d * u.i[0], d * u.i[1], d * u.i[2]);
 
 }
 
 /// \brief Returns the product of double \p d with physical interval vector \p u
 
 template <typename Units>
-SBDTypePhysicalIAVector3Wrapper<Units>     operator*(const double d, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+SBDTypePhysicalIAVector3Wrapper<Units>		operator*(const double d, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
-	return SBDTypePhysicalIAVector3Wrapper<Units>(d*u.i[0],d*u.i[1],d*u.i[2]);
+	return SBDTypePhysicalIAVector3Wrapper<Units>(d * u.i[0], d * u.i[1], d * u.i[2]);
 
 }
 /*
 /// \brief Returns the product of dimensionless 3x3 matrix \p m with physical interval vector \p u
 
 template <typename Units>
-SBDTypePhysicalIAVector3Wrapper<Units>     operator*(const SBMatrix33WrapperForPython& m, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+SBDTypePhysicalIAVector3Wrapper<Units>		operator*(const SBMatrix33WrapperForPython& m, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
 	return SBDTypePhysicalIAVector3Wrapper<Units>(
-        m.m[0][0]*u.i[0]+m.m[0][1]*u.i[1]+m.m[0][2]*u.i[2],
-        m.m[1][0]*u.i[0]+m.m[1][1]*u.i[1]+m.m[1][2]*u.i[2],
-        m.m[2][0]*u.i[0]+m.m[2][1]*u.i[1]+m.m[2][2]*u.i[2]
+		m.m[0][0] * u.i[0] + m.m[0][1] * u.i[1] + m.m[0][2] * u.i[2],
+		m.m[1][0] * u.i[0] + m.m[1][1] * u.i[1] + m.m[1][2] * u.i[2],
+		m.m[2][0] * u.i[0] + m.m[2][1] * u.i[1] + m.m[2][2] * u.i[2]
     );
 
 }
@@ -1006,7 +1094,7 @@ SBDTypePhysicalIAVector3Wrapper<Units>     operator*(const SBMatrix33WrapperForP
 /// \brief Inserts the physical interval vector \p u in the output stream \p s
 
 template <typename Units>
-std::ostream&                                       operator<<(std::ostream& s, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
+std::ostream&								operator<<(std::ostream& s, const SBDTypePhysicalIAVector3Wrapper<Units>& u) {
 
     s << "(" << u.i[0] << ", " << u.i[1] << ", " << u.i[2] << ")";
     return s;

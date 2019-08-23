@@ -66,7 +66,7 @@ public:
 
     /// \brief Returns a dimensionless physical interval whose bounds are equal to those of this physical interval
 
-    std::vector<double>			getValue() const {
+	std::vector<double>											getValue() const {
 
 		std::vector<double> ret = {i[0].getValue(), i[1].getValue()};
 		return ret;
@@ -75,7 +75,7 @@ public:
 
     /// \brief Sets the bounds of this physical interval equal to those of the dimensionless physical interval \p u
 
-    void						setValue(const std::vector<double>& u) {
+	void														setValue(const std::vector<double>& u) {
 
 		if (u.size() != 2) throw std::runtime_error("The size of the input array should be 2");
 
@@ -87,7 +87,7 @@ public:
     /// \brief Returns the arbitraty SBPhysicalInterval
 
     template<typename Quantity, typename System = SBUnitSystemSI>
-    SBPhysicalInterval<Quantity> toSBPhysicalInterval () const {
+	SBPhysicalInterval<Quantity>								toSBPhysicalInterval () const {
 
         return SBPhysicalInterval<Quantity>( getSBQuantity<Quantity>(i[0]), getSBQuantity<Quantity>(i[1]) );
 
@@ -95,13 +95,21 @@ public:
 
     /// \brief Returns the i-th component of the vector
 
-    Units                       getComponent(const unsigned int j) const {
+	Units														getComponent(const unsigned int j) const {
 
 		if (j >= 2) throw std::runtime_error("Index is out of range");
 
         return i[j];
 
     }
+
+	/// \brief Returns true if the interval is dimensionless
+
+	bool														isDimensionless() const {
+
+		return i[0].isDimensionless();
+
+	}
 
     //@}
 
@@ -110,7 +118,7 @@ public:
 
     /// \brief Returns the sum of this physical interval and the physical interval \p u.
 
-	SBDTypePhysicalIntervalWrapper<Units>							operator+(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
+	SBDTypePhysicalIntervalWrapper<Units>						operator+(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
 
 		return SBDTypePhysicalIntervalWrapper<Units>(i[0]+u.i[0],i[1]+u.i[1]);
 
@@ -118,93 +126,101 @@ public:
 
     /// \brief Returns the difference between this physical interval and the physical interval \p u.
 
-	SBDTypePhysicalIntervalWrapper<Units>							operator-(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
+	SBDTypePhysicalIntervalWrapper<Units>						operator-(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
 
 		return SBDTypePhysicalIntervalWrapper<Units>(i[0]-u.i[1],i[1]-u.i[0]);
 
     }
 
-    /// \brief Returns the product of this physical interval by the quantity \p b.
-    ///
-    /// This function returns the product of this physical interval by the quantity \p d. Note that the
-    /// unit of the returned physical interval is the product of the physical interval's unit and the quantity's unit.
+	/// \brief Returns the result of the product of this physical interval by the double \p d
 
-	SBDTypePhysicalIntervalWrapper<Units>                          operator*(const Units& b) const {
-
-		return SBDTypePhysicalIntervalWrapper<Units>(b * i[0], b * i[1]);
-
-    }
-
-    /// \brief Multiplies this physical interval with physical quantity \p u
-
-	SBDTypePhysicalIntervalWrapper<Units>&                         operator*=(const Units& u) {
-
-        i[0] *= u;
-        i[1] *= u;
-        return *this;
-
-    }
-
-    /// \brief Returns the result of the product of this physical interval by the double \p d
-
-	SBDTypePhysicalIntervalWrapper<Units>							operator*(const double d) const {
+	SBDTypePhysicalIntervalWrapper<Units>						operator*(const double d) const {
 
 		if (d >= 0) return SBDTypePhysicalIntervalWrapper<Units>(i[0] * d, i[1] * d);
 		return SBDTypePhysicalIntervalWrapper<Units>(i[1] * d, i[0] * d);
 
+	}
+
+	/// \brief Multiplies this physical interval with double \p d
+
+	SBDTypePhysicalIntervalWrapper<Units>&						operator*=(const double d) {
+
+		if (d >= 0) {
+
+			i[0] *= d;
+			i[1] *= d;
+
+		}
+		else {
+
+			Units t(i[0]);
+			i[0] = i[1] * d;
+			i[1] = t * d;
+
+		}
+
+		return *this;
+
+	}
+
+	/// \brief Returns the product of this physical interval by the quantity \p d.
+    ///
+    /// This function returns the product of this physical interval by the quantity \p d. Note that the
+    /// unit of the returned physical interval is the product of the physical interval's unit and the quantity's unit.
+
+	SBDTypePhysicalIntervalWrapper<Units>						operator*(const Units& d) const {
+
+		if (d.getValue() >= 0) return SBDTypePhysicalIntervalWrapper<Units>(d * i[0], d * i[1]);
+		return SBDTypePhysicalIntervalWrapper<Units>(d * i[1], d * i[0]);
+
     }
 
-    /// \brief Multiplies this physical interval with double \p d
+	/// \brief Multiplies this physical interval with physical quantity \p d
 
-	SBDTypePhysicalIntervalWrapper<Units>&                         operator*=(const double d) {
+	SBDTypePhysicalIntervalWrapper<Units>&						operator*=(const Units& d) {
 
-        i[0] *= d;
-        i[1] *= d;
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		if (d.getValue() >= 0) {
+
+			i[0] *= d;
+			i[1] *= d;
+
+		}
+		else {
+
+			Units t(i[0]);
+			i[0] = i[1] * d;
+			i[1] = t * d;
+
+		}
+
         return *this;
 
-    }
+	}
 
-    /// \brief Returns the result of the division of this physical interval by the double \p d
+	/// \brief Returns the product of this physical interval with the physical interval \p in
 
-	SBDTypePhysicalIntervalWrapper<Units>							operator/(const double d) const {
-
-		if (d > 0) return SBDTypePhysicalIntervalWrapper<Units>(i[0] / d, i[1] / d);
-		return SBDTypePhysicalIntervalWrapper<Units>(i[1] / d, i[0] / d);
-
-    }
-
-    /// \brief Divides this physical interval by double \p d
-
-	SBDTypePhysicalIntervalWrapper<Units>&                         operator/=(const double d) {
-
-        i[0] /= d;
-        i[1] /= d;
-        return *this;
-
-    }
-
-    /// \brief Returns the product of this physical interval with the physical interval \p in
-
-	SBDTypePhysicalIntervalWrapper<Units>                          operator*(const SBDTypePhysicalIntervalWrapper<Units>& in) const {
+	SBDTypePhysicalIntervalWrapper<Units>						operator*(const SBDTypePhysicalIntervalWrapper<Units>& in) const {
 
 		if (in.i[0].getValue() >= 0.0) {
 
-			if (i[0].getValue() >= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[0],i[1]*in.i[1]);
-			if (i[1].getValue() <= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[1],i[1]*in.i[0]);
-			return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[1],i[1]*in.i[1]);
+			if (i[0].getValue() >= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[0], i[1]*in.i[1]);
+			if (i[1].getValue() <= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[1], i[1]*in.i[0]);
+			return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[1], i[1]*in.i[1]);
 
-        }
+		}
 
 		if (in.i[1].getValue() <= 0.0) {
 
-			if (i[0].getValue() >= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[0],i[0]*in.i[1]);
-			if (i[1].getValue() <= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[1],i[0]*in.i[0]);
-			return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[0],i[0]*in.i[0]);
+			if (i[0].getValue() >= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[0], i[0]*in.i[1]);
+			if (i[1].getValue() <= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[1], i[0]*in.i[0]);
+			return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[0], i[0]*in.i[0]);
 
-        }
+		}
 
-		if (i[0].getValue() >= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[0],i[1]*in.i[1]);
-		if (i[1].getValue() <= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[1],i[0]*in.i[0]);
+		if (i[0].getValue() >= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[1]*in.i[0], i[1]*in.i[1]);
+		if (i[1].getValue() <= 0.0) return SBDTypePhysicalIntervalWrapper<Units>(i[0]*in.i[1], i[0]*in.i[0]);
 
 		Units v00 = i[0] * in.i[0];
 		Units v11 = i[1] * in.i[1];
@@ -213,48 +229,125 @@ public:
 
 			Units v01 = i[0] * in.i[1];
 			Units v10 = i[1] * in.i[0];
-			if (v01.getValue() < v10.getValue()) return SBDTypePhysicalIntervalWrapper<Units>(v01,v11);
-			return SBDTypePhysicalIntervalWrapper<Units>(v10,v11);
+			if (v01.getValue() < v10.getValue()) return SBDTypePhysicalIntervalWrapper<Units>(v01, v11);
+			return SBDTypePhysicalIntervalWrapper<Units>(v10, v11);
 
-        }
+		}
 
 		Units v01 = i[0] * in.i[1];
 		Units v10 = i[1] * in.i[0];
 
-		if (v01.getValue() < v10.getValue()) return SBDTypePhysicalIntervalWrapper<Units>(v01,v00);
-		return SBDTypePhysicalIntervalWrapper<Units>(v10,v00);
+		if (v01.getValue() < v10.getValue()) return SBDTypePhysicalIntervalWrapper<Units>(v01, v00);
+		return SBDTypePhysicalIntervalWrapper<Units>(v10, v00);
+
+	}
+
+	/// \brief Multiplies this physical interval with the physical interval \p in
+
+	SBDTypePhysicalIntervalWrapper<Units>&						operator*=(const SBDTypePhysicalIntervalWrapper<Units>& in) {
+
+		if (!isDimensionless() || !in.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		(*this) = (*this) * (in);
+		return *this;
+
+	}
+
+    /// \brief Returns the result of the division of this physical interval by the double \p d
+
+	SBDTypePhysicalIntervalWrapper<Units>						operator/(const double d) const {
+
+		if (d > 0) return SBDTypePhysicalIntervalWrapper<Units>(i[0] / d, i[1] / d);
+		return SBDTypePhysicalIntervalWrapper<Units>(i[1] / d, i[0] / d);
 
     }
+
+    /// \brief Divides this physical interval by double \p d
+
+	SBDTypePhysicalIntervalWrapper<Units>&						operator/=(const double d) {
+
+		if (d > 0) {
+
+			i[0] /= d;
+			i[1] /= d;
+
+		}
+		else {
+
+			Units t(i[0]);
+			i[0] = i[1] * d;
+			i[1] = t * d;
+
+		}
+
+        return *this;
+
+	}
 
     /// \brief Returns the division of this physical interval by physical quantity \p u
 
-	SBDTypePhysicalIntervalWrapper<Units>                          operator/(const Units& u) const {
+	SBDTypePhysicalIntervalWrapper<Units>						operator/(const Units& u) const {
 
-		return SBDTypePhysicalIntervalWrapper<Units>(i[0] / u, i[1] / u);
+		if (u.getValue() >= 0) return SBDTypePhysicalIntervalWrapper<Units>(i[0] / u, i[1] / u);
+		return SBDTypePhysicalIntervalWrapper<Units>(i[1] / u, i[0] / u);
 
-    }
+
+	}
 
     /// \brief Divides this physical interval by physical quantity \p u
 
-	SBDTypePhysicalIntervalWrapper<Units>&          operator/=(const Units& u) {
+	SBDTypePhysicalIntervalWrapper<Units>&						operator/=(const Units& u) {
 
-        i[0] /= u;
-        i[1] /= u;
+		if (!isDimensionless() || !u.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		if (u.getValue() >= 0) {
+
+			i[0] /= u;
+			i[1] /= u;
+
+		}
+		else {
+
+			Units t(i[0]);
+			i[0] = i[1] / u;
+			i[1] = t / u;
+
+		}
+
         return *this;
 
-    }
+	}
+
+	/// \brief Returns the result of the division of this physical interval by the physical interval \p in
+
+	SBDTypePhysicalIntervalWrapper<Units>						operator/(const SBDTypePhysicalIntervalWrapper<Units>& in) const {
+
+		return (*this) * SBDTypePhysicalIntervalWrapper<Units>(1.0 / in.i[1], 1.0 / in.i[0]);
+
+	}
+
+	/// \brief Divides this physical interval by the physical interval \p in
+
+	SBDTypePhysicalIntervalWrapper<Units>&						operator/=(const SBDTypePhysicalIntervalWrapper<Units>& in) {
+
+		if (!isDimensionless() || !in.isDimensionless()) throw std::runtime_error("Error, this function can only be used for dimensionless quantities");
+
+		(*this) = (*this) / (in);
+		return *this;
+
+	}
 
     /// \brief Returns the opposite of this physical interval
 
-	SBDTypePhysicalIntervalWrapper<Units>							operator-() const {
+	SBDTypePhysicalIntervalWrapper<Units>						operator-() const {
 
-		return SBDTypePhysicalIntervalWrapper<Units>(-i[1],-i[0]);
+		return SBDTypePhysicalIntervalWrapper<Units>(-i[1], -i[0]);
 
     }
 
     /// \brief Adds the physical interval \p u to this physical interval
 
-	SBDTypePhysicalIntervalWrapper<Units>&							operator+=(const SBDTypePhysicalIntervalWrapper<Units>& u) {
+	SBDTypePhysicalIntervalWrapper<Units>&						operator+=(const SBDTypePhysicalIntervalWrapper<Units>& u) {
 
 		i[0] += u.i[0];
 		i[1] += u.i[1];
@@ -264,7 +357,7 @@ public:
 
     /// \brief Subtracts the physical interval \p u from this physical interval
 
-	SBDTypePhysicalIntervalWrapper<Units>&							operator-=(const SBDTypePhysicalIntervalWrapper<Units>& u) {
+	SBDTypePhysicalIntervalWrapper<Units>&						operator-=(const SBDTypePhysicalIntervalWrapper<Units>& u) {
 
 		i[0] -= u.i[1];
 		i[1] -= u.i[0];
@@ -292,23 +385,23 @@ public:
 
     /// \brief Returns true when this physical interval is equal to physical interval \p u
 
-	bool                                                        operator==(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
+	bool														operator==(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
 
-        return (i[0]==u.i[0])&&(i[1]==u.i[1]);
+		return (i[0] == u.i[0]) && (i[1] == u.i[1]);
 
     }
 
     /// \brief Returns true when this physical interval is different from physical interval \p u
 
-	bool                                                        operator!=(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
+	bool														operator!=(const SBDTypePhysicalIntervalWrapper<Units>& u) const {
 
-        return (i[0]!=u.i[0])||(i[1]!=u.i[1]);
+		return (i[0] != u.i[0]) || (i[1] != u.i[1]);
 
     }
 
     /// \brief Returns a reference to component \p index of this physical interval
 
-	Units&                                                      operator[](const int index) { return i[index]; }
+	Units&														operator[](const int index) { return i[index]; }
 
     /// \brief Returns a reference to component \p index of this physical interval (const version)
 
@@ -321,7 +414,7 @@ public:
 
     /// \brief Determines whether the intersection between this physical interval and the physical interval [\p l, \p r] is empty,
 
-    bool														isEmpty(const Units& l, const Units& r) {
+	bool														isEmpty(const Units& l, const Units& r) {
 
 		if (i[1] < l) return true;
 		if (i[0] > r) return true;
@@ -331,7 +424,7 @@ public:
 
     /// \brief Returns the lower bound of the absolute value of this physical interval
 
-    Units                                                       getAbsLower() const {
+	Units														getAbsLower() const {
 
 		if (i[0].getValue() >= 0.0) return i[0];
 		if (i[1].getValue() >= 0.0) return Units(0.0, i[1].getScale(), i[1].getExponent());
@@ -341,7 +434,7 @@ public:
 
     /// \brief Returns the upper bound of the absolute value of this physical interval
 
-    Units                                                       getAbsUpper() const {
+	Units														getAbsUpper() const {
 
 		if (i[0].getValue() + i[1].getValue() >= 0.0) return i[1];
         return -i[0];
@@ -350,7 +443,7 @@ public:
 
     /// \brief Returns true when this physical interval contains \p v
 
-    bool														contains(const Units& v) {
+	bool														contains(const Units& v) {
 
 		if (v < i[0]) return false;
 		if (v > i[1]) return false;
@@ -360,7 +453,7 @@ public:
 
     /// \brief Enlarges this physical interval to contain \p v
 
-    void														bound(const Units& v) {
+	void														bound(const Units& v) {
 
 		if (v < i[0]) i[0] = v;
 		if (v > i[1]) i[1] = v;
@@ -382,7 +475,7 @@ public:
     ///
     /// This function expands this physical interval by offset \p r: [\p a, \p b] becomes [\p a-r, \p b+r].
 
-    void														expand(const Units& r) {
+	void														expand(const Units& r) {
 
 		i[0] -= r;
 		i[1] += r;
@@ -435,7 +528,7 @@ public:
 
     /// \brief Returns the string representation of the physical interval (with a full unit name when fullName is true)
 
-    std::string                                         toStdString(bool fullName = false) const {
+	std::string													toStdString(bool fullName = false) const {
 
         std::string ret = "[" + i[0].toStdString(fullName) + ", " +
                                 i[1].toStdString(fullName) + "]";
@@ -444,18 +537,18 @@ public:
 
     }
 
-    //@}
+	//@}
 
 public:
 
-	std::vector<Units>													i;                  ///< The components of the interval
+	std::vector<Units>											i;                  ///< The components of the interval
 
 };
 
 /// \name Common types and shortnames
 //@{
 
-#define		SBPhysicalIntervalWrapper		SBDTypePhysicalIntervalWrapper
+#define		SBPhysicalIntervalWrapper							SBDTypePhysicalIntervalWrapper
 
 typedef     SBDTypePhysicalIntervalWrapper<SBDQuantityWrapperSI>                   SBDTypePhysicalIntervalWrapperSI;
 typedef     SBDTypePhysicalIntervalWrapper<SBDQuantityWrapperAU>                   SBDTypePhysicalIntervalWrapperAU;
@@ -477,7 +570,7 @@ typedef     SBDTypePhysicalIntervalWrapper<SBDQuantityWrapperKilocaloriePerMole>
 /// \brief Returns the SBPhysicalInterval<Quantity> from Unit \p u
 
 template<typename Quantity, typename T>
-SBPhysicalInterval<Quantity>	getSBPhysicalInterval(const T& a) {
+SBPhysicalInterval<Quantity>				getSBPhysicalInterval(const T& a) {
 
 	return a.template toSBPhysicalInterval<Quantity>();
 
@@ -488,21 +581,23 @@ SBPhysicalInterval<Quantity>	getSBPhysicalInterval(const T& a) {
 /// \name External operators
 //@{
 
-/// \brief Returns the product of physical quantity \p d and physical interval \p u
-
-template<typename Units>
-SBDTypePhysicalIntervalWrapper<Units>       operator*(const Units d, const SBDTypePhysicalIntervalWrapper<Units>& u) {
-
-	return SBDTypePhysicalIntervalWrapper<Units>(d*u.i[0], d*u.i[1]);
-
-}
-
 /// \brief Returns the product of double \p d and physical interval \p u
 
 template<typename Units>
 SBDTypePhysicalIntervalWrapper<Units>       operator*(const double d, const SBDTypePhysicalIntervalWrapper<Units>& u) {
 
-		return SBDTypePhysicalIntervalWrapper<Units>(d*u.i[0], d*u.i[1]);
+	if (d >= 0) return SBDTypePhysicalIntervalWrapper<Units>(d * u.i[0], d * u.i[1]);
+	return SBDTypePhysicalIntervalWrapper<Units>(d * u.i[1], d * u.i[0]);
+
+}
+
+/// \brief Returns the product of physical quantity \p d and physical interval \p u
+
+template<typename Units>
+SBDTypePhysicalIntervalWrapper<Units>       operator*(const Units d, const SBDTypePhysicalIntervalWrapper<Units>& u) {
+
+	if (d.getValue() >= 0) return SBDTypePhysicalIntervalWrapper<Units>(d * u.i[0], d * u.i[1]);
+	return SBDTypePhysicalIntervalWrapper<Units>(d * u.i[1], d * u.i[0]);
 
 }
 

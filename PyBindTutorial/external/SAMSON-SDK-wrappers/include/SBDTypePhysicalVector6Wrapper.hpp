@@ -127,7 +127,7 @@ public:
 
     /// \brief Returns a dimensionless spatial vector whose components are equal to those of this spatial vector
 
-    std::vector<double>         getValue() const {
+	std::vector<double>											getValue() const {
 
 		std::vector<double> ret = {angular.v[0].getValue(), angular.v[1].getValue(), angular.v[2].getValue(),
 								   linear.v[0].getValue(),  linear.v[1].getValue(),  linear.v[2].getValue()};
@@ -137,7 +137,7 @@ public:
 
     /*/// \brief Sets the components of this spatial vector equal to those of the vectors \p a and \p l
 
-    void                        setValue(const std::vector<double>& a, const std::vector<double>& l) {
+	void														setValue(const std::vector<double>& a, const std::vector<double>& l) {
 
         if (a.size() != 3 || l.size() != 3) throw std::runtime_error("The size of the input vectors should be 3");
 
@@ -152,7 +152,7 @@ public:
 
     /// \brief Sets the components of this spatial vector equal to those of the vector \p u
 
-    void                        setValue(const std::vector<double>& u) {
+	void														setValue(const std::vector<double>& u) {
 
         if (u.size() != 6) throw std::runtime_error("The size of the input vector should be 6");
 
@@ -168,7 +168,7 @@ public:
     /// \brief Returns the arbitraty SBPhysicalVector6
 
     template<typename QuantityA, typename QuantityL, typename System = SBUnitSystemSI>
-    SBPhysicalVector6<QuantityA, QuantityL> toSBPhysicalVector6 () const {
+	SBPhysicalVector6<QuantityA, QuantityL>						toSBPhysicalVector6 () const {
 
         return SBPhysicalVector6<QuantityA, QuantityL>(
                     getSBQuantity<QuantityA>(angular.v[0]), getSBQuantity<QuantityA>(angular.v[1]), getSBQuantity<QuantityA>(angular.v[2]),
@@ -178,7 +178,7 @@ public:
 
     /// \brief Returns the i-th component of the vector
 
-    Units                       getComponent(const unsigned int i) const {
+	Units														getComponent(const unsigned int i) const {
 
         if (i >= 6) throw std::runtime_error("Index is out of range");
 
@@ -187,6 +187,14 @@ public:
 
     }
 
+	/// \brief Returns true if the spatial vector is dimensionless
+
+	bool														isDimensionless() const {
+
+		return angular.isDimensionless() && linear.isDimensionless();
+
+	}
+
     //@}
 
     /// \name Operators
@@ -194,7 +202,7 @@ public:
 
     /// \brief Returns the dot product of this spatial vector with spatial vector \p u
 
-	Units               operator|(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	Units														operator|(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         return (angular | u.angular) + (linear | u.linear);
 
@@ -202,7 +210,7 @@ public:
 
     /// \brief Returns the cross product of this spatial vector with spatial vector \p u
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator^(const SBDTypePhysicalVector6Wrapper<Units> force) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator^(const SBDTypePhysicalVector6Wrapper<Units> force) const {
 
         Units R0(angular.v[1] * force.angular.v[2] - angular.v[2] * force.angular.v[1] + linear.v[1] * force.linear.v[2] - linear.v[2] * force.linear.v[1]);
         Units R1(angular.v[2] * force.angular.v[0] - angular.v[0] * force.angular.v[2] + linear.v[2] * force.linear.v[0] - linear.v[0] * force.linear.v[2]);
@@ -217,7 +225,7 @@ public:
 
     /// \brief Returns the sum of this spatial vector with spatial vector \p u
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator+(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator+(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             angular.v[0] + u.angular.v[0], angular.v[1] + u.angular.v[1], angular.v[2] + u.angular.v[2],
@@ -228,7 +236,7 @@ public:
 
     /// \brief Returns the difference of this spatial vector with spatial vector \p u
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator-(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator-(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             angular.v[0] - u.angular.v[0], angular.v[1] - u.angular.v[1], angular.v[2] - u.angular.v[2],
@@ -237,52 +245,54 @@ public:
 
     }
 
+	/// \brief Returns the product of this spatial vector with double \p d
+
+	SBDTypePhysicalVector6Wrapper<Units>						operator*(const double d) const {
+
+		return SBDTypePhysicalVector6Wrapper<Units> (
+					d * angular.v[0], d * angular.v[1], d * angular.v[2],
+					d * linear.v[0],  d * linear.v[1],  d * linear.v[2]
+				);
+
+	}
+
+	/// \brief Multiplies this spatial vector with double \p d
+
+	SBDTypePhysicalVector6Wrapper<Units>&						operator*=(const double d) {
+
+		angular.v[0] *= d;
+		angular.v[1] *= d;
+		angular.v[2] *= d;
+		linear.v[0]  *= d;
+		linear.v[1]  *= d;
+		linear.v[2]  *= d;
+		return *this;
+
+	}
+
     /// \brief Returns the product of this spatial vector with physical quantity \p d
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator*(const Units d) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator*(const Units d) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units> (
-                    d*angular.v[0], d*angular.v[1], d*angular.v[2],
-                    d*linear.v[0], d*linear.v[1], d*linear.v[2]
+					d * angular.v[0], d * angular.v[1], d * angular.v[2],
+					d * linear.v[0],  d * linear.v[1],  d * linear.v[2]
                 );
 
-    }
-
-    /// \brief Returns the product of this spatial vector with double \p d
-
-	SBDTypePhysicalVector6Wrapper<Units>               operator*(const double d) const {
-
-		return SBDTypePhysicalVector6Wrapper<Units> (
-                    d*angular.v[0], d*angular.v[1], d*angular.v[2],
-                    d*linear.v[0], d*linear.v[1], d*linear.v[2]
-                );
-
-    }
-
-    /// \brief Multiplies this spatial vector with double \p d
-
-	SBDTypePhysicalVector6Wrapper<Units>&				operator*=(const double d) {
-
-        angular.v[0] *= d;
-        angular.v[1] *= d;
-        angular.v[2] *= d;
-        linear.v[0] *= d;
-        linear.v[1] *= d;
-        linear.v[2] *= d;
-        return *this;
-
-    }
+	}
 
     /// \brief Multiplies this dimensionless spatial vector with physical quantity \p d
 
-	SBDTypePhysicalVector6Wrapper<Units>&				operator*=(const Units& d) {
+	SBDTypePhysicalVector6Wrapper<Units>&						operator*=(const Units& d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
 
         angular.v[0] *= d;
         angular.v[1] *= d;
         angular.v[2] *= d;
-        linear.v[0] *= d;
-        linear.v[1] *= d;
-        linear.v[2] *= d;
+		linear.v[0]  *= d;
+		linear.v[1]  *= d;
+		linear.v[2]  *= d;
         return *this;
 
     }
@@ -292,68 +302,70 @@ public:
     /// This operator returns the component-wise product of this spatial vector with spatial vector \p u, <em>i.e.</em>
     /// a spatial vector in which each component is the product of the corresponding components in this spatial vector and spatial vector \p u.
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator*(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator*(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
 		return 	SBDTypePhysicalVector6Wrapper<Units> (
                     angular.v[0] * u.angular.v[0], angular.v[1] * u.angular.v[1], angular.v[2] * u.angular.v[2],
-                    linear.v[0] * u.linear.v[0], linear.v[1] * u.linear.v[1], linear.v[2] * u.linear.v[2]
+					linear.v[0]  * u.linear.v[0],  linear.v[1]  * u.linear.v[1],  linear.v[2]  * u.linear.v[2]
                 );
 
     }
 
     /// \brief Returns the division of this spatial vector by physical quantity \p d
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator/(const Units d) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator/(const Units d) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units> (
-                    angular.v[0]/d, angular.v[1]/d, angular.v[2]/d,
-                    linear.v[0]/d, linear.v[1]/d, linear.v[2]/d
+					angular.v[0] / d, angular.v[1] / d, angular.v[2] / d,
+					linear.v[0]  / d, linear.v[1]  / d, linear.v[2]  / d
                 );
 
     }
 
     /// \brief Returns the division of this spatial vector by double \p d
 
-	SBDTypePhysicalVector6Wrapper<Units>               operator/(const double d) const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator/(const double d) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units> (
                     angular.v[0] / d, angular.v[1] / d, angular.v[2] / d,
-                    linear.v[0] / d, linear.v[1] / d, linear.v[2] / d
+					linear.v[0]  / d, linear.v[1]  / d, linear.v[2]  / d
                 );
 
     }
 
+	/// \brief Divides this spatial vector by double \p d
+
+	SBDTypePhysicalVector6Wrapper<Units>&						operator/=(const double d) {
+
+		angular.v[0] /= d;
+		angular.v[1] /= d;
+		angular.v[2] /= d;
+		linear.v[0]  /= d;
+		linear.v[1]  /= d;
+		linear.v[2]  /= d;
+		return *this;
+
+	}
+
     /// \brief Divides this spatial vector by physical quantity \p d
 
-	SBDTypePhysicalVector6Wrapper<Units>&				operator/=(const Units d) {
+	SBDTypePhysicalVector6Wrapper<Units>&						operator/=(const Units d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
 
         angular.v[0] /= d;
         angular.v[1] /= d;
         angular.v[2] /= d;
-        linear.v[0] /= d;
-        linear.v[1] /= d;
-        linear.v[2] /= d;
+		linear.v[0]  /= d;
+		linear.v[1]  /= d;
+		linear.v[2]  /= d;
         return *this;
 
-    }
-
-    /// \brief Divides this spatial vector by double \p d
-
-	SBDTypePhysicalVector6Wrapper<Units>&				operator/=(const double d) {
-
-        angular.v[0] /= d;
-        angular.v[1] /= d;
-        angular.v[2] /= d;
-        linear.v[0] /= d;
-        linear.v[1] /= d;
-        linear.v[2] /= d;
-        return *this;
-
-    }
+	}
 
     /// \brief Returns the opposite of this spatial vector
 
-	SBDTypePhysicalVector6Wrapper<Units>				operator-() const {
+	SBDTypePhysicalVector6Wrapper<Units>						operator-() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(-angular.v[0], -angular.v[1], -angular.v[2], -linear.v[0], -linear.v[1], -linear.v[2]);
 
@@ -361,96 +373,96 @@ public:
 
     /// \brief Adds spatial vector \p u to this spatial vector
 
-	SBDTypePhysicalVector6Wrapper<Units>&				operator+=(const SBDTypePhysicalVector6Wrapper<Units>& u) {
+	SBDTypePhysicalVector6Wrapper<Units>&						operator+=(const SBDTypePhysicalVector6Wrapper<Units>& u) {
 
         angular.v[0] += u.angular.v[0]; angular.v[1] += u.angular.v[1]; angular.v[2] += u.angular.v[2];
-        linear.v[0] += u.linear.v[0]; linear.v[1] += u.linear.v[1]; linear.v[2] += u.linear.v[2];
+		linear.v[0]  += u.linear.v[0];  linear.v[1]  += u.linear.v[1];  linear.v[2]  += u.linear.v[2];
         return *this;
 
     }
 
     /// \brief Subtracts spatial vector \p u from this spatial vector
 
-	SBDTypePhysicalVector6Wrapper<Units>&				operator-=(const SBDTypePhysicalVector6Wrapper<Units>& u) {
+	SBDTypePhysicalVector6Wrapper<Units>&						operator-=(const SBDTypePhysicalVector6Wrapper<Units>& u) {
 
         angular.v[0] -= u.angular.v[0]; angular.v[1] -= u.angular.v[1]; angular.v[2] -= u.angular.v[2];
-        linear.v[0] -= u.linear.v[0]; linear.v[1] -= u.linear.v[1]; linear.v[2] -= u.linear.v[2];
+		linear.v[0]  -= u.linear.v[0];  linear.v[1]  -= u.linear.v[1];  linear.v[2]  -= u.linear.v[2];
         return *this;
 
     }
 
     /// \brief Returns true if this spatial vector is equal to spatial vector \p u (component-wise)
 
-	bool	operator==(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	bool														operator==(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         return
             (angular.v[0] == u.angular.v[0]) && (angular.v[1] == u.angular.v[1]) && (angular.v[2] == u.angular.v[2]) &&
-            (linear.v[0] == u.linear.v[0]) && (linear.v[1] == u.linear.v[1]) && (linear.v[2] == u.linear.v[2]);
+			(linear.v[0]  == u.linear.v[0])  && (linear.v[1]  == u.linear.v[1])  && (linear.v[2]  == u.linear.v[2]);
 
     }
 
     /// \brief Returns true if this spatial vector is different from spatial vector \p u (component-wise)
 
-	bool	operator!=(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	bool														operator!=(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         return
             (angular.v[0] != u.angular.v[0]) || (angular.v[1] != u.angular.v[1]) || (angular.v[2] != u.angular.v[2]) ||
-            (linear.v[0] != u.linear.v[0]) || (linear.v[1] != u.linear.v[1]) || (linear.v[2] != u.linear.v[2]);
+			(linear.v[0]  != u.linear.v[0])  || (linear.v[1]  != u.linear.v[1])  || (linear.v[2] != u.linear.v[2]);
 
     }
 
     /// \brief Returns true if this spatial vector is smaller than spatial vector \p u (lexicographic comparison)
 
-	bool	operator<(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	bool														operator<(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         if (angular.v[0] >= u.angular.v[0]) return false;
         if (angular.v[1] >= u.angular.v[1]) return false;
         if (angular.v[2] >= u.angular.v[2]) return false;
-        if (linear.v[0] >= u.linear.v[0]) return false;
-        if (linear.v[1] >= u.linear.v[1]) return false;
-        if (linear.v[2] >= u.linear.v[2]) return false;
+		if (linear.v[0]  >= u.linear.v[0])  return false;
+		if (linear.v[1]  >= u.linear.v[1])  return false;
+		if (linear.v[2]  >= u.linear.v[2])  return false;
         return true;
 
     }
 
     /// \brief Returns true if this spatial vector is larger than spatial vector \p u (lexicographic comparison)
 
-	bool	operator>(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	bool														operator>(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         if (angular.v[0] <= u.angular.v[0]) return false;
         if (angular.v[1] <= u.angular.v[1]) return false;
         if (angular.v[2] <= u.angular.v[2]) return false;
-        if (linear.v[0] <= u.linear.v[0]) return false;
-        if (linear.v[1] <= u.linear.v[1]) return false;
-        if (linear.v[2] <= u.linear.v[2]) return false;
+		if (linear.v[0]  <= u.linear.v[0])  return false;
+		if (linear.v[1]  <= u.linear.v[1])  return false;
+		if (linear.v[2]  <= u.linear.v[2])  return false;
         return true;
 
     }
 
     /// \brief Returns true if this spatial vector is smaller or equal than spatial vector \p u (lexicographic comparison)
 
-	bool	operator<=(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	bool														operator<=(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         if (angular.v[0] > u.angular.v[0]) return false;
         if (angular.v[1] > u.angular.v[1]) return false;
         if (angular.v[2] > u.angular.v[2]) return false;
-        if (linear.v[0] > u.linear.v[0]) return false;
-        if (linear.v[1] > u.linear.v[1]) return false;
-        if (linear.v[2] > u.linear.v[2]) return false;
+		if (linear.v[0]  > u.linear.v[0])  return false;
+		if (linear.v[1]  > u.linear.v[1])  return false;
+		if (linear.v[2]  > u.linear.v[2])  return false;
         return true;
 
     }
 
     /// \brief Returns true if this spatial vector is larger or equal than spatial vector \p u (lexicographic comparison)
 
-	bool	operator>=(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
+	bool														operator>=(const SBDTypePhysicalVector6Wrapper<Units>& u) const {
 
         if (angular.v[0] < u.angular.v[0]) return false;
         if (angular.v[1] < u.angular.v[1]) return false;
         if (angular.v[2] < u.angular.v[2]) return false;
-        if (linear.v[0] < u.linear.v[0]) return false;
-        if (linear.v[1] < u.linear.v[1]) return false;
-        if (linear.v[2] < u.linear.v[2]) return false;
+		if (linear.v[0]  < u.linear.v[0])  return false;
+		if (linear.v[1]  < u.linear.v[1])  return false;
+		if (linear.v[2]  < u.linear.v[2])  return false;
         return true;
 
     }
@@ -480,7 +492,7 @@ public:
     /// This function returns the cross product of this spatial vector with spatial vector \p u. As with the cross product operator, this function is only useful when this
     /// spatial vector is a motion and \p force is a force.
 
-	SBDTypePhysicalVector6Wrapper<Units>    motionCrossForce(const SBDTypePhysicalVector6Wrapper<Units>& force) const {
+	SBDTypePhysicalVector6Wrapper<Units>						motionCrossForce(const SBDTypePhysicalVector6Wrapper<Units>& force) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units> (
             angular.v[1] * force.angular.v[2] - angular.v[2] * force.angular.v[1] + linear.v[1] * force.linear.v[2] - linear.v[2] * force.linear.v[1],
@@ -499,7 +511,7 @@ public:
 
     /// \brief Returns the string representation of the spatial vector (with a full unit name when fullName is true)
 
-    std::string                                         toStdString(bool fullName = false) const {
+	std::string													toStdString(bool fullName = false) const {
 
         std::string ret = "(" + angular.v[0].toStdString(fullName) + ", " +
                                 angular.v[1].toStdString(fullName) + ", " +
@@ -516,27 +528,27 @@ public:
 
 public:
 
-    SBDTypePhysicalVector3Wrapper<Units>               angular;																///< The part of the spatial vector
-	SBDTypePhysicalVector3Wrapper<Units>               linear;																///< The part of the spatial vector
+	SBDTypePhysicalVector3Wrapper<Units>						angular;																///< The part of the spatial vector
+	SBDTypePhysicalVector3Wrapper<Units>						linear;																///< The part of the spatial vector
 
 };
 
 /// \name Common types and shortnames
 //@{
 
-#define		SBPhysicalVector6Wrapper		SBDTypePhysicalVector6Wrapper
+#define		SBPhysicalVector6Wrapper												SBDTypePhysicalVector6Wrapper
 
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperSI>                   SBDTypePhysicalVector6WrapperSI;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperAU>                   SBDTypePhysicalVector6WrapperAU;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperDalton>               SBDTypePhysicalVector6WrapperDalton;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperElectronvolt>         SBDTypePhysicalVector6WrapperElectronvolt;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperKilocaloriePerMole>   SBDTypePhysicalVector6WrapperKilocaloriePerMole;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperSI>						SBDTypePhysicalVector6WrapperSI;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperAU>						SBDTypePhysicalVector6WrapperAU;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperDalton>					SBDTypePhysicalVector6WrapperDalton;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperElectronvolt>			SBDTypePhysicalVector6WrapperElectronvolt;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperKilocaloriePerMole>		SBDTypePhysicalVector6WrapperKilocaloriePerMole;
 
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperSI>                   SBPhysicalVector6WrapperSI;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperAU>                   SBPhysicalVector6WrapperAU;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperDalton>               SBPhysicalVector6WrapperDalton;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperElectronvolt>         SBPhysicalVector6WrapperElectronvolt;
-typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperKilocaloriePerMole>   SBPhysicalVector6WrapperKilocaloriePerMole;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperSI>						SBPhysicalVector6WrapperSI;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperAU>						SBPhysicalVector6WrapperAU;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperDalton>					SBPhysicalVector6WrapperDalton;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperElectronvolt>			SBPhysicalVector6WrapperElectronvolt;
+typedef     SBDTypePhysicalVector6Wrapper<SBDQuantityWrapperKilocaloriePerMole>		SBPhysicalVector6WrapperKilocaloriePerMole;
 
 //@}
 
@@ -563,8 +575,8 @@ template<typename Units>
 SBDTypePhysicalVector6Wrapper<Units>   operator*(const Units& d, const SBDTypePhysicalVector6Wrapper<Units>& u) {
 
 	return SBDTypePhysicalVector6Wrapper<Units> (
-                d*u.angular.v[0], d*u.angular.v[1], d*u.angular.v[2],
-				d*u.linear.v[0],  d*u.linear.v[1],  d*u.linear.v[2]
+				d * u.angular.v[0], d * u.angular.v[1], d * u.angular.v[2],
+				d * u.linear.v[0],  d * u.linear.v[1],  d * u.linear.v[2]
             );
 
 }
@@ -574,10 +586,10 @@ SBDTypePhysicalVector6Wrapper<Units>   operator*(const Units& d, const SBDTypePh
 template<typename Units>
 SBDTypePhysicalVector6Wrapper<Units>   operator*(const double d, const SBDTypePhysicalVector6Wrapper<Units>& u) {
 
-		return SBDTypePhysicalVector6Wrapper<Units> (
-                    d*u.angular.v[0], d*u.angular.v[1], d*u.angular.v[2],
-					d*u.linear.v[0],  d*u.linear.v[1],  d*u.linear.v[2]
-                );
+	return SBDTypePhysicalVector6Wrapper<Units> (
+				d * u.angular.v[0], d * u.angular.v[1], d * u.angular.v[2],
+				d * u.linear.v[0],  d * u.linear.v[1],  d * u.linear.v[2]
+			);
 
 }
 

@@ -89,7 +89,7 @@ public:
 
 	/// \brief Returns the arbitraty SBSpatialTransform
 
-	SBSpatialTransform toSBSpatialTransform () const {
+	SBSpatialTransform										toSBSpatialTransform () const {
 
 		return SBSpatialTransform(
 					orientation.template toSBPhysicalMatrix33<SBQuantity::dimensionless>(),
@@ -100,7 +100,7 @@ public:
 
 	/// \brief Returns the first column of the orientation matrix
 
-	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>	getE1() const {
+	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>			getE1() const {
 
 		return SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>(orientation.m[0][0], orientation.m[1][0], orientation.m[2][0]);
 
@@ -108,7 +108,7 @@ public:
 
 	/// \brief Returns the second column of the orientation matrix
 
-	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>	getE2() const {
+	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>			getE2() const {
 
 		return SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>(orientation.m[0][1], orientation.m[1][1], orientation.m[2][1]);
 
@@ -116,7 +116,7 @@ public:
 
 	/// \brief Returns the third column of the orientation matrix
 
-	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>	getE3() const {
+	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>			getE3() const {
 
 		return SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>(orientation.m[0][2], orientation.m[1][2], orientation.m[2][2]);
 
@@ -124,7 +124,7 @@ public:
 
 	/// \brief Returns the position vector
 
-	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>	getE4() const {
+	SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>			getE4() const {
 
 		return SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>(position.v[0], position.v[1], position.v[2]);
 
@@ -132,7 +132,7 @@ public:
 
 	/// \brief Sets the first column of the orientation matrix to \p vec
 
-	void	setE1(const SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>& vec) {
+	void													setE1(const SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>& vec) {
 
 		if (vec.v[0].getExponent() != orientationExponent)
 			throw std::runtime_error("Cannot set the first column of the orientation matrix for transform: types mismatch - input vector should be dimensionless");
@@ -145,7 +145,7 @@ public:
 
 	/// \brief Sets the second column of the orientation matrix to \p vec
 
-	void	setE2(const SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>& vec) {
+	void													setE2(const SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>& vec) {
 
 		if (vec.v[0].getExponent() != orientationExponent)
 			throw std::runtime_error("Cannot set the second column of the orientation matrix for transform: types mismatch - input vector should be dimensionless");
@@ -158,7 +158,7 @@ public:
 
 	/// \brief Sets the third column of the orientation matrix to \p vec
 
-	void	setE3(const SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>& vec) {
+	void													setE3(const SBPhysicalVector3Wrapper<SBDQuantityWrapperSI>& vec) {
 
 		if (vec.v[0].getExponent() != orientationExponent)
 			throw std::runtime_error("Cannot set the third column of the orientation matrix for transform: types mismatch - input vector should be dimensionless");
@@ -171,7 +171,7 @@ public:
 
 	/// \brief Sets the position vector to \p vec
 
-	void	setE4(const SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperSI> &vec) {
+	void													setE4(const SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperSI> &vec) {
 
 		if (vec.v[0].getExponent() != positionExponent)
 			throw std::runtime_error("Cannot set the position of the spatial transform: types mismatch - input vector should of type position3");
@@ -190,7 +190,7 @@ public:
 
 	/// \brief Returns the position of the spatial transform
 
-	SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperSI>	getPosition() const {
+	SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperSI>		getPosition() const {
 
 		return position;
 
@@ -198,7 +198,7 @@ public:
 
 	/// \brief Sets the orientation of the spatial transform to \p om
 
-	void	setOrientation(const SBDTypePhysicalMatrix33Wrapper<SBDQuantityWrapperSI> &om) {
+	void													setOrientation(const SBDTypePhysicalMatrix33Wrapper<SBDQuantityWrapperSI> &om) {
 
 		if (om.m[0][0].getExponent() != orientationExponent)
 			throw std::runtime_error("Cannot set the orientation of the spatial transform: types mismatch - input matrix should be dimensionless");
@@ -209,7 +209,7 @@ public:
 
 	/// \brief Sets the position of the spatial transform to \p pos
 
-	void	setPosition(const SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperSI> &pos) {
+	void													setPosition(const SBDTypePhysicalVector3Wrapper<SBDQuantityWrapperSI> &pos) {
 
 		if (pos.v[0].getExponent() != positionExponent)
 			throw std::runtime_error("Cannot set the position of the spatial transform: types mismatch - input vector should be of type position3");
@@ -227,7 +227,7 @@ public:
 	///
 	/// \param p - position
 
-	SBDTypePhysicalVector3WrapperSI  operator*(const SBDTypePhysicalVector3WrapperSI &p) const {
+	SBDTypePhysicalVector3WrapperSI							operator*(const SBDTypePhysicalVector3WrapperSI &p) const {
 
 		if (p.v[0].getExponent() != positionExponent)
 			throw std::runtime_error("Cannot multiply transform by this vector: types mismatch. The vector should be of position3 type");
@@ -241,7 +241,7 @@ public:
 	///
 	/// \param sv - spatial vector (vector6 type: velocity6, acceleration6 or force6)
 
-	SBDTypePhysicalVector6WrapperSI  operator*(const SBDTypePhysicalVector6WrapperSI &sv) const {
+	SBDTypePhysicalVector6WrapperSI							operator*(const SBDTypePhysicalVector6WrapperSI &sv) const {
 
 		if (sv.angular[0].getExponent() == QuantityScaleExponent<SBQuantity::inverseTime>::exponent &&
 			sv.linear[0].getExponent()  == QuantityScaleExponent<SBQuantity::velocity>::exponent) {
@@ -277,7 +277,7 @@ public:
 	///
 	/// \param st - spatial transform
 
-	SBDTypeSpatialTransformWrapper  operator*(const SBDTypeSpatialTransformWrapper &st) const {
+	SBDTypeSpatialTransformWrapper							operator*(const SBDTypeSpatialTransformWrapper &st) const {
 
 		return SBDTypeSpatialTransformWrapper(toSBSpatialTransform() * st.toSBSpatialTransform());
 
@@ -285,7 +285,7 @@ public:
 
 	/// \brief Returns true if and only if this transform is equal to \p transform
 
-	bool	operator==(const SBDTypeSpatialTransformWrapper& transform) const {
+	bool													operator==(const SBDTypeSpatialTransformWrapper& transform) const {
 
 		return orientation == transform.orientation && position == transform.position;
 
@@ -298,7 +298,7 @@ public:
 
 	/// \brief Sets this transform to identity
 
-	void setIdentity() {
+	void													setIdentity() {
 
 		orientation.setIdentity();
 		position.setZero();
@@ -307,7 +307,7 @@ public:
 
 	/// \brief Returns the inverse of this transform
 
-	SBDTypeSpatialTransformWrapper	inverse() {
+	SBDTypeSpatialTransformWrapper							inverse() {
 
 		return SBDTypeSpatialTransformWrapper(toSBSpatialTransform().inverse());
 
@@ -317,7 +317,7 @@ public:
 	///
 	/// \param leftMember - spatial transform
 
-	SBDTypeSpatialTransformWrapper  rightMultiply3D(const SBDTypeSpatialTransformWrapper &leftMember) const {
+	SBDTypeSpatialTransformWrapper							rightMultiply3D(const SBDTypeSpatialTransformWrapper &leftMember) const {
 
 		SBDTypeSpatialTransform result;
 		toSBSpatialTransform().rightMultiply3D(leftMember.toSBSpatialTransform(), result);
@@ -329,7 +329,7 @@ public:
 	///
 	/// \param leftMember - spatial transform
 
-	SBDTypeSpatialTransformWrapper  rightMultiplyInverse3D(const SBDTypeSpatialTransformWrapper &leftMember) const {
+	SBDTypeSpatialTransformWrapper							rightMultiplyInverse3D(const SBDTypeSpatialTransformWrapper &leftMember) const {
 
 		SBDTypeSpatialTransform result;
 		toSBSpatialTransform().rightMultiplyInverse3D(leftMember.toSBSpatialTransform(), result);
@@ -346,7 +346,7 @@ public:
 	///
 	/// \param p - position of the point (position3 type)
 
-	SBDTypePhysicalVector3WrapperSI  transformPoint(const SBDTypePhysicalVector3WrapperSI &p) const {
+	SBDTypePhysicalVector3WrapperSI							transformPoint(const SBDTypePhysicalVector3WrapperSI &p) const {
 
 		if (p.v[0].getExponent() != positionExponent)
 			throw std::runtime_error("Cannot multiply transform by this vector: types mismatch. The vector should be of position3 type");
@@ -361,7 +361,7 @@ public:
 	///
 	/// \param sv - spatial velocity (velocity6 type)
 
-	SBDTypePhysicalVector6WrapperSI  transformVelocity(const SBDTypePhysicalVector6WrapperSI &sv) const {
+	SBDTypePhysicalVector6WrapperSI							transformVelocity(const SBDTypePhysicalVector6WrapperSI &sv) const {
 
 		if (sv.angular[0].getExponent() != QuantityScaleExponent<SBQuantity::inverseTime>::exponent ||
 			sv.linear[0].getExponent()  != QuantityScaleExponent<SBQuantity::velocity>::exponent)
@@ -377,7 +377,7 @@ public:
 	///
 	/// \param sa - spatial acceleration (acceleration6 type)
 
-	SBDTypePhysicalVector6WrapperSI  transformAcceleration(const SBDTypePhysicalVector6WrapperSI &sa) const {
+	SBDTypePhysicalVector6WrapperSI							transformAcceleration(const SBDTypePhysicalVector6WrapperSI &sa) const {
 
 		if (sa.angular[0].getExponent() != QuantityScaleExponent<SBQuantity::inverseSquareTime>::exponent ||
 			sa.linear[0].getExponent()  != QuantityScaleExponent<SBQuantity::acceleration>::exponent)
@@ -393,7 +393,7 @@ public:
 	///
 	/// \param sf - spatial force (force6 type)
 
-	SBDTypePhysicalVector6WrapperSI  transformForce(const SBDTypePhysicalVector6WrapperSI &sf) const {
+	SBDTypePhysicalVector6WrapperSI							transformForce(const SBDTypePhysicalVector6WrapperSI &sf) const {
 
 		if (sf.angular[0].getExponent() != QuantityScaleExponent<SBQuantity::energy>::exponent ||
 			sf.linear[0].getExponent()  != QuantityScaleExponent<SBQuantity::force>::exponent)
@@ -409,7 +409,7 @@ public:
 	///
 	/// \param sv - spatial velocity (velocity6 type)
 
-	SBDTypePhysicalVector6WrapperSI  inverseTransformVelocity(const SBDTypePhysicalVector6WrapperSI &sv) const {
+	SBDTypePhysicalVector6WrapperSI							inverseTransformVelocity(const SBDTypePhysicalVector6WrapperSI &sv) const {
 
 		if (sv.angular[0].getExponent() != QuantityScaleExponent<SBQuantity::inverseTime>::exponent ||
 			sv.linear[0].getExponent()  != QuantityScaleExponent<SBQuantity::velocity>::exponent)
@@ -425,7 +425,7 @@ public:
 	///
 	/// \param sa - spatial acceleration (acceleration6 type)
 
-	SBDTypePhysicalVector6WrapperSI  inverseTransformAcceleration(const SBDTypePhysicalVector6WrapperSI &sa) const {
+	SBDTypePhysicalVector6WrapperSI							inverseTransformAcceleration(const SBDTypePhysicalVector6WrapperSI &sa) const {
 
 		if (sa.angular[0].getExponent() != QuantityScaleExponent<SBQuantity::inverseSquareTime>::exponent ||
 			sa.linear[0].getExponent()  != QuantityScaleExponent<SBQuantity::acceleration>::exponent)
@@ -441,7 +441,7 @@ public:
 	///
 	/// \param phi - inverse inertia (inverseInertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInverseInertia(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInverseInertia(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
 
 		if (phi.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseMomentOfInertia>::exponent ||
 			phi.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseLengthInverseMass>::exponent ||
@@ -461,7 +461,7 @@ public:
 	///
 	/// \param phi - inverse inertia (inverseInertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInverseInertiaLeft(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInverseInertiaLeft(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
 
 		if (phi.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseMomentOfInertia>::exponent ||
 			phi.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseLengthInverseMass>::exponent ||
@@ -481,7 +481,7 @@ public:
 	///
 	/// \param phi - inverse inertia (inverseInertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInverseInertiaRight(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInverseInertiaRight(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
 
 		if (phi.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseMomentOfInertia>::exponent ||
 			phi.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseLengthInverseMass>::exponent ||
@@ -501,7 +501,7 @@ public:
 	///
 	/// \param phi - inverse inertia (inverseInertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInverseInertiaTransposeRight(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInverseInertiaTransposeRight(const SBDTypePhysicalMatrix66WrapperSI &phi) const {
 
 		if (phi.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseMomentOfInertia>::exponent ||
 			phi.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::inverseLengthInverseMass>::exponent ||
@@ -521,7 +521,7 @@ public:
 	///
 	/// \param I - inertia (inertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInertia(const SBDTypePhysicalMatrix66WrapperSI &I) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInertia(const SBDTypePhysicalMatrix66WrapperSI &I) const {
 
 		if (I.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::momentOfInertia>::exponent ||
 			I.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::lengthMass>::exponent ||
@@ -541,7 +541,7 @@ public:
 	///
 	/// \param I - inertia (inertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInertiaLeft(const SBDTypePhysicalMatrix66WrapperSI &I) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInertiaLeft(const SBDTypePhysicalMatrix66WrapperSI &I) const {
 
 		if (I.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::momentOfInertia>::exponent ||
 			I.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::lengthMass>::exponent ||
@@ -561,7 +561,7 @@ public:
 	///
 	/// \param I - inertia (inertia66 type)
 
-	SBDTypePhysicalMatrix66WrapperSI  transformInertiaRight(const SBDTypePhysicalMatrix66WrapperSI &I) const {
+	SBDTypePhysicalMatrix66WrapperSI						transformInertiaRight(const SBDTypePhysicalMatrix66WrapperSI &I) const {
 
 		if (I.m00.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::momentOfInertia>::exponent ||
 			I.m01.m[0][0].getExponent() != QuantityScaleExponent<SBQuantity::lengthMass>::exponent ||
@@ -584,7 +584,7 @@ public:
 
 	/// \brief Returns the string representation of the spatial transform (with a full unit name when fullName is true)
 
-	std::string                                         toStdString(bool fullName = false) const {
+	std::string												toStdString(bool fullName = false) const {
 
 		std::string ret =
 				"orientation\n" + orientation.toStdString(fullName) +
@@ -595,6 +595,27 @@ public:
 	}
 
     //@}
+
+	/// \name The zero and identity spatial transform
+	//@{
+
+	/// \brief Returns the zero spatial transform
+
+	static SBDTypeSpatialTransformWrapper					getZero() {
+
+		return SBDTypeSpatialTransformWrapper(SBSpatialTransform::zero);
+
+	}
+
+	/// \brief Returns the identity spatial transform
+
+	static SBDTypeSpatialTransformWrapper					getIdentity() {
+
+		return SBDTypeSpatialTransformWrapper(SBSpatialTransform::identity);
+
+	}
+
+	//@}
 
 public:
 
@@ -616,7 +637,7 @@ private:
 /// \name Shortnames
 //@{
 
-typedef SBDTypeSpatialTransformWrapper									SBSpatialTransformWrapper;				///< The short name of SBDTypeSpatialTransformWrapper
+typedef SBDTypeSpatialTransformWrapper						SBSpatialTransformWrapper;				///< The short name of SBDTypeSpatialTransformWrapper
 
 //@}
 
@@ -627,7 +648,7 @@ typedef SBDTypeSpatialTransformWrapper									SBSpatialTransformWrapper;				///
 /// \brief Returns the product of double \p d and spatial matrix \p u
 
 template<typename Units>
-SBDTypeSpatialTransformWrapper<Units>       operator*(const double d, const SBDTypeSpatialTranformWrapperForPython<Units>& u) {
+SBDTypeSpatialTransformWrapper<Units>						operator*(const double d, const SBDTypeSpatialTranformWrapperForPython<Units>& u) {
 
 	return SBDTypeSpatialTransformWrapper<Units>(u.m00 * d, u.m01 * d, u.m10 * d, u.m11 * d);
 

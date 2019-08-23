@@ -81,7 +81,7 @@ public:
 
     /// \brief Returns the first column of the spatial matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>				getE1() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getE1() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             m00.m[0][0],
@@ -96,7 +96,7 @@ public:
 
     /// \brief Returns the second column of the spatial matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>				getE2() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getE2() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             m00.m[0][1],
@@ -111,7 +111,7 @@ public:
 
     /// \brief Returns the third column of the spatial matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>				getE3() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getE3() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             m00.m[0][2],
@@ -126,7 +126,7 @@ public:
 
     /// \brief Returns the fourth column of the spatial matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>				getE4() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getE4() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             m01.m[0][0],
@@ -141,7 +141,7 @@ public:
 
     /// \brief Returns the fifth column of the spatial matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>				getE5() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getE5() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             m01.m[0][1],
@@ -156,7 +156,7 @@ public:
 
     /// \brief Returns the sixth column of the spatial matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>				getE6() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getE6() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
             m01.m[0][2],
@@ -171,7 +171,7 @@ public:
 
     /// \brief Returns the first row of this spatial physical matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>									getRow1() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getRow1() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
                     m00.m[0][0],
@@ -186,7 +186,7 @@ public:
 
     /// \brief Returns the second row of this spatial physical matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>									getRow2() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getRow2() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
                     m00.m[1][0],
@@ -201,7 +201,7 @@ public:
 
     /// \brief Returns the third row of this spatial physical matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>									getRow3() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getRow3() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
                     m00.m[2][0],
@@ -216,7 +216,7 @@ public:
 
     /// \brief Returns the fourth row of this spatial physical matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>									getRow4() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getRow4() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
                     m10.m[0][0],
@@ -231,7 +231,7 @@ public:
 
     /// \brief Returns the fifth row of this spatial physical matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>									getRow5() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getRow5() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
                     m10.m[1][0],
@@ -246,7 +246,7 @@ public:
 
     /// \brief Returns the sixth row of this spatial physical matrix
 
-	SBDTypePhysicalVector6Wrapper<Units>									getRow6() const {
+	SBDTypePhysicalVector6Wrapper<Units>							getRow6() const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
                     m10.m[2][0],
@@ -263,14 +263,14 @@ public:
 
 	SBPhysicalVector6Wrapper<Units>									getRow(const unsigned int r) const {
 
-        if (r > 6) throw std::runtime_error("Index out of range");
+		if (r >= 6) throw std::runtime_error("Index out of range");
 
         if (r == 0) return getRow1();
         if (r == 1) return getRow2();
         if (r == 2) return getRow3();
         if (r == 3) return getRow4();
         if (r == 4) return getRow5();
-        if (r == 5) return getRow6();
+		return getRow6();
 
     }
 
@@ -278,20 +278,20 @@ public:
 
 	SBPhysicalVector6Wrapper<Units>									getColumn(const unsigned int c) const {
 
-        if (c > 6) throw std::runtime_error("Index out of range");
+		if (c >= 6) throw std::runtime_error("Index out of range");
 
         if (c == 0) return getE1();
         if (c == 1) return getE2();
         if (c == 2) return getE3();
         if (c == 3) return getE4();
         if (c == 4) return getE5();
-        if (c == 5) return getE6();
+		return getE6();
 
     }
 
     /// \brief Returns a dimensionless physical matrix whose components are equal to those of this physical matrix
 
-    std::vector<std::vector<double>> getValue() const {
+	std::vector<std::vector<double>>								getValue() const {
 
         std::vector<std::vector<double>> ret = {{m00.m[0][0].getValue(), m00.m[0][1].getValue(), m00.m[0][2].getValue(), m01.m[0][0].getValue(), m01.m[0][1].getValue(), m01.m[0][2].getValue()},
                                                 {m00.m[1][0].getValue(), m00.m[1][1].getValue(), m00.m[1][2].getValue(), m01.m[1][0].getValue(), m01.m[1][1].getValue(), m01.m[1][2].getValue()},
@@ -306,7 +306,7 @@ public:
 
     /// \brief Sets the components of this physical matrix equal to those of the dimensionless physical matrix \p u
 
-    void														setValue(const std::vector<std::vector<double>>& u) {
+	void															setValue(const std::vector<std::vector<double>>& u) {
 
         if (u.size() != 6) throw std::runtime_error("The size of the input matrix should be 6x6");
         for (auto v: u)
@@ -326,13 +326,21 @@ public:
     template<typename Quantity00, typename Quantity01,
              typename Quantity10, typename Quantity11,
              typename System = SBUnitSystemSI>
-    SBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11> toSBPhysicalMatrix66 () const {
+	SBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11>	toSBPhysicalMatrix66 () const {
 
         return SBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11>(
                     m00.template toSBPhysicalMatrix33<Quantity00>(), m01.template toSBPhysicalMatrix33<Quantity01>(),
                     m10.template toSBPhysicalMatrix33<Quantity10>(), m11.template toSBPhysicalMatrix33<Quantity11>());
 
     }
+
+	/// \brief Returns true if the spatial matrix is dimensionless
+
+	bool																isDimensionless() const {
+
+		return m00.isDimensionless() && m01.isDimensionless() && m10.isDimensionless() && m11.isDimensionless();
+
+	}
 
     //@}
 
@@ -346,7 +354,7 @@ public:
     /// This function returns the sum of the spatial matrix with the \p mat spatial matrix. Both spatial matrices must
     /// have identical units.
 
-	SBDTypePhysicalMatrix66Wrapper<Units>  operator+(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) const {
+	SBDTypePhysicalMatrix66Wrapper<Units>								operator+(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) const {
 
 		return SBDTypePhysicalMatrix66Wrapper<Units>(m00 + mat.m00, m01 + mat.m01, m10 + mat.m10, m11 + mat.m11);
 
@@ -359,7 +367,7 @@ public:
     /// This function adds the \p mat spatial matrix to this spatial matrix. Both spatial matrices must
     /// have identical units.
 
-	SBDTypePhysicalMatrix66Wrapper<Units>&  operator+=(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) {
+	SBDTypePhysicalMatrix66Wrapper<Units>&								operator+=(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) {
 
         m00 += mat.m00;
         m01 += mat.m01;
@@ -376,7 +384,7 @@ public:
     /// This function returns the subtraction of the spatial matrix from the \p mat spatial matrix. Both spatial matrices must
     /// have identical units.
 
-	SBDTypePhysicalMatrix66Wrapper<Units>  operator-(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) const {
+	SBDTypePhysicalMatrix66Wrapper<Units>								operator-(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) const {
 
 		return SBDTypePhysicalMatrix66Wrapper<Units>(m00 - mat.m00, m01 - mat.m01, m10 - mat.m10, m11 - mat.m11);
 
@@ -389,7 +397,7 @@ public:
     /// This function subtracts the \p mat spatial matrix from this spatial matrix. Both spatial matrices must
     /// have identical units.
 
-	SBDTypePhysicalMatrix66Wrapper<Units>& operator-=(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) {
+	SBDTypePhysicalMatrix66Wrapper<Units>&								operator-=(const SBDTypePhysicalMatrix66Wrapper<Units>& mat) {
 
         m00 -= mat.m00;
         m01 -= mat.m01;
@@ -399,15 +407,37 @@ public:
 
     }
 
-    /// \brief Returns the opposite of the spatial matrix
-    ///
-    /// This function returns the opposite of the spatial matrix.
+	/// \brief Returns the opposite of the spatial matrix
 
-	SBDTypePhysicalMatrix66Wrapper<Units> operator-() const {
+	SBDTypePhysicalMatrix66Wrapper<Units>								operator-() const {
 
 		return SBDTypePhysicalMatrix66Wrapper<Units>(-m00, -m01, -m10, -m11);
 
     }
+
+	/// \brief Returns the product of this spatial matrix with the double \p d
+	///
+	/// \param d A double
+
+	SBDTypePhysicalMatrix66Wrapper<Units>								operator*(const double d) const {
+
+		return SBDTypePhysicalMatrix66Wrapper<Units>(m00 * d, m01 * d, m10 * d, m11 * d);
+
+	}
+
+	/// \brief Multiplies this spatial matrix with the double \p d
+	///
+	/// \param d A double
+
+	SBDTypePhysicalMatrix66Wrapper<Units>&								operator*=(const double d) {
+
+		m00 *= d;
+		m01 *= d;
+		m10 *= d;
+		m11 *= d;
+		return *this;
+
+	}
 
     /// \brief Returns the product of this spatial matrix with the spatial vector \p v
     ///
@@ -416,25 +446,40 @@ public:
     /// This function returns the product of this spatial matrix with the spatial vector \p v.
     /// \ref pageUnits "SAMSON's unit system" checks that the units in the spatial matrix and the spatial vector are compatible.
 
-	SBDTypePhysicalVector6Wrapper<Units>
-		operator*(const SBDTypePhysicalVector6Wrapper<Units>& v) const {
+	SBDTypePhysicalVector6Wrapper<Units>								operator*(const SBDTypePhysicalVector6Wrapper<Units>& v) const {
 
 		return SBDTypePhysicalVector6Wrapper<Units>(
-                m00*v.angular + m01*v.linear,
-                m10*v.angular + m11*v.linear
+				m00 * v.angular + m01 * v.linear,
+				m10 * v.angular + m11 * v.linear
                 );
 
-    }
+	}
 
-    /// \brief Returns the product of this spatial matrix with the double \p d
-    ///
-    /// \param d A double
-    ///
-    /// This function returns the product of this spatial matrix with the double \p d.
+	/// \brief Multiplies this spatial matrix with physical quantity \p d
 
-	SBDTypePhysicalMatrix66Wrapper<Units>  operator*(const double d) const {
+	SBDTypePhysicalMatrix66Wrapper<Units>&								operator*=(const Units& d) {
 
-		return SBDTypePhysicalMatrix66Wrapper<Units>(m00*d, m01*d, m10*d, m11*d);
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
+
+		m00 *= d;
+		m01 *= d;
+		m10 *= d;
+		m11 *= d;
+		return *this;
+
+	}
+
+	/// \brief Divides this spatial matrix by physical quantity \p d
+
+	SBDTypePhysicalMatrix66Wrapper<Units>&								operator/=(const Units& d) {
+
+		if (!isDimensionless() || !d.isDimensionless()) throw std::runtime_error("Error, this function may only be used for dimensionless quantities");
+
+		m00 /= d;
+		m01 /= d;
+		m10 /= d;
+		m11 /= d;
+		return *this;
 
 	}
 
@@ -445,7 +490,7 @@ public:
 
     /// \brief Sets the matrix to zero
 
-    void														setZero() {
+	void																setZero() {
 
         m00.setZero();
         m01.setZero();
@@ -458,7 +503,7 @@ public:
     ///
     /// Makes the matrix symmetric by replacing it with the half-sum of itself and its transpose: \f$\mathbf{M}:=\frac{\mathbf{M}+\mathbf{M}^T}{2}\f$
 
-    void														symmetrize() {
+	void																symmetrize() {
 
         m00.m[0][1] = 0.5*(m00.m[0][1] + m00.m[1][0]); m00.m[0][2] = 0.5*(m00.m[0][2] + m00.m[2][0]); m01.m[0][0] = 0.5*(m01.m[0][0] + m10.m[0][0]); m01.m[0][1] = 0.5*(m01.m[0][1] + m10.m[1][0]); m01.m[0][2] = 0.5*(m01.m[0][2] + m10.m[2][0]);
         m00.m[1][2] = 0.5*(m00.m[1][2] + m00.m[2][1]); m01.m[1][0] = 0.5*(m01.m[1][0] + m10.m[0][1]); m01.m[1][1] = 0.5*(m01.m[1][1] + m10.m[1][1]); m01.m[1][2] = 0.5*(m01.m[1][2] + m10.m[2][1]);
@@ -476,7 +521,7 @@ public:
 
     /// \brief Sets the matrix to identity
 
-    void														setIdentity() {
+	void																setIdentity() {
 
         m00.setIdentity();
         m11.setIdentity();
@@ -488,7 +533,7 @@ public:
 
     /// \brief Returns the transpose
 
-	SBDTypePhysicalMatrix66Wrapper<Units> transpose() const {
+	SBDTypePhysicalMatrix66Wrapper<Units>								transpose() const {
 
 		return SBDTypePhysicalMatrix66Wrapper<Units>(m00.transpose(), m10.transpose(), m01.transpose(), m11.transpose());
 
@@ -496,7 +541,7 @@ public:
 
     /// \brief Returns twice the symmetric part of the matrix
 
-	SBDTypePhysicalMatrix66Wrapper<Units> doubleSymmetricPart() const {
+	SBDTypePhysicalMatrix66Wrapper<Units>								doubleSymmetricPart() const {
 
 		return SBDTypePhysicalMatrix66Wrapper<Units>(m00 + m00.transpose(), m01 + m10.transpose(), m10 + m01.transpose(), m11 + m11.transpose());
 
@@ -509,7 +554,7 @@ public:
 
     /// \brief Returns the string representation of the spatial matrix (with a full unit name when fullName is true)
 
-    std::string                                         toStdString(bool fullName = false) const {
+	std::string															toStdString(bool fullName = false) const {
 
         std::string ret = "";
         ret += "m00\n" + m00.toStdString(fullName);
@@ -526,20 +571,19 @@ public:
 public:
 
 
-    SBDTypePhysicalMatrix33Wrapper<Units>							m00;																	///< The top left 3x3 matrix
-    SBDTypePhysicalMatrix33Wrapper<Units>							m01;																	///< The top right 3x3 matrix
-    SBDTypePhysicalMatrix33Wrapper<Units>							m10;																	///< The bottom left 3x3 matrix
-    SBDTypePhysicalMatrix33Wrapper<Units>							m11;																	///< The bottom right 3x3 matrix
+	SBDTypePhysicalMatrix33Wrapper<Units>								m00;																	///< The top left 3x3 matrix
+	SBDTypePhysicalMatrix33Wrapper<Units>								m01;																	///< The top right 3x3 matrix
+	SBDTypePhysicalMatrix33Wrapper<Units>								m10;																	///< The bottom left 3x3 matrix
+	SBDTypePhysicalMatrix33Wrapper<Units>								m11;																	///< The bottom right 3x3 matrix
 
 };
 
 /// \name Common types and shortnames
 //@{
 
-#define		SBPhysicalMatrix66Wrapper		SBDTypePhysicalMatrix66Wrapper
+#define		SBPhysicalMatrix66Wrapper									SBDTypePhysicalMatrix66Wrapper
 
 typedef     SBDTypePhysicalMatrix66Wrapper<SBDQuantityWrapperSI>		SBDTypePhysicalMatrix66WrapperSI;
-
 typedef     SBDTypePhysicalMatrix66Wrapper<SBDQuantityWrapperSI>		SBPhysicalMatrix66WrapperSI;
 
 //@}
@@ -552,7 +596,7 @@ typedef     SBDTypePhysicalMatrix66Wrapper<SBDQuantityWrapperSI>		SBPhysicalMatr
 template<typename Quantity00, typename Quantity01,
 		 typename Quantity10, typename Quantity11,
 		 typename T>
-SBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11>	getSBPhysicalMatrix66(const T& a) {
+SBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11>		getSBPhysicalMatrix66(const T& a) {
 
 	return a.template toSBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11>();
 
@@ -566,7 +610,7 @@ SBPhysicalMatrix66<Quantity00, Quantity01, Quantity10, Quantity11>	getSBPhysical
 /// \brief Returns the product of double \p d and spatial matrix \p u
 
 template<typename Units>
-SBDTypePhysicalMatrix66Wrapper<Units>       operator*(const double d, const SBDTypePhysicalMatrix66Wrapper<Units>& u) {
+SBDTypePhysicalMatrix66Wrapper<Units>									operator*(const double d, const SBDTypePhysicalMatrix66Wrapper<Units>& u) {
 
 	return SBDTypePhysicalMatrix66Wrapper<Units>(u.m00 * d, u.m01 * d, u.m10 * d, u.m11 * d);
 
