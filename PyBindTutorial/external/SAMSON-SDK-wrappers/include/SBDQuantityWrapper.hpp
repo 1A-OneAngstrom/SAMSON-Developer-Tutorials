@@ -184,7 +184,7 @@ public:
 
 		for (int i = 0; i < System::size; ++i)
 			if (exponent[i] != 0)
-				scaling_factor *= pow( 10.0, (double)( (scale[i] - other_scale[i]) * exponent[i]) );
+				scaling_factor *= pow( 10.0, static_cast<double>( (scale[i] - other_scale[i]) * exponent[i]) );
 
         return scaling_factor;
 
@@ -306,13 +306,13 @@ public:
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 7) throw std::runtime_error("The unit system has a wrong size");
 
-		if (    (bool)QuantityScaleExponent<Quantity>::exponent[0] ^ (bool)exponent[0] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[1] ^ (bool)exponent[1] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[2] ^ (bool)exponent[2] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[3] ^ (bool)exponent[3] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[4] ^ (bool)exponent[4] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[5] ^ (bool)exponent[5] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[6] ^ (bool)exponent[6] )
+		if (    static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[0]) ^ static_cast<bool>(exponent[0]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[1]) ^ static_cast<bool>(exponent[1]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[2]) ^ static_cast<bool>(exponent[2]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[3]) ^ static_cast<bool>(exponent[3]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[4]) ^ static_cast<bool>(exponent[4]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[5]) ^ static_cast<bool>(exponent[5]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[6]) ^ static_cast<bool>(exponent[6]) )
 			throw std::runtime_error("This attribute cannot be applied to this unit");
 
 		return getScaledValue(QuantityScaleExponent<Quantity>::scale);
@@ -325,10 +325,10 @@ public:
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 4) throw std::runtime_error("The unit system has a wrong size");
 
-		if (    (bool)QuantityScaleExponent<Quantity>::exponent[0] ^ (bool)exponent[0] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[1] ^ (bool)exponent[1] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[2] ^ (bool)exponent[2] ||
-				(bool)QuantityScaleExponent<Quantity>::exponent[3] ^ (bool)exponent[3] )
+		if (    static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[0]) ^ static_cast<bool>(exponent[0]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[1]) ^ static_cast<bool>(exponent[1]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[2]) ^ static_cast<bool>(exponent[2]) ||
+				static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[3]) ^ static_cast<bool>(exponent[3]) )
 			throw std::runtime_error("This attribute cannot be applied to this unit");
 
 		return getScaledValue(QuantityScaleExponent<Quantity>::scale);
@@ -341,7 +341,7 @@ public:
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 1) throw std::runtime_error("The unit system has a wrong size");
 
-		if ( (bool)QuantityScaleExponent<Quantity>::exponent[0] ^ (bool)exponent[0] )
+		if ( static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[0]) ^ static_cast<bool>(exponent[0]) )
 			throw std::runtime_error("This attribute cannot be applied to this unit");
 
 		return getScaledValue(QuantityScaleExponent<Quantity>::scale);
@@ -354,7 +354,7 @@ public:
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 1) throw std::runtime_error("The unit system has a wrong size");
 
-		if ( (bool)QuantityScaleExponent<Quantity>::exponent[0] ^ (bool)exponent[0] )
+		if ( static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[0]) ^ static_cast<bool>(exponent[0]) )
 			throw std::runtime_error("This attribute cannot be applied to this unit");
 
 		return getScaledValue(QuantityScaleExponent<Quantity>::scale);
@@ -367,7 +367,7 @@ public:
 
 		if (QuantityScaleExponent<Quantity>::exponent.size() < 1) throw std::runtime_error("The unit system has a wrong size");
 
-		if ( (bool)QuantityScaleExponent<Quantity>::exponent[0] ^ (bool)exponent[0] )
+		if ( static_cast<bool>(QuantityScaleExponent<Quantity>::exponent[0]) ^ static_cast<bool>(exponent[0]) )
 			throw std::runtime_error("This attribute cannot be applied to this unit");
 
 		return getScaledValue(QuantityScaleExponent<Quantity>::scale);
@@ -1349,7 +1349,7 @@ SBDQuantityWrapper<System>			pow(const SBDQuantityWrapper<System>& q, int p) {
     std::vector<int> e = q.getExponent();
 	for (auto& ei: e) ei *= p;
 
-	return SBDQuantityWrapper<System>(pow(q.getValue(), (double)p), q.getScale(), e);
+	return SBDQuantityWrapper<System>(pow(q.getValue(), static_cast<double>(p)), q.getScale(), e);
 
 }
 
@@ -1381,7 +1381,7 @@ SBDQuantityWrapper<System>			root(const SBDQuantityWrapper<System>& q, int p) {
 
 	for (auto& ei: e) ei /= p;
 
-	return SBDQuantityWrapper<System>(pow(q.getValue(), 1.0 / (double)p), q.getScale(), e);
+	return SBDQuantityWrapper<System>(pow(q.getValue(), 1.0 / static_cast<double>(p)), q.getScale(), e);
 
 }
 

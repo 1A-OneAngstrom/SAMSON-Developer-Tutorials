@@ -147,6 +147,16 @@ public:
 
     }
 
+	/// \brief Sets the first column of this physical matrix
+
+	void														setE1(const SBPhysicalVector3Wrapper<Units>& v) {
+
+		m[0][0] = v.v[0];
+		m[1][0] = v.v[1];
+		m[2][0] = v.v[2];
+
+	}
+
     /// \brief Returns the second column of this physical matrix
 
 	SBPhysicalVector3Wrapper<Units>								getE2() const {
@@ -155,6 +165,16 @@ public:
 
     }
 
+	/// \brief Sets the second column of this physical matrix
+
+	void														setE2(const SBPhysicalVector3Wrapper<Units>& v) {
+
+		m[0][1] = v.v[0];
+		m[1][1] = v.v[1];
+		m[2][1] = v.v[2];
+
+	}
+
     /// \brief Returns the third column of this physical matrix
 
 	SBPhysicalVector3Wrapper<Units>								getE3() const {
@@ -162,6 +182,16 @@ public:
 		return SBPhysicalVector3Wrapper<Units>(m[0][2], m[1][2], m[2][2]);
 
     }
+
+	/// \brief Sets the third column of this physical matrix
+
+	void														setE3(const SBPhysicalVector3Wrapper<Units>& v) {
+
+		m[0][2] = v.v[0];
+		m[1][2] = v.v[1];
+		m[2][2] = v.v[2];
+
+	}
 
     /// \brief Returns the row \p r of this physical matrix
 
@@ -671,7 +701,7 @@ public:
 
     }
 
-    /// \brief Returns the dimensionless physical matrix corresponding to rotation axis \p axis and a rotation angle equal to Pi
+	/// \brief Returns the dimensionless physical matrix corresponding to rotation axis \p axis and a rotation angle equal to Pi
 
 	static SBDTypePhysicalMatrix33Wrapper<Units>				fromAxisAnglePi(const SBDTypePhysicalVector3WrapperSI& axis) {
 
@@ -682,6 +712,19 @@ public:
 		return SBDTypePhysicalMatrix33Wrapper<Units>(sret);
 
     }
+
+	/// \brief Returns the dimensionless physical matrix that transforms vector \p from into vector \p to. Precisely, left-multiplying vector \p from by the resulting matrix produces vector \p to.
+
+	static SBDTypePhysicalMatrix33Wrapper<Units>				fromAlignment(const SBDTypePhysicalVector3WrapperSI& from, const SBDTypePhysicalVector3WrapperSI& to) {
+
+		SBVector3 sfrom = getSBPhysicalVector3<SBQuantity::dimensionless>(from);
+		SBVector3 sto   = getSBPhysicalVector3<SBQuantity::dimensionless>(to);
+
+		SBDTypePhysicalMatrix33<SBQuantity::dimensionless> sret = SBDTypePhysicalMatrix33<SBQuantity::dimensionless>::fromAlignment(sfrom, sto);
+
+		return SBDTypePhysicalMatrix33Wrapper<Units>(sret);
+
+	}
 
 
     /// \brief Sets this physical matrix to an orthonormal matrix whose third column is \p axis
@@ -838,10 +881,10 @@ public:
 
                         for (j = 0; j<3; j++) {
 
-                            g = a[j][ip];
-                            h = a[j][iq];
-                            a[j][ip] = g - s*(h + g*tau);
-                            a[j][iq] = h + s*(g - h*tau);
+							g = v[j][ip];
+							h = v[j][iq];
+							v[j][ip] = g - s * (h + g * tau);
+							v[j][iq] = h + s * (g - h * tau);
 
                         }
 
@@ -1012,7 +1055,7 @@ public:
 
         std::string ret =   "[" + m[0][0].toStdString(fullName) + "\t" + m[0][1].toStdString(fullName) + "\t" + m[0][2].toStdString(fullName) + "]" + "\n"
                             "[" + m[1][0].toStdString(fullName) + "\t" + m[1][1].toStdString(fullName) + "\t" + m[1][2].toStdString(fullName) + "]" + "\n"
-                            "[" + m[2][0].toStdString(fullName) + "\t" + m[2][1].toStdString(fullName) + "\t" + m[2][2].toStdString(fullName) + "]" + "\n";
+							"[" + m[2][0].toStdString(fullName) + "\t" + m[2][1].toStdString(fullName) + "\t" + m[2][2].toStdString(fullName) + "]";
 
         return ret;
 

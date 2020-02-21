@@ -10,7 +10,7 @@
 
 SB_ELEMENT_DESCRIPTION("This tutorial demonstrates how to create python bindings for a SAMSON Element");
 SB_ELEMENT_DOCUMENTATION("Resource/Documentation/doc.html");
-SB_ELEMENT_VERSION_NUMBER("0.7.0");
+SB_ELEMENT_VERSION_NUMBER("0.10.0");
 
 SB_ELEMENT_CLASSES_BEGIN;
 

@@ -29,7 +29,7 @@ public:
 	/// \name App
 	//@{
 
-	SEPyBindTutorialApp*												getApp() const;					///< Returns a pointer to the app
+	SEPyBindTutorialApp*										getApp() const;							///< Returns a pointer to the app
 
 	//@}
 
@@ -60,6 +60,6 @@ public slots:
 
 private:
 
-	Ui::SEPyBindTutorialAppGUIClass									ui;
+	Ui::SEPyBindTutorialAppGUIClass								ui;
 
 };

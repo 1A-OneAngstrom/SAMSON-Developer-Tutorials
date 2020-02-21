@@ -2,10 +2,7 @@
 
 bool CustomStructuralModel::hasCustomComment() const {
 
-	if (customComment.size() == 0)
-		return false;
-	else
-		return true;
+	return (customComment.size() != 0);
 
 }
 

@@ -20,15 +20,15 @@ public:
 	/// \name Custom functions
 	//@{
 
-	bool				hasCustomComment() const;
-	std::string const&	getCustomComment() const;
-	void				setCustomComment(const std::string& str);
-	void				clearCustomComment();
+	bool															hasCustomComment() const;
+	std::string const&												getCustomComment() const;
+	void															setCustomComment(const std::string& str);
+	void															clearCustomComment();
 
 	//@}
 
 private:
 
-	std::string			customComment;
+	std::string														customComment;
 
 };

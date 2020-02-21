@@ -287,7 +287,15 @@ public:
 
 	bool													operator==(const SBDTypeSpatialTransformWrapper& transform) const {
 
-		return orientation == transform.orientation && position == transform.position;
+		return (orientation == transform.orientation && position == transform.position);
+
+	}
+
+	/// \brief Returns true if and only if this transform is equal to \p transform
+
+	bool													operator!=(const SBDTypeSpatialTransformWrapper& transform) const {
+
+		return (orientation != transform.orientation || position != transform.position);
 
 	}
 
@@ -588,7 +596,7 @@ public:
 
 		std::string ret =
 				"orientation\n" + orientation.toStdString(fullName) +
-				"position\n" + position.toStdString(fullName);
+				"\nposition\n" + position.toStdString(fullName);
 
 		return ret;
 

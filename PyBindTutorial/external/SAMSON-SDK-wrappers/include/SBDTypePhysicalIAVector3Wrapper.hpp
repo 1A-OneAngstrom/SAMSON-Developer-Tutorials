@@ -197,7 +197,7 @@ public:
 
 		if (v.size() != 3) throw std::runtime_error("The size of the input array should be 3x2");
 
-        for (int j = 0; j < v.size(); j++) {
+		for (auto j = 0; j < v.size(); j++) {
 
 			if (v[j].size() != 2) throw std::runtime_error("The size of the input array should be 3x2");
 
