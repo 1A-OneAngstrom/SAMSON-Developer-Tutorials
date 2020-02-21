@@ -18,7 +18,9 @@ namespace py = pybind11;
 #include "SBDTypePhysicalIAVector3Wrapper.hpp"
 #include "SBDTypePhysicalMatrix33Wrapper.hpp"
 #include "SBDTypePhysicalMatrix66Wrapper.hpp"
+#include "SBDTypeSpatialDomainWrapper.hpp"
 #include "SBDTypeSpatialTransformWrapper.hpp"
+#include "SBDToolsConvert.hpp"
 
 namespace UnitsExample_pybind_namespace {
 

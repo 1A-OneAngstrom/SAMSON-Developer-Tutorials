@@ -21,8 +21,8 @@ public :
 	/// \name Constructors and destructors
 	//@{
 
-	SEAtomPusherEditor();																													///< Builds an editor					
-	virtual ~SEAtomPusherEditor();																											///< Destructs the editor
+	SEAtomPusherEditor();																												///< Builds an editor
+	virtual ~SEAtomPusherEditor();																										///< Destructs the editor
 
 	//@}
 
@@ -56,9 +56,7 @@ public :
 	/// \name Rendering
 	//@{
 
-	virtual void												display();																///< Displays the editor
-	virtual void												displayForShadow();														///< Displays the editor for shadow purposes
-	virtual void												displayInterface();														///< Displays the 2D interface in the viewport
+	virtual void												display(RenderingPass renderingPass);									///< To display elements related to the editor
 
 	//@}
 
@@ -90,7 +88,7 @@ public :
 	/// \name GUI
 	//@{
 
-	SEAtomPusherEditorGUI*											getPropertyWidget() const;												///< Returns the property widget of the editor
+	SEAtomPusherEditorGUI*										getPropertyWidget() const;												///< Returns the property widget of the editor
 
 	//@}
 

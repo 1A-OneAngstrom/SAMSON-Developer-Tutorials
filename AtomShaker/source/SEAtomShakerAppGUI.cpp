@@ -17,7 +17,7 @@ SEAtomShakerApp* SEAtomShakerAppGUI::getApp() const { return static_cast<SEAtomS
 
 void SEAtomShakerAppGUI::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -27,7 +27,7 @@ void SEAtomShakerAppGUI::loadSettings( SBGSettings *settings ) {
 
 void SEAtomShakerAppGUI::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -51,7 +51,7 @@ QString SEAtomShakerAppGUI::getName() const {
 	// SAMSON Element generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your app inside SAMSON
 
-	return "Atom shaker"; 
+	return "DevTutorial: Atom shaker";
 
 }
 

@@ -19,9 +19,9 @@ public :
 	/// \name Constructors and destructors
 	//@{
 
-	SESpringsInteractionModel();																													///< Builds an interaction model					
-	SESpringsInteractionModel(SBParticleSystem* particleSystem);																					///< Builds an interaction model 
-	virtual ~SESpringsInteractionModel();																											///< Destructs the interaction model
+	SESpringsInteractionModel();																										///< Builds an interaction model
+	SESpringsInteractionModel(SBParticleSystem* particleSystem);																		///< Builds an interaction model
+	virtual ~SESpringsInteractionModel();																								///< Destructs the interaction model
 
 	//@}
 
@@ -53,9 +53,7 @@ public :
 	/// \name Rendering
 	//@{
 
-	virtual void												display();																///< Displays the interaction model
-	virtual void												displayForShadow();														///< Displays the interaction model for shadow purposes
-	virtual void												displayForSelection();													///< Displays the interaction model for selection purposes
+	virtual void												display(RenderingPass renderingPass);									///< Displays the interaction model
 
 	virtual void												expandBounds(SBIAPosition3& bounds) const;								///< Expands the bounds to make sure the interaction model fits inside them
 
@@ -74,7 +72,7 @@ public :
 	//@}
 
 	void														initializeBondSpringsModel();											///< set up the bond spring model
-	void														setBondSpringStiffness(double stiffness) { bondSpringStiffness = stiffness; }	///< set the bond spring stiffness parameter
+	void														setBondSpringStiffness(double stiffness);								///< set the bond spring stiffness parameter
 
 private:
 

@@ -19,8 +19,8 @@ void SESteepestDescentStateUpdater::updateState() {
 
 	SBPointerIndexer<SBStructuralParticle> const* particleIndexer = (*dynamicalModel)->getStructuralParticleIndexer();
 
-	unsigned int nParticles = particleIndexer->size(); // number of particles in the particle system
-	unsigned int nSteps = getNumberOfSteps(); // the number of iterations per interactive simulation step
+	const unsigned int nParticles = particleIndexer->size(); // number of particles in the particle system
+	const unsigned int nSteps = getNumberOfSteps(); // the number of iterations per interactive simulation step
 
 	// A state updater that just displaces atoms in the x-direction
 	/*
@@ -85,30 +85,10 @@ void SESteepestDescentStateUpdater::updateState() {
 
 }
 
-void SESteepestDescentStateUpdater::display() {
+void SESteepestDescentStateUpdater::display(RenderingPass renderingPass) {
 
 	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-}
-
-void SESteepestDescentStateUpdater::displayForShadow() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to compute shadows. 
-	// Implement this function if your state updater displays things in viewports, so that your state updater can cast shadows
-	// to other objects in SAMSON, for example thanks to the utility
-	// functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-}
-
-void SESteepestDescentStateUpdater::displayForSelection() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to perform object picking.
-	// Instead of rendering colors, your state updater is expected to write the index of a data graph node (obtained with getIndex()).
-	// Implement this function so that your state updater can be selected (if you render its own index) or can be used to select other objects (if you render 
-	// the other objects' indices), for example thanks to the utility functions provided by SAMSON (e.g. displaySpheresSelection, displayTrianglesSelection, etc.)
-	// This should be implemented if your state updater displays something in viewports (and you want the user to be able to select your state updater
-	// by picking its visual representation in viewports). 
 
 }
 

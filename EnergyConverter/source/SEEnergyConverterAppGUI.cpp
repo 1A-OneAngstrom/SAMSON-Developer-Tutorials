@@ -17,7 +17,7 @@ SEEnergyConverterApp* SEEnergyConverterAppGUI::getApp() const { return static_ca
 
 void SEEnergyConverterAppGUI::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -25,7 +25,7 @@ void SEEnergyConverterAppGUI::loadSettings( SBGSettings *settings ) {
 
 void SEEnergyConverterAppGUI::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -86,8 +86,8 @@ void SEEnergyConverterAppGUI::onLeftChanged() {
 
 		// convert units
 
-		unsigned int sourceUnit = ui.comboBoxLeft->currentIndex();
-		unsigned int destinationUnit = ui.comboBoxRight->currentIndex();
+		const int sourceUnit = ui.comboBoxLeft->currentIndex();
+		const int destinationUnit = ui.comboBoxRight->currentIndex();
 
 		double destination = getApp()->convert(source, sourceUnit, destinationUnit);
 
@@ -116,8 +116,8 @@ void SEEnergyConverterAppGUI::onRightChanged() {
 
 		// convert units
 
-		unsigned int sourceUnit = ui.comboBoxRight->currentIndex();
-		unsigned int destinationUnit = ui.comboBoxLeft->currentIndex();
+		const int sourceUnit = ui.comboBoxRight->currentIndex();
+		const int destinationUnit = ui.comboBoxLeft->currentIndex();
 
 		double destination = getApp()->convert(source, sourceUnit, destinationUnit);
 

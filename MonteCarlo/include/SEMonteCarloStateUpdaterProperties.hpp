@@ -74,8 +74,8 @@ private:
 
 	friend class SEMonteCarloStateUpdater;
 
-	Ui::SEMonteCarloStateUpdaterPropertiesClass							ui;
-	SBPointer<SEMonteCarloStateUpdater>									stateUpdater;
+	Ui::SEMonteCarloStateUpdaterPropertiesClass					ui;
+	SBPointer<SEMonteCarloStateUpdater>							stateUpdater;
 
 	SBPointer<Observer>											observer;
 

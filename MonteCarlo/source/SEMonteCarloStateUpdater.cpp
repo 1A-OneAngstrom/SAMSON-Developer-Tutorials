@@ -43,7 +43,7 @@ void SEMonteCarloStateUpdater::updateState() {
 	while (movingParticleIndexer.size() != numberOfMovingParticles) {
 
 		// generate an index of a particle and add it in the indexer of moving particles
-		unsigned int idx = (unsigned int)(randomNumberGenerator.randUnsignedLong() % nParticles);
+		unsigned int idx = static_cast<unsigned int>(randomNumberGenerator.randUnsignedLong() % nParticles);
 		movingParticleIndexer.push_back(idx);
 
 	}
@@ -110,7 +110,7 @@ void SEMonteCarloStateUpdater::updateState() {
 	if (numberOfTrials == 100) {
 
 		// check the rejects ratio
-		if ( (double)numberOfRejects / (double)numberOfTrials > 0.5 ) {
+		if ( static_cast<double>(numberOfRejects) / static_cast<double>(numberOfTrials) > 0.5 ) {
 
 			// rejects constitute to more than a half of trials
 

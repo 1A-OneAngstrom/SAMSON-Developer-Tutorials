@@ -19,7 +19,7 @@ SEPyBindTutorialApp* SEPyBindTutorialAppGUI::getApp() const { return static_cast
 
 void SEPyBindTutorialAppGUI::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -27,7 +27,7 @@ void SEPyBindTutorialAppGUI::loadSettings( SBGSettings *settings ) {
 
 void SEPyBindTutorialAppGUI::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -49,7 +49,7 @@ QString SEPyBindTutorialAppGUI::getName() const {
 	// SAMSON Element generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your app inside SAMSON
 
-	return "PyBind Tutorial App";
+	return "DevTutorial: PyBind Tutorial App";
 
 }
 

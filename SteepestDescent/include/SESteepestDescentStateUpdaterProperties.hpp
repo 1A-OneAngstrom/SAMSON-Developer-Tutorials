@@ -71,8 +71,8 @@ private:
 
 	friend class SESteepestDescentStateUpdater;
 
-	Ui::SESteepestDescentStateUpdaterPropertiesClass							ui;
-	SBPointer<SESteepestDescentStateUpdater>									stateUpdater;
+	Ui::SESteepestDescentStateUpdaterPropertiesClass			ui;
+	SBPointer<SESteepestDescentStateUpdater>					stateUpdater;
 
 	SBPointer<Observer>											observer;
 

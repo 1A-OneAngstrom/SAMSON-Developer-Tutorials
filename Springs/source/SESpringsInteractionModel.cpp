@@ -2,7 +2,7 @@
 #include "SAMSON.hpp"
 
 
-SESpringsInteractionModel::SESpringsInteractionModel() : SBMInteractionModelParticleSystem(0) {
+SESpringsInteractionModel::SESpringsInteractionModel() : SBMInteractionModelParticleSystem(nullptr) {
 
 	// SAMSON Element generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
 
@@ -124,6 +124,8 @@ void SESpringsInteractionModel::initializeBondSpringsModel() {
 
 }
 
+void SESpringsInteractionModel::setBondSpringStiffness(double stiffness) { bondSpringStiffness = stiffness; }
+
 void SESpringsInteractionModel::updateInteractions() {
 
 	// SAMSON Element generator pro tip: this function is called to update the energy and forces. It is the most important function of your interaction model. 
@@ -170,7 +172,7 @@ void SESpringsInteractionModel::updateBondSpringsInteractions() {
 		const SBPosition3& positionJ = (*particleSystem)->getPosition(indexJ);
 
 		// The force intensity depends on the shift with respect to the equilibrium length
-		SBQuantity::length forceIntensity(0);
+		SBQuantity::length forceIntensity(0.0);
 		forceIntensity = (positionJ - positionI).norm() - springLengthVector[i];
 
 		// Compute the forces acting on both atoms connected through the bond
@@ -192,30 +194,10 @@ void SESpringsInteractionModel::updateBondSpringsInteractions() {
 
 }
 
-void SESpringsInteractionModel::display() {
+void SESpringsInteractionModel::display(RenderingPass renderingPass) {
 
 	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-}
-
-void SESpringsInteractionModel::displayForShadow() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to compute shadows. 
-	// Implement this function if your interaction model displays things in viewports, so that your interaction model can cast shadows
-	// to other objects in SAMSON, for example thanks to the utility
-	// functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-}
-
-void SESpringsInteractionModel::displayForSelection() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to perform object picking.
-	// Instead of rendering colors, your interaction model is expected to write the index of a data graph node (obtained with getIndex()).
-	// Implement this function so that your interaction model can be selected (if you render its own index) or can be used to select other objects (if you render 
-	// the other objects' indices), for example thanks to the utility functions provided by SAMSON (e.g. displaySpheresSelection, displayTrianglesSelection, etc.)
-	// This should be implemented if your interaction model displays something in viewports (and you want the user to be able to select your interaction model
-	// by picking its visual representation in viewports). 
 
 }
 

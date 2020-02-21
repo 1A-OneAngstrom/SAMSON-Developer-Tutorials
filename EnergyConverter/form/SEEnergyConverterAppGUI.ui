@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>373</width>
+    <width>420</width>
     <height>70</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>300</width>
+    <width>420</width>
     <height>70</height>
    </size>
   </property>
@@ -21,42 +21,35 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutLeft">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QLineEdit" name="lineEditLeft">
+     <property name="text">
+      <string/>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="comboBoxLeft">
      <item>
-      <widget class="QLineEdit" name="lineEditLeft">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
+      <property name="text">
+       <string>eV</string>
+      </property>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxLeft">
-       <item>
-        <property name="text">
-         <string>eV</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Eh</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>kcal/mol</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>zJ</string>
-        </property>
-       </item>
-      </widget>
+      <property name="text">
+       <string>Eh</string>
+      </property>
      </item>
-    </layout>
+     <item>
+      <property name="text">
+       <string>kcal/mol</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>zJ</string>
+      </property>
+     </item>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="labelEqualSign">
@@ -72,42 +65,35 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutRight">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QLineEdit" name="lineEditRight">
+     <property name="text">
+      <string/>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="comboBoxRight">
      <item>
-      <widget class="QLineEdit" name="lineEditRight">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
+      <property name="text">
+       <string>eV</string>
+      </property>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxRight">
-       <item>
-        <property name="text">
-         <string>eV</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Eh</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>kcal/mol</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>zJ</string>
-        </property>
-       </item>
-      </widget>
+      <property name="text">
+       <string>Eh</string>
+      </property>
      </item>
-    </layout>
+     <item>
+      <property name="text">
+       <string>kcal/mol</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>zJ</string>
+      </property>
+     </item>
+    </widget>
    </item>
   </layout>
  </widget>

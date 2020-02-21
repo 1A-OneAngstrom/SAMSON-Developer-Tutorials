@@ -18,14 +18,14 @@ SEEnergyConverterApp::~SEEnergyConverterApp() {
 
 SEEnergyConverterAppGUI* SEEnergyConverterApp::getGUI() const { return static_cast<SEEnergyConverterAppGUI*>(SBDApp::getGUI()); }
 
-double SEEnergyConverterApp::convert(double sourceEnergy, const unsigned int sourceUnit, const unsigned int destinationUnit) {
+double SEEnergyConverterApp::convert(const double sourceEnergy, const int sourceUnit, const int destinationUnit) {
 
-	SBQuantity::energy source;
+	SBQuantity::energy source(0.0);
 
 	if (sourceUnit == 0) source = SBQuantity::eV(sourceEnergy);
-	if (sourceUnit == 1) source = SBQuantity::Eh(sourceEnergy);
-	if (sourceUnit == 2) source = SBQuantity::kcalPerMol(sourceEnergy);
-	if (sourceUnit == 3) source = SBQuantity::zJ(sourceEnergy);
+	else if (sourceUnit == 1) source = SBQuantity::Eh(sourceEnergy);
+	else if (sourceUnit == 2) source = SBQuantity::kcalPerMol(sourceEnergy);
+	else if (sourceUnit == 3) source = SBQuantity::zJ(sourceEnergy);
 
 	if (destinationUnit == 0) return (SBQuantity::eV(source)).getValue();
 	if (destinationUnit == 1) return (SBQuantity::Eh(source)).getValue();

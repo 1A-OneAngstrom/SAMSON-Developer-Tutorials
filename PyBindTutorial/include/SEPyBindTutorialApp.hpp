@@ -18,15 +18,15 @@ public :
 	/// \name Constructors and destructors
 	//@{
 
-	SEPyBindTutorialApp();																													///< Constructs an app
-	virtual ~SEPyBindTutorialApp();																											///< Destructs the app
+	SEPyBindTutorialApp();																				///< Constructs an app
+	virtual ~SEPyBindTutorialApp();																		///< Destructs the app
 
 	//@}
 
 	/// \name GUI
 	//@{
 
-	SEPyBindTutorialAppGUI*											getGUI() const;															///< Returns a pointer to the GUI of the app
+	SEPyBindTutorialAppGUI*											getGUI() const;						///< Returns a pointer to the GUI of the app
 
 	//@}
 

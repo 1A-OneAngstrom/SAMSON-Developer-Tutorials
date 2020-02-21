@@ -45,9 +45,7 @@ public :
 	/// \name Rendering
 	//@{
 
-	virtual void												display();																///< Displays the visual model
-	virtual void												displayForShadow();														///< Displays the visual model for shadow purposes
-	virtual void												displayForSelection();													///< Displays the visual model for selection purposes
+	virtual void												display(RenderingPass renderingPass);									///< Displays the node
 
 	virtual void												expandBounds(SBIAPosition3& bounds) const;								///< Expands the bounds to make sure the visual model fits inside them
 
@@ -64,18 +62,57 @@ public :
 
 	//@}
 
-	/// \name Getter/setter functions
+	/// \name Radius factor
 	//@{
 
 	const float&												getRadiusFactor() const;
 	void														setRadiusFactor(const float& r);
+	bool														hasRadiusFactorRange() const;
+	const float&												getMinimumRadiusFactor() const;
+	const float&												getMaximumRadiusFactor() const;
+	const float&												getRadiusFactorSingleStep() const;
+	std::string													getRadiusFactorSuffix() const;
+
+	//@}
+
+	/// \name Opacity
+	//@{
+
+	void														setOpacity(unsigned int opacity);
+	unsigned int												getOpacity() const;
+	bool														hasOpacityRange() const;
+	unsigned int												getMinimumOpacity() const;
+	unsigned int												getMaximumOpacity() const;
+	unsigned int												getOpacitySingleStep() const;
+	std::string													getOpacitySuffix() const;
 
 	//@}
 
 private:
 
 	SBPointerIndexer<SBAtom>									atomIndexer;
+
 	float														radiusFactor;															///< The radius factor
+	float														minimumRadiusFactor;
+	float														maximumRadiusFactor;
+	float														radiusFactorSingleStep;
+
+	float														opacity;																///< Opacity
+
+	/// \name Display data
+	//@{
+
+	void														updateDisplayData();													///< Updates polyhedra display data
+
+	unsigned int												numberOfAtoms;
+
+	float*														positionData;
+	float*														radiusData;
+	float*														colorData;
+	unsigned int*												flagData;
+	unsigned int*												nodeIndexData;
+
+	//@}
 
 };
 

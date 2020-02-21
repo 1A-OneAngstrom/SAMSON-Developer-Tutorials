@@ -94,63 +94,60 @@ void SEAtomPusherEditor::getActions(SBVector<SBAction*>& actionVector) {
 
 }
 
-void SEAtomPusherEditor::display() {
+void SEAtomPusherEditor::display(RenderingPass renderingPass) {
 
 	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
-	float positionData[3];
-	float radiusData[1];
-	float colorData[4];
-	unsigned int flagData[1];
+	if (renderingPass == SBGEditor::RenderingPass::OpaqueGeometry || renderingPass == SBGEditor::RenderingPass::ShadowingGeometry) {
 
-	positionData[0] = spherePosition[0].getValue();
-	positionData[1] = spherePosition[1].getValue();
-	positionData[2] = spherePosition[2].getValue();
+		float positionData[3];
+		float radiusData[1];
 
-	radiusData[0] = sphereRadius.getValue();
+		positionData[0] = static_cast<float>(spherePosition[0].getValue());
+		positionData[1] = static_cast<float>(spherePosition[1].getValue());
+		positionData[2] = static_cast<float>(spherePosition[2].getValue());
 
-	if (sphereIsActive){
+		radiusData[0] = static_cast<float>(sphereRadius.getValue());
 
-		// a white sphere
-		colorData[0] = 1.0f;
-		colorData[1] = 1.0f;
-		colorData[2] = 1.0f;
-		colorData[3] = 1.0f;
+		if (renderingPass == SBGEditor::RenderingPass::OpaqueGeometry) {
+
+			float colorData[4];
+			unsigned int flagData[1];
+
+			if (sphereIsActive){
+
+				// a white sphere
+				colorData[0] = 1.0f;
+				colorData[1] = 1.0f;
+				colorData[2] = 1.0f;
+				colorData[3] = 1.0f;
+
+			}
+			else {
+
+				// a green sphere
+				colorData[0] = 0.0f;
+				colorData[1] = 1.0f;
+				colorData[2] = 0.0f;
+				colorData[3] = 1.0f;
+
+			}
+
+			flagData[0] = 0;
+
+			SAMSON::displaySpheres(1, positionData, radiusData, colorData, flagData);
+
+		}
+		else if (renderingPass == SBGEditor::RenderingPass::ShadowingGeometry) {
+
+			// display for shadows
+
+			SAMSON::displaySpheres(1, positionData, radiusData, nullptr, nullptr, true);
+
+		}
 
 	}
-	else {
-
-		// a green sphere
-		colorData[0] = 0.0f;
-		colorData[1] = 1.0f;
-		colorData[2] = 0.0f;
-		colorData[3] = 1.0f;
-
-	}
-
-	flagData[0] = 0;
-
-	SAMSON::displaySpheres(1, positionData, radiusData, colorData, flagData);
-
-}
-
-void SEAtomPusherEditor::displayForShadow() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to compute shadows. 
-	// Implement this function if your editor displays things in viewports, so that your editor can cast shadows
-	// to other objects in SAMSON, for example thanks to the utility
-	// functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-	display();
-
-}
-
-void SEAtomPusherEditor::displayInterface() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to display the editor 2D interface in viewports. 
-	// Implement this function if your editor displays a 2D user interface. For example, a rectangle selection editor would display a 2D rectangle in the active viewport. 
-	// You may use utility functions provided by SAMSON (e.g. displayLinesOrtho and displayTrianglesOrtho).
 
 }
 
@@ -165,6 +162,10 @@ void SEAtomPusherEditor::mousePressEvent(QMouseEvent* event) {
 		SAMSON::requestViewportUpdate();
 
 	}
+
+	// accept the event to not pass it to the parent class
+
+	event->accept();
 
 }
 
@@ -191,6 +192,9 @@ void SEAtomPusherEditor::pushAtoms() {
 	SBNodeIndexer nodeIndexer;
 	SAMSON::getActiveDocument()->getNodes(nodeIndexer, SBNode::IsType(SBNode::Atom));
 
+	// start the undoable operation
+	SAMSON::beginHolding("Pushed atoms");
+
 	SB_FOR(SBNode * node, nodeIndexer){
 
 		SBPointer<SBAtom> atom = static_cast<SBAtom*>(node);
@@ -214,6 +218,9 @@ void SEAtomPusherEditor::pushAtoms() {
 
 	}
 
+	// end the undoable operation
+	SAMSON::endHolding();
+
 }
 
 void SEAtomPusherEditor::mouseMoveEvent(QMouseEvent* event) {
@@ -224,7 +231,7 @@ void SEAtomPusherEditor::mouseMoveEvent(QMouseEvent* event) {
 	SBPosition3 nodePosition;
 	SBNode* pickedNode = SAMSON::getNode(event->pos(), nodePosition);
 
-	if (pickedNode == NULL)
+	if (pickedNode == nullptr)
 		spherePosition = SAMSON::getWorldPositionFromViewportPosition(event->pos());
 	else
 		spherePosition = SAMSON::getWorldPositionFromViewportPosition(event->pos(), nodePosition);
@@ -255,6 +262,10 @@ void SEAtomPusherEditor::wheelEvent(QWheelEvent* event) {
 	SAMSON::requestViewportUpdate();
 
 	pushAtoms();
+
+	// accept the event to not pass it to the parent class
+
+	event->accept();
 
 }
 

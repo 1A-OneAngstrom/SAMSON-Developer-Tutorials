@@ -25,7 +25,7 @@ void SEAtomShakerApp::shakeAtoms(const SBQuantity::length& distance) {
 	// collect all selected atoms in the active document
 	SAMSON::getActiveDocument()->getNodes(nodeIndexer, SBNode::IsType(SBNode::Atom) && SBNode::IsSelected());
 
-	SAMSON::setStatusMessage(QString("We found " + QString::number(nodeIndexer.size()) + QString(" atom(s).")), 0);
+	SAMSON::setStatusMessage(QString("We found " + QString::number(nodeIndexer.size()) + (nodeIndexer.size() == 1 ? QString(" atom.") : QString(" atom(s)."))), 0);
 
 	// create a random generator with custom seed
 	SBRandom randomGenerator(SAMSON::getTime());

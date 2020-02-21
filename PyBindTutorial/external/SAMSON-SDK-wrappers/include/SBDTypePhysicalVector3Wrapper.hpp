@@ -94,7 +94,7 @@ public:
 
 	std::vector<double>										getValue() const {
 
-		std::vector<double> ret = {(double)v[0].getValue(), (double)v[1].getValue(), (double)v[2].getValue()};
+		std::vector<double> ret = {v[0].getValue(), v[1].getValue(), v[2].getValue()};
 		return ret;
 
     }
@@ -408,7 +408,7 @@ public:
 	SBDTypePhysicalVector3Wrapper<Units>					normalizedVersion()	const {
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
-        if (norm == 0) return SBDTypePhysicalVector3Wrapper<Units>(0.0, 0.0, 0.0);
+		if (norm == 0.0) return SBDTypePhysicalVector3Wrapper<Units>(0.0, 0.0, 0.0);
         return SBDTypePhysicalVector3Wrapper<Units>(v[0].getValue() / norm, v[1].getValue() / norm, v[2].getValue() / norm);
 
     }
@@ -418,9 +418,13 @@ public:
 	SBDTypePhysicalVector3Wrapper<Units>					normalizedVersionWithUnits() const {
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
-		if (norm == 0) return SBDTypePhysicalVector3Wrapper<Units>( Units(0.0, v[0].getScale(), v[0].getExponent()),
-																	Units(0.0, v[1].getScale(), v[1].getExponent()),
-																	Units(0.0, v[2].getScale(), v[2].getExponent()));
+
+		if (norm == 0.0)
+			return SBDTypePhysicalVector3Wrapper<Units>(
+					Units(0.0, v[0].getScale(), v[0].getExponent()),
+					Units(0.0, v[1].getScale(), v[1].getExponent()),
+					Units(0.0, v[2].getScale(), v[2].getExponent()));
+
         return SBDTypePhysicalVector3Wrapper<Units>(v[0] / norm, v[1] / norm, v[2] / norm);
 
     }
@@ -431,7 +435,7 @@ public:
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
 
-        if (norm) {
+		if (norm != 0.0) {
 
             v[0] /= norm;
             v[1] /= norm;
@@ -449,7 +453,7 @@ public:
 
         double norm = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).getValue();
 
-        if (norm) {
+		if (norm != 0.0) {
 
             v[0] /= norm;
             v[1] /= norm;

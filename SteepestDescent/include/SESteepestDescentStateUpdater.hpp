@@ -21,9 +21,7 @@ public:
 	/// \name Rendering
 	//@{
 
-	virtual void												display();																///< Displays the state updater
-	virtual void												displayForShadow();														///< Displays the state updater for shadow purposes
-	virtual void												displayForSelection();													///< Displays the state updater for selection purposes
+	virtual void												display(RenderingPass renderingPass);									///< Displays the state updater
 
 	virtual void												expandBounds(SBIAPosition3& bounds) const;								///< Expands the bounds to make sure the state updater fits inside them
 

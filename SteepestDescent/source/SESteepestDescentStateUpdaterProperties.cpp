@@ -5,7 +5,7 @@
 
 SESteepestDescentStateUpdaterProperties::SESteepestDescentStateUpdaterProperties() {
 
-	stateUpdater = 0;
+	stateUpdater = nullptr;
 	ui.setupUi(this);
 	observer = new Observer(this);
 
@@ -22,7 +22,7 @@ SESteepestDescentStateUpdaterProperties::~SESteepestDescentStateUpdaterPropertie
 
 void SESteepestDescentStateUpdaterProperties::loadSettings(SBGSettings *settings) {
 
-	if (settings == 0) return;
+	if (settings == nullptr) return;
 
 	ui.spinBoxSteps->setValue(settings->loadIntValue("Steps", 1));
 	double v = settings->loadDoubleValue("StepSize", 1.0);
@@ -34,7 +34,7 @@ void SESteepestDescentStateUpdaterProperties::loadSettings(SBGSettings *settings
 
 void SESteepestDescentStateUpdaterProperties::saveSettings(SBGSettings *settings) {
 
-	if (settings == 0) return;
+	if (settings == nullptr) return;
 
 	settings->saveValue("Steps", ui.spinBoxSteps->value());
 	settings->saveValue("StepSize", ui.doubleSpinBoxStepSize->value());

@@ -125,6 +125,20 @@ void SEVanDerWaalsVisualModelProperties::onRadiusFactorChanged(double radiusFact
 
 }
 
+void SEVanDerWaalsVisualModelProperties::onOpacityValueChanged(int value) {
+
+	ui.labelOpacityValue->setText(QString::number(value) + "%");
+
+	if (!visualModel.isValid()) return;
+
+	// set the opacity for the visual model
+	visualModel->setOpacity(value);
+
+	// request re-rendering of the viewport
+	SAMSON::requestViewportUpdate();
+
+}
+
 SEVanDerWaalsVisualModelProperties::Observer::Observer(SEVanDerWaalsVisualModelProperties* properties) { this->properties = properties; }
 SEVanDerWaalsVisualModelProperties::Observer::~Observer() {}
 

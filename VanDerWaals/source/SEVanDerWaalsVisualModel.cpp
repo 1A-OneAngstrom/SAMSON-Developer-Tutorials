@@ -7,6 +7,20 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel() {
 
 	// SAMSON Element generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
 
+	minimumRadiusFactor = 0.0f;
+	maximumRadiusFactor = 3.0f;
+	radiusFactorSingleStep = 0.1f;
+	radiusFactor = 1.0f; // set a default radius factor
+
+	opacity = 1.0f;
+
+	numberOfAtoms = 0;
+	positionData = nullptr;
+	radiusData = nullptr;
+	colorData = nullptr;
+	flagData = nullptr;
+	nodeIndexData = nullptr;
+
 }
 
 SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeIndexer) {
@@ -16,7 +30,19 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 	// the center of mass of a group of atoms, you might want to connect to the atoms' base signals (e.g. to update the center of mass when an atom is erased) and
 	// the atoms' structural signals (e.g. to update the center of mass when an atom is moved).
 
+	minimumRadiusFactor = 0.0f;
+	maximumRadiusFactor = 3.0f;
+	radiusFactorSingleStep = 0.1f;
 	radiusFactor = 1.0f; // set a default radius factor
+
+	opacity = 1.0f;
+
+	numberOfAtoms = 0;
+	positionData = nullptr;
+	radiusData = nullptr;
+	colorData = nullptr;
+	flagData = nullptr;
+	nodeIndexData = nullptr;
 
 	SBNodeIndexer temporaryIndexer;
 	SB_FOR(SBNode* node, nodeIndexer)
@@ -34,6 +60,14 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 SEVanDerWaalsVisualModel::~SEVanDerWaalsVisualModel() {
 
 	// SAMSON Element generator pro tip: disconnect from signals you might have connected to.
+
+	// clean up the memory
+
+	delete[] positionData;
+	delete[] radiusData;
+	delete[] colorData;
+	delete[] flagData;
+	delete[] nodeIndexData;
 
 }
 
@@ -59,6 +93,16 @@ void SEVanDerWaalsVisualModel::serialize(SBCSerializer* serializer, const SBNode
 	// Write the radius factor
 
 	serializer->writeFloatElement("radiusFactor", radiusFactor);
+
+	// Write opacity
+
+	if (classVersionNumber >= SBVersionNumber(0, 10, 0)) {
+
+		// This attribute was introduced in the class v. 0.10.0
+
+		serializer->writeUnsignedIntElement("opacity", getOpacity());
+
+	}
 
 	// Write the number of atoms to which this visual model is applied
 
@@ -103,7 +147,17 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 
 	// Read the radius factor
 
-	radiusFactor = serializer->readFloatElement();
+	setRadiusFactor(serializer->readFloatElement());
+
+	// Read opacity
+
+	if (classVersionNumber >= SBVersionNumber(0, 10, 0)) {
+
+		// This attribute was introduced in the class v. 0.10.0
+
+		setOpacity(serializer->readUnsignedIntElement());
+
+	}
 
 	// Read the number of atoms to which this visual model is applied
 
@@ -145,114 +199,46 @@ void SEVanDerWaalsVisualModel::eraseImplementation() {
 
 }
 
-void SEVanDerWaalsVisualModel::display() {
+void SEVanDerWaalsVisualModel::updateDisplayData() {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. This is the main function of your visual model. 
-	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
+	// modify the size of display data arrays if necessary
 
-	unsigned int numberOfAtoms = atomIndexer.size();
+	if (numberOfAtoms != atomIndexer.size()) {
 
-	// allocate arrays and initialize them to zeros
+		numberOfAtoms = atomIndexer.size();
 
-	float* positionData = new float[3 * numberOfAtoms]();
-	float* radiusData = new float[numberOfAtoms]();
-	float* colorData = new float[4 * numberOfAtoms]();
-	unsigned int* flagData = new unsigned int[numberOfAtoms]();
+		// delete arrays
 
-	// retreive the pointer to the material applied to the visual model
+		if (positionData) delete[] positionData;
+		if (radiusData) delete[] radiusData;
+		if (colorData) delete[] colorData;
+		if (flagData) delete[] flagData;
+		if (nodeIndexData) delete[] nodeIndexData;
 
-	SBNodeMaterial* material = getMaterial();
+		if (numberOfAtoms == 0) {
 
-	// fill in the arrays
-
-	for (unsigned int i = 0; i < numberOfAtoms; i++) {
-
-		SBPointer<SBAtom> currentAtom = atomIndexer[i];
-		// check if the atom is not null
-		if (!currentAtom.isValid()) continue;
-		// check if the atom is not erased
-		if (currentAtom->isErased()) continue;
-
-		// fill the position array
-		SBPosition3 position = currentAtom->getPosition();
-		positionData[3 * i + 0] = (float)position.v[0].getValue();
-		positionData[3 * i + 1] = (float)position.v[1].getValue();
-		positionData[3 * i + 2] = (float)position.v[2].getValue();
-
-		// fill the radius array
-		radiusData[i] = radiusFactor * (float)currentAtom->getVanDerWaalsRadius().getValue();
-
-		// fill the color array based on the material applied to the visual model, if any
-		if (material) {
-
-			// if a material is applied to the visual model use its color scheme
-			material->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
-
-		}
-		else if (currentAtom->getMaterial()) {
-
-			// else if a material is applied to the current atom use its color scheme
-			currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+			positionData = nullptr;
+			radiusData = nullptr;
+			colorData = nullptr;
+			flagData = nullptr;
+			nodeIndexData = nullptr;
 
 		}
 		else {
 
-			// else set the default color based on CPK color
-			memcpy(&colorData[4 * i],
-					SBElementTable::getElement(currentAtom->getElementType()).getColorCPK(),
-					4 * sizeof(float));
+			// allocate arrays and initialize them [to zeros]
+
+			positionData = new float[3 * numberOfAtoms]();
+			radiusData = new float[numberOfAtoms]();
+			colorData = new float[4 * numberOfAtoms]();
+			flagData = new unsigned int[numberOfAtoms]();
+			nodeIndexData = new unsigned int[numberOfAtoms]();
 
 		}
 
-		// fill the flag array based on the combination of the flags for the visual model and the current atom
-		flagData[i] = currentAtom->getInheritedFlags() | getInheritedFlags();
-
 	}
 
-	// display spheres for atoms
-
-	SAMSON::displaySpheres(
-		numberOfAtoms,
-		positionData,
-		radiusData,
-		colorData,
-		flagData);
-
-	// clean up the memory
-
-	delete[] positionData;
-	delete[] radiusData;
-	delete[] colorData;
-	delete[] flagData;
-
-}
-
-void SEVanDerWaalsVisualModel::displayForShadow() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to compute shadows. 
-	// Implement this function so that your visual model can cast shadows to other objects in SAMSON, for example thanks to the utility
-	// functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-	display();
-
-}
-
-void SEVanDerWaalsVisualModel::displayForSelection() {
-
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop in order to perform object picking.
-	// Instead of rendering colors, your visual model is expected to write the index of a data graph node (obtained with getIndex()).
-	// Implement this function so that your visual model can be selected (if you render its own index) or can be used to select other objects (if you render 
-	// the other objects' indices), for example thanks to the utility functions provided by SAMSON (e.g. displaySpheresSelection, displayTrianglesSelection, etc.)
-
-	unsigned int numberOfAtoms = atomIndexer.size();
-
-	// allocate arrays and initialize them to zeros
-
-	float* positionData = new float[3 * numberOfAtoms]();
-	float* radiusData = new float[numberOfAtoms]();
-	unsigned int* nodeIndexData = new unsigned int[numberOfAtoms]();
-
-	// fill in the arrays
+	// fill in the common arrays
 
 	for (unsigned int i = 0; i < numberOfAtoms; i++) {
 
@@ -264,31 +250,114 @@ void SEVanDerWaalsVisualModel::displayForSelection() {
 
 		// fill the position array
 		SBPosition3 position = currentAtom->getPosition();
-		positionData[3 * i + 0] = (float)position.v[0].getValue();
-		positionData[3 * i + 1] = (float)position.v[1].getValue();
-		positionData[3 * i + 2] = (float)position.v[2].getValue();
+		positionData[3 * i + 0] = static_cast<float>(position.v[0].getValue());
+		positionData[3 * i + 1] = static_cast<float>(position.v[1].getValue());
+		positionData[3 * i + 2] = static_cast<float>(position.v[2].getValue());
 
 		// fill the radius array
-		radiusData[i] = radiusFactor * (float)currentAtom->getVanDerWaalsRadius().getValue();
-
-		// fill the node index array
-		nodeIndexData[i] = currentAtom->getNodeIndex();
+		radiusData[i] = radiusFactor * static_cast<float>(currentAtom->getVanDerWaalsRadius().getValue());
 
 	}
 
-	// display spheres for atoms
+}
 
-	SAMSON::displaySpheresSelection(
-		numberOfAtoms,
-		positionData,
-		radiusData,
-		nodeIndexData);
+void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
-	// clean up the memory
+	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. This is the main function of your visual model. 
+	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
-	delete[] positionData;
-	delete[] radiusData;
-	delete[] nodeIndexData;
+	if (renderingPass == SBNode::RenderingPass::OpaqueGeometry) {
+
+		// update display data arrays
+
+		updateDisplayData();
+
+		// retreive the pointer to the material applied to the visual model
+
+		SBNodeMaterial* material = getMaterial();
+
+		// fill in the arrays
+
+		for (unsigned int i = 0; i < numberOfAtoms; i++) {
+
+			SBPointer<SBAtom> currentAtom = atomIndexer[i];
+			// check if the atom is not null
+			if (!currentAtom.isValid()) continue;
+			// check if the atom is not erased
+			if (currentAtom->isErased()) continue;
+
+			// fill the color array based on the material applied to the visual model, if any
+			if (material) {
+
+				// if a material is applied to the visual model use its color scheme
+				material->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+
+			}
+			else if (currentAtom->getMaterial()) {
+
+				// else if a material is applied to the current atom use its color scheme
+				currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+
+			}
+			else {
+
+				// else set the default color based on CPK color
+				memcpy(&colorData[4 * i], SBElementTable::getElement(currentAtom->getElementType()).getColorCPK(), 4 * sizeof(float));
+
+			}
+
+			// set opacity
+			colorData[4 * i + 3] = opacity;
+
+			// fill the flag array based on the combination of the flags for the visual model and the current atom
+			flagData[i] = currentAtom->getInheritedFlags() | getInheritedFlags();
+
+		}
+
+		// display spheres for atoms
+
+		SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true);
+
+	}
+	else if (renderingPass == SBNode::RenderingPass::ShadowingGeometry) {
+
+		// display for shadows
+
+		// update display data arrays
+
+		updateDisplayData();
+
+		SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, nullptr, nullptr, true, true);
+
+	}
+	else if (renderingPass == SBNode::RenderingPass::SelectableGeometry) {
+
+		// display for selection
+
+		// update display data arrays
+
+		updateDisplayData();
+
+		// fill in the arrays
+
+		for (unsigned int i = 0; i < numberOfAtoms; i++) {
+
+			SBPointer<SBAtom> currentAtom = atomIndexer[i];
+			// check if the atom is not null
+			if (!currentAtom.isValid()) continue;
+			// check if the atom is not erased
+			if (currentAtom->isErased()) continue;
+
+			// fill the node index array
+			nodeIndexData[i] = currentAtom->getNodeIndex();
+
+		}
+
+		// display spheres for atoms
+
+		SAMSON::displaySpheresSelection(numberOfAtoms, positionData, radiusData, nodeIndexData);
+
+	}
 
 }
 
@@ -335,19 +404,60 @@ void SEVanDerWaalsVisualModel::onStructuralEvent(SBStructuralEvent* documentEven
 
 }
 
-const float& SEVanDerWaalsVisualModel::getRadiusFactor() const {
-
-	return radiusFactor;
-
-}
-
+const float& SEVanDerWaalsVisualModel::getRadiusFactor() const { return radiusFactor; }
 void SEVanDerWaalsVisualModel::setRadiusFactor(const float& r) {
 
-	if (r < 0.0f) return;
+	float prevValue = radiusFactor;
 
-	radiusFactor = r;
+	if (hasRadiusFactorRange()) {
 
-	// request re-rendering of the viewport
-	SAMSON::requestViewportUpdate();
+		if      (radiusFactor < getMinimumRadiusFactor()) radiusFactor = getMinimumRadiusFactor();
+		else if (radiusFactor > getMaximumRadiusFactor()) radiusFactor = getMaximumRadiusFactor();
+		else radiusFactor = r;
+
+	}
+	else
+		radiusFactor = r;
+
+	if (radiusFactor != prevValue) {
+
+		// request re-rendering of the viewport
+		SAMSON::requestViewportUpdate();
+
+	}
 
 }
+bool			SEVanDerWaalsVisualModel::hasRadiusFactorRange() const { return true; }
+const float&	SEVanDerWaalsVisualModel::getMinimumRadiusFactor() const { return minimumRadiusFactor; }
+const float&	SEVanDerWaalsVisualModel::getMaximumRadiusFactor() const { return maximumRadiusFactor; }
+const float&	SEVanDerWaalsVisualModel::getRadiusFactorSingleStep() const { return radiusFactorSingleStep; }
+std::string		SEVanDerWaalsVisualModel::getRadiusFactorSuffix() const { return std::string(""); }
+
+unsigned int SEVanDerWaalsVisualModel::getOpacity() const { return static_cast<unsigned int>(opacity * 100.0f); }
+void SEVanDerWaalsVisualModel::setOpacity(unsigned int opacity) {
+
+	float prevValue = this->opacity;
+
+	if (hasOpacityRange()) {
+
+		if      (opacity < getMinimumOpacity()) this->opacity = static_cast<float>(getMinimumOpacity()) / 100.0f;
+		else if (opacity > getMaximumOpacity()) this->opacity = static_cast<float>(getMaximumOpacity()) / 100.0f;
+		else this->opacity = static_cast<float>(opacity) / 100.0f;
+
+	}
+	else
+		this->opacity = static_cast<float>(opacity) / 100.0f;
+
+	if (prevValue != this->opacity)  {
+
+		// request re-rendering of the viewport
+		SAMSON::requestViewportUpdate();
+
+	}
+
+}
+bool			SEVanDerWaalsVisualModel::hasOpacityRange() const { return true; }
+unsigned int	SEVanDerWaalsVisualModel::getMinimumOpacity() const { return 0; }
+unsigned int	SEVanDerWaalsVisualModel::getMaximumOpacity() const { return 100; }
+unsigned int	SEVanDerWaalsVisualModel::getOpacitySingleStep() const { return 1; }
+std::string		SEVanDerWaalsVisualModel::getOpacitySuffix() const { return std::string("%"); }
