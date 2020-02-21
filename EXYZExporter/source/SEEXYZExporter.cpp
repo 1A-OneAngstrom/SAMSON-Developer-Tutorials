@@ -9,7 +9,7 @@ SEEXYZExporter::SEEXYZExporter() {
 
 	// remove the options window
 
-	propertyDialog = 0;
+	propertyDialog = nullptr;
 
 	//propertyDialog = new SEEXYZExporterGUI(this);
 	//propertyDialog->loadDefaultSettings();

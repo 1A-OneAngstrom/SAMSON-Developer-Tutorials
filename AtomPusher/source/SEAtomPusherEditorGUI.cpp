@@ -18,7 +18,7 @@ SEAtomPusherEditor* SEAtomPusherEditorGUI::getEditor() const { return editor; }
 
 void SEAtomPusherEditorGUI::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so your editor can save its GUI state from one session to the next
 
@@ -26,7 +26,7 @@ void SEAtomPusherEditorGUI::loadSettings( SBGSettings *settings ) {
 
 void SEAtomPusherEditorGUI::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so your editor can save its GUI state from one session to the next
 

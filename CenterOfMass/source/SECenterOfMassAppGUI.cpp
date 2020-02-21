@@ -17,7 +17,7 @@ SECenterOfMassApp* SECenterOfMassAppGUI::getApp() const { return static_cast<SEC
 
 void SECenterOfMassAppGUI::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -25,7 +25,7 @@ void SECenterOfMassAppGUI::loadSettings( SBGSettings *settings ) {
 
 void SECenterOfMassAppGUI::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
 

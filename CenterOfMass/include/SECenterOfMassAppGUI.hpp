@@ -20,15 +20,15 @@ public:
 	/// \name Constructors and destructors
 	//@{
 
-	SECenterOfMassAppGUI(SECenterOfMassApp* t);																									///< Constructs a GUI for the app
-	virtual ~SECenterOfMassAppGUI();																										///< Destructs the GUI of the app
+	SECenterOfMassAppGUI(SECenterOfMassApp* t);																							///< Constructs a GUI for the app
+	virtual ~SECenterOfMassAppGUI();																									///< Destructs the GUI of the app
 
 	//@}
 
 	/// \name App
 	//@{
 
-	SECenterOfMassApp*												getApp() const;															///< Returns a pointer to the app
+	SECenterOfMassApp*											getApp() const;															///< Returns a pointer to the app
 
 	//@}
 
@@ -46,8 +46,8 @@ public:
 	///\name Settings
 	//@{
 
-	void														loadSettings(SBGSettings* settings);										///< Load GUI settings
-	void														saveSettings(SBGSettings* settings);										///< Save GUI settings
+	void														loadSettings(SBGSettings* settings);									///< Load GUI settings
+	void														saveSettings(SBGSettings* settings);									///< Save GUI settings
 
 	//@}
 

@@ -18,7 +18,7 @@ SEEXYZImporter* SEEXYZImporterGUI::getImporter() const { return static_cast<SEEX
 
 void SEEXYZImporterGUI::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
@@ -28,7 +28,7 @@ void SEEXYZImporterGUI::loadSettings( SBGSettings *settings ) {
 
 void SEEXYZImporterGUI::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == NULL ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 

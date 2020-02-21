@@ -5,7 +5,7 @@
 
 SESpringsInteractionModelProperties::SESpringsInteractionModelProperties() {
 
-	interactionModel = 0;
+	interactionModel = nullptr;
 	ui.setupUi( this );
 	observer = new Observer(this);
 
@@ -22,7 +22,7 @@ SESpringsInteractionModelProperties::~SESpringsInteractionModelProperties() {
 
 void SESpringsInteractionModelProperties::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == 0 ) return;
+	if ( settings == nullptr ) return;
 	
 	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
@@ -34,7 +34,7 @@ void SESpringsInteractionModelProperties::loadSettings( SBGSettings *settings ) 
 
 void SESpringsInteractionModelProperties::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == 0 ) return;
+	if ( settings == nullptr ) return;
 
 	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 

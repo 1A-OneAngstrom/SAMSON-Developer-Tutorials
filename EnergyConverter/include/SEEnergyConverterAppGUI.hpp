@@ -19,15 +19,15 @@ public:
 	/// \name Constructors and destructors
 	//@{
 
-	SEEnergyConverterAppGUI(SEEnergyConverterApp* t);																									///< Constructs a GUI for the app
-	virtual ~SEEnergyConverterAppGUI();																										///< Destructs the GUI of the app
+	SEEnergyConverterAppGUI(SEEnergyConverterApp* t);																					///< Constructs a GUI for the app
+	virtual ~SEEnergyConverterAppGUI();																									///< Destructs the GUI of the app
 
 	//@}
 
 	/// \name App
 	//@{
 
-	SEEnergyConverterApp*												getApp() const;															///< Returns a pointer to the app
+	SEEnergyConverterApp*												getApp() const;													///< Returns a pointer to the app
 
 	//@}
 
@@ -45,8 +45,8 @@ public:
 	///\name Settings
 	//@{
 
-	void														loadSettings(SBGSettings* settings);										///< Load GUI settings
-	void														saveSettings(SBGSettings* settings);										///< Save GUI settings
+	void														loadSettings(SBGSettings* settings);									///< Load GUI settings
+	void														saveSettings(SBGSettings* settings);									///< Save GUI settings
 
 	//@}
 

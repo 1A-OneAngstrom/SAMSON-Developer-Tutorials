@@ -6,7 +6,7 @@ SECenterOfMassApp::SECenterOfMassApp() {
 	setGUI(new SECenterOfMassAppGUI(this));
 	getGUI()->loadDefaultSettings();
 
-	positionArray = 0;
+	positionArray = nullptr;
 
 }
 
@@ -42,8 +42,21 @@ void SECenterOfMassApp::computeCenterOfMass() {
 	SBPointerIndexer<SBNode> const* selectedNodes = SAMSON::getActiveDocument()->getSelectedNodes();
 
 	SBNodeIndexer temporaryIndexer;
-	SB_FOR(SBNode* node, *selectedNodes)
-		node->getNodes(temporaryIndexer, SBNode::IsType(SBNode::Atom));
+	if (selectedNodes->size() > 0) {
+
+		// if there are nodes that are selected then get atoms from the selected nodes
+
+		SB_FOR(SBNode* node, *selectedNodes)
+			node->getNodes(temporaryIndexer, SBNode::IsType(SBNode::Atom));
+
+	}
+	else {
+
+		// if nothing is selected then select all atoms in the active document
+
+		SAMSON::getActiveDocument()->getNodes(temporaryIndexer, SBNode::IsType(SBNode::Atom));
+
+	}
 
 	// store pointers to atoms
 
@@ -69,7 +82,7 @@ void SECenterOfMassApp::computeCenterOfMass() {
 	SB_FOR(SBAtom* atom, atomIndexer)
 		centerOfMass += atom->getPosition();
 
-	centerOfMass /= (double)atomIndexer.size();
+	centerOfMass /= static_cast<double>(atomIndexer.size());
 
 	// display the center of mass
 

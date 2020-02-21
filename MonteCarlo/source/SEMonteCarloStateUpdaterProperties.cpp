@@ -5,7 +5,7 @@
 
 SEMonteCarloStateUpdaterProperties::SEMonteCarloStateUpdaterProperties() {
 
-	stateUpdater = 0;
+	stateUpdater = nullptr;
 	ui.setupUi(this);
 	observer = new Observer(this);
 
@@ -22,7 +22,7 @@ SEMonteCarloStateUpdaterProperties::~SEMonteCarloStateUpdaterProperties() {
 
 void SEMonteCarloStateUpdaterProperties::loadSettings(SBGSettings *settings) {
 
-	if (settings == 0) return;
+	if (settings == nullptr) return;
 
 	ui.spinBoxNumberOfMovingParticles->setValue(settings->loadIntValue("spinBoxNumberOfMovingParticles", 1));
 	double v = settings->loadDoubleValue("doubleSpinBoxTemperature", 1.0);
@@ -34,7 +34,7 @@ void SEMonteCarloStateUpdaterProperties::loadSettings(SBGSettings *settings) {
 
 void SEMonteCarloStateUpdaterProperties::saveSettings(SBGSettings *settings) {
 
-	if (settings == 0) return;
+	if (settings == nullptr) return;
 
 	settings->saveValue("doubleSpinBoxTemperature", ui.doubleSpinBoxTemperature->value());
 	settings->saveValue("spinBoxNumberOfMovingParticles", ui.spinBoxNumberOfMovingParticles->value());

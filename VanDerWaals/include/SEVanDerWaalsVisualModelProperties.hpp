@@ -76,6 +76,7 @@ public slots:
 	//@{
 
 	void														onRadiusFactorChanged(double radiusFactor);
+	void														onOpacityValueChanged(int value);
 
 	//@}
 

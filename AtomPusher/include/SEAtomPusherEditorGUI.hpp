@@ -20,15 +20,15 @@ public:
 	/// \name Constructors and destructors
 	//@{
 
-	SEAtomPusherEditorGUI(SEAtomPusherEditor* editor);																		///< Constructs a GUI for the editor
-	virtual ~SEAtomPusherEditorGUI();																										///< Destructs the GUI of the editor
+	SEAtomPusherEditorGUI(SEAtomPusherEditor* editor);																					///< Constructs a GUI for the editor
+	virtual ~SEAtomPusherEditorGUI();																									///< Destructs the GUI of the editor
 
 	//@}
 
 	/// \name Editor
 	//@{
 
-	SEAtomPusherEditor*												getEditor() const;														///< Returns a pointer to the editor
+	SEAtomPusherEditor*											getEditor() const;														///< Returns a pointer to the editor
 
 	//@}
 
@@ -46,15 +46,15 @@ public:
 	///\name Settings
 	//@{
 
-	void														loadSettings(SBGSettings* settings);										///< Load GUI settings
-	void														saveSettings(SBGSettings* settings);										///< Save GUI settings
+	void														loadSettings(SBGSettings* settings);									///< Load GUI settings
+	void														saveSettings(SBGSettings* settings);									///< Save GUI settings
 
 	//@}
 
 private:
 
-	Ui::SEAtomPusherEditorGUIClass									ui;
-	SEAtomPusherEditor*												editor;
+	Ui::SEAtomPusherEditorGUIClass								ui;
+	SEAtomPusherEditor*											editor;
 
 };
 
