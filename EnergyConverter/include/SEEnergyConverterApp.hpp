@@ -6,9 +6,9 @@
 
 /// This class implements the functionality of the app
 
-// SAMSON Element generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEEnergyConverterAppGUI class
+// SAMSON Extension generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEEnergyConverterAppGUI class
 
-class SEEnergyConverterApp : public SBDApp {
+class SB_EXPORT SEEnergyConverterApp : public SBDApp {
 
 	SB_CLASS
 
@@ -17,7 +17,7 @@ public :
 	/// \name Constructors and destructors
 	//@{
 
-	SEEnergyConverterApp();																													///< Constructs an app
+	SEEnergyConverterApp();																														///< Constructs an app
 	virtual ~SEEnergyConverterApp();																											///< Destructs the app
 
 	//@}

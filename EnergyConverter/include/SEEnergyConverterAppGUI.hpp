@@ -8,9 +8,9 @@ class SEEnergyConverterApp;
 
 /// This class implements the GUI of the app
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEEnergyConverterApp class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEEnergyConverterApp class
 
-class SEEnergyConverterAppGUI : public SBGApp {
+class SB_EXPORT SEEnergyConverterAppGUI : public SBGApp {
 
 	Q_OBJECT
 
@@ -27,7 +27,7 @@ public:
 	/// \name App
 	//@{
 
-	SEEnergyConverterApp*												getApp() const;													///< Returns a pointer to the app
+	SEEnergyConverterApp*										getApp() const;															///< Returns a pointer to the app
 
 	//@}
 
@@ -52,14 +52,14 @@ public:
 
 public slots:
 
-	// SAMSON Element generator pro tip: add slots here to interact with your app
+	// SAMSON Extension generator pro tip: add slots here to interact with your app
 
 	void														onLeftChanged();
 	void														onRightChanged();
 
 private:
 
-	Ui::SEEnergyConverterAppGUIClass									ui;
+	Ui::SEEnergyConverterAppGUIClass							ui;
 
 };
 

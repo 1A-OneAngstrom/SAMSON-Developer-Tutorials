@@ -8,9 +8,9 @@
 
 /// This class implements the functionality of the app
 
-// SAMSON Element generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SECenterOfMassAppGUI class
+// SAMSON Extension generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SECenterOfMassAppGUI class
 
-class SECenterOfMassApp : public SBDApp {
+class SB_EXPORT SECenterOfMassApp : public SBDApp {
 
 	SB_CLASS
 
@@ -38,7 +38,7 @@ public :
 	SBPointerIndexer<SBAtom>										atomIndexer;
 
 	SBPosition3														centerOfMass;
-	SBPosition3*													positionArray;
+	SBPosition3*													positionArray{ nullptr };
 
 };
 

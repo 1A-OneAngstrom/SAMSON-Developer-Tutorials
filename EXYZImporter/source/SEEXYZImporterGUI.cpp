@@ -20,7 +20,7 @@ void SEEXYZImporterGUI::loadSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so your importer can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
 	ui.checkBoxCreateCovalentBonds->setChecked( settings->loadBoolValue("checkBoxCreateCovalentBonds", true) );
 
@@ -30,7 +30,7 @@ void SEEXYZImporterGUI::saveSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so your importer can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
 	settings->saveValue("checkBoxCreateCovalentBonds", ui.checkBoxCreateCovalentBonds->isChecked());
 
@@ -40,7 +40,7 @@ SBCContainerUUID SEEXYZImporterGUI::getUUID() const { return SBCContainerUUID( "
 
 QPixmap SEEXYZImporterGUI::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your importer.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/icons/SEEXYZImporterIcon.png"));
@@ -49,7 +49,7 @@ QPixmap SEEXYZImporterGUI::getLogo() const {
 
 QString SEEXYZImporterGUI::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your importer inside SAMSON
 
 	return "DevTutorial: EXYZ Importer";
@@ -58,7 +58,7 @@ QString SEEXYZImporterGUI::getName() const {
 
 int SEEXYZImporterGUI::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -71,7 +71,7 @@ int SEEXYZImporterGUI::getFormat() const {
 
 QString SEEXYZImporterGUI::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this importer in your work, please cite: <br/>"

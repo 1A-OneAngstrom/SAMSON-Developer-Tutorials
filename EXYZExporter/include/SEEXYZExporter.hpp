@@ -6,9 +6,9 @@
 
 /// This class implements the functionality of the exporter
 
-// SAMSON Element generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEEXYZExporterGUI class
+// SAMSON Extension generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEEXYZExporterGUI class
 
-class SEEXYZExporter : public SBIFileExporter {
+class SB_EXPORT SEEXYZExporter : public SBIFileExporter {
 
 	SB_CLASS
 

@@ -46,15 +46,18 @@ void SECenterOfMassApp::computeCenterOfMass() {
 
 		// if there are nodes that are selected then get atoms from the selected nodes
 
-		SB_FOR(SBNode* node, *selectedNodes)
-			node->getNodes(temporaryIndexer, SBNode::IsType(SBNode::Atom));
+		SB_FOR(SBNode * node, *selectedNodes) {
+
+			node->getNodes(temporaryIndexer, SBNode::Atom);
+
+		}
 
 	}
 	else {
 
 		// if nothing is selected then select all atoms in the active document
 
-		SAMSON::getActiveDocument()->getNodes(temporaryIndexer, SBNode::IsType(SBNode::Atom));
+		SAMSON::getActiveDocument()->getNodes(temporaryIndexer, SBNode::Atom);
 
 	}
 
@@ -98,7 +101,7 @@ void SECenterOfMassApp::onStructuralEvent(SBStructuralEvent* event) {
 
 		// get the index of the atom in the atom indexer
 
-		unsigned int atomIndex = atomIndexer.getIndex(atom);
+		const unsigned int atomIndex = atomIndexer.getIndex(atom);
 
 		// subtract the old position
 

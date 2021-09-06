@@ -2,7 +2,7 @@
 
 #include "SBSStateUpdaterParticleSystem.hpp"
 
-class SESteepestDescentStateUpdater : public SBSStateUpdaterParticleSystem {
+class SB_EXPORT SESteepestDescentStateUpdater : public SBSStateUpdaterParticleSystem {
 
 	SB_CLASS
 

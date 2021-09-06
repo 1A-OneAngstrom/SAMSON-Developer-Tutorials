@@ -8,9 +8,9 @@ class SEEXYZImporter;
 
 /// This class implements the GUI of the importer
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEEXYZImporter class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEEXYZImporter class
 
-class SEEXYZImporterGUI : public SBGFileImporter {
+class SB_EXPORT SEEXYZImporterGUI : public SBGFileImporter {
 
 	Q_OBJECT
 

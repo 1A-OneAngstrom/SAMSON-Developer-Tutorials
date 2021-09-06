@@ -7,7 +7,7 @@
 
 // Class descriptor
 
-// SAMSON Element generator pro tip: complete this descriptor to expose this class to SAMSON and other SAMSON Elements
+// SAMSON Extension generator pro tip: complete this descriptor to expose this class to SAMSON and other SAMSON Extensions
 
 SB_CLASS_BEGIN(SESpringsInteractionModelProperties);
 

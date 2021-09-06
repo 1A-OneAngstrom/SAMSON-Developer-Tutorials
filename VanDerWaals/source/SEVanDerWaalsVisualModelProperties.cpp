@@ -22,17 +22,17 @@ SEVanDerWaalsVisualModelProperties::~SEVanDerWaalsVisualModelProperties() {
 
 void SEVanDerWaalsVisualModelProperties::loadSettings( SBGSettings *settings ) {
 
-	if ( settings == 0 ) return;
+	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
 void SEVanDerWaalsVisualModelProperties::saveSettings( SBGSettings *settings ) {
 
-	if ( settings == 0 ) return;
+	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
@@ -40,7 +40,7 @@ SBCContainerUUID SEVanDerWaalsVisualModelProperties::getUUID() const { return SB
 
 QPixmap SEVanDerWaalsVisualModelProperties::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your visual model.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/Icons/SEVanDerWaalsVisualModelPropertiesIcon.png"));
@@ -49,7 +49,7 @@ QPixmap SEVanDerWaalsVisualModelProperties::getLogo() const {
 
 QString SEVanDerWaalsVisualModelProperties::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your visual model inside SAMSON
 
 	return "Dev tutorial: Van Der Waals Visual Model";
@@ -58,7 +58,7 @@ QString SEVanDerWaalsVisualModelProperties::getName() const {
 
 int SEVanDerWaalsVisualModelProperties::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -71,7 +71,7 @@ int SEVanDerWaalsVisualModelProperties::getFormat() const {
 
 QString SEVanDerWaalsVisualModelProperties::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this visual model in your work, please cite: <br/>"
@@ -125,20 +125,6 @@ void SEVanDerWaalsVisualModelProperties::onRadiusFactorChanged(double radiusFact
 
 }
 
-void SEVanDerWaalsVisualModelProperties::onOpacityValueChanged(int value) {
-
-	ui.labelOpacityValue->setText(QString::number(value) + "%");
-
-	if (!visualModel.isValid()) return;
-
-	// set the opacity for the visual model
-	visualModel->setOpacity(value);
-
-	// request re-rendering of the viewport
-	SAMSON::requestViewportUpdate();
-
-}
-
 SEVanDerWaalsVisualModelProperties::Observer::Observer(SEVanDerWaalsVisualModelProperties* properties) { this->properties = properties; }
 SEVanDerWaalsVisualModelProperties::Observer::~Observer() {}
 
@@ -152,7 +138,7 @@ void SEVanDerWaalsVisualModelProperties::Observer::onVisualEvent(SBVisualEvent* 
 
 	if (visualEvent->getType() == SBVisualEvent::VisualModelChanged) {
 		
-		// SAMSON Element generator pro tip: modify this function if the property window
+		// SAMSON Extension generator pro tip: modify this function if the property window
 		// needs to be updated when the VisualModelChanged event is sent
 				
 	}

@@ -8,9 +8,9 @@ class SEAtomShakerApp;
 
 /// This class implements the GUI of the app
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEAtomShakerApp class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEAtomShakerApp class
 
-class SEAtomShakerAppGUI : public SBGApp {
+class SB_EXPORT SEAtomShakerAppGUI : public SBGApp {
 
 	Q_OBJECT
 

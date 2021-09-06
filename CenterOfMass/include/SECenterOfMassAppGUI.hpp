@@ -9,9 +9,9 @@ class SECenterOfMassApp;
 
 /// This class implements the GUI of the app
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SECenterOfMassApp class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SECenterOfMassApp class
 
-class SECenterOfMassAppGUI : public SBGApp {
+class SB_EXPORT SECenterOfMassAppGUI : public SBGApp {
 
 	Q_OBJECT
 
@@ -55,13 +55,13 @@ public:
 
 public slots:
 
-	// SAMSON Element generator pro tip: add slots here to interact with your app
+	// SAMSON Extension generator pro tip: add slots here to interact with your app
 
 	void														onComputeCenterOfMass();
 
 private:
 
-	Ui::SECenterOfMassAppGUIClass									ui;
+	Ui::SECenterOfMassAppGUIClass								ui;
 
 };
 

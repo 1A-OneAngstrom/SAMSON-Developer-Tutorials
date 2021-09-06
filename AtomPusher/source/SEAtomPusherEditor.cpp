@@ -4,7 +4,7 @@
 
 SEAtomPusherEditor::SEAtomPusherEditor() {
 
-	// SAMSON Element generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
+	// SAMSON Extension generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
 
 	//propertyWidget = new SEAtomPusherEditorGUI(this);
 	//propertyWidget->loadDefaultSettings();
@@ -20,7 +20,7 @@ SEAtomPusherEditor::SEAtomPusherEditor() {
 
 SEAtomPusherEditor::~SEAtomPusherEditor() {
 
-	// SAMSON Element generator pro tip: disconnect from signals you might have connected to.
+	// SAMSON Extension generator pro tip: disconnect from signals you might have connected to.
 
 	//propertyWidget->saveDefaultSettings();
 	//delete propertyWidget;
@@ -33,7 +33,7 @@ SBCContainerUUID SEAtomPusherEditor::getUUID() const { return SBCContainerUUID("
 
 QString SEAtomPusherEditor::getName() const { 
 
-	// SAMSON Element generator pro tip: this name should not be changed
+	// SAMSON Extension generator pro tip: this name should not be changed
 
 	return "DevTutorial: Atom pusher";
 
@@ -41,7 +41,7 @@ QString SEAtomPusherEditor::getName() const {
 
 QString SEAtomPusherEditor::getDescription() const {
 
-	// SAMSON Element generator pro tip: modify this function to return a user-friendly string that will be displayed in menus
+	// SAMSON Extension generator pro tip: modify this function to return a user-friendly string that will be displayed in menus
 
 	return QObject::tr("DevTutorial: Atom pusher");
 
@@ -49,7 +49,7 @@ QString SEAtomPusherEditor::getDescription() const {
 
 QPixmap SEAtomPusherEditor::getLogo() const {
 
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your editor.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/icons/SEAtomPusherEditorIcon.png"));
@@ -58,7 +58,7 @@ QPixmap SEAtomPusherEditor::getLogo() const {
 
 QKeySequence SEAtomPusherEditor::getShortcut() const { 
 	
-	// SAMSON Element generator pro tip: modify this function to associate a tentative shortcut to your editor
+	// SAMSON Extension generator pro tip: modify this function to associate a tentative shortcut to your editor
 
 	return QKeySequence(""); 
 
@@ -66,7 +66,7 @@ QKeySequence SEAtomPusherEditor::getShortcut() const {
 
 QString SEAtomPusherEditor::getToolTip() const { 
 	
-	// SAMSON Element generator pro tip: modify this function to have your editor display a tool tip in the SAMSON GUI when the mouse hovers the editor's icon
+	// SAMSON Extension generator pro tip: modify this function to have your editor display a tool tip in the SAMSON GUI when the mouse hovers the editor's icon
 
 	return QObject::tr("Pushes atoms when pressed");
 
@@ -74,21 +74,21 @@ QString SEAtomPusherEditor::getToolTip() const {
 
 void SEAtomPusherEditor::beginEditing() {
 
-	// SAMSON Element generator pro tip: SAMSON calls this function when your editor becomes active. 
+	// SAMSON Extension generator pro tip: SAMSON calls this function when your editor becomes active. 
 	// Implement this function if you need to prepare some data structures in order to be able to handle GUI or SAMSON events.
 
 }
 
 void SEAtomPusherEditor::endEditing() {
 
-	// SAMSON Element generator pro tip: SAMSON calls this function immediately before your editor becomes inactive (for example when another editor becomes active). 
+	// SAMSON Extension generator pro tip: SAMSON calls this function immediately before your editor becomes inactive (for example when another editor becomes active). 
 	// Implement this function if you need to clean some data structures.
 
 }
 
 void SEAtomPusherEditor::getActions(SBVector<SBAction*>& actionVector) {
 
-	// SAMSON Element generator pro tip: SAMSON calls this function to show the user actions associated to your editor in context menus.
+	// SAMSON Extension generator pro tip: SAMSON calls this function to show the user actions associated to your editor in context menus.
 	// Append actions to the actionVector if necessary.
 	// Please refer to tutorials for examples.
 
@@ -96,7 +96,7 @@ void SEAtomPusherEditor::getActions(SBVector<SBAction*>& actionVector) {
 
 void SEAtomPusherEditor::display(RenderingPass renderingPass) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. 
+	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
 	if (renderingPass == SBGEditor::RenderingPass::OpaqueGeometry || renderingPass == SBGEditor::RenderingPass::ShadowingGeometry) {
@@ -153,7 +153,7 @@ void SEAtomPusherEditor::display(RenderingPass renderingPass) {
 
 void SEAtomPusherEditor::mousePressEvent(QMouseEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 	if (event->button() == Qt::MouseButton::LeftButton) {
@@ -171,7 +171,7 @@ void SEAtomPusherEditor::mousePressEvent(QMouseEvent* event) {
 
 void SEAtomPusherEditor::mouseReleaseEvent(QMouseEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 	if (event->button() == Qt::MouseButton::LeftButton) {
@@ -190,7 +190,7 @@ void SEAtomPusherEditor::pushAtoms() {
 
 	// get an indexer of all atoms in the active document
 	SBNodeIndexer nodeIndexer;
-	SAMSON::getActiveDocument()->getNodes(nodeIndexer, SBNode::IsType(SBNode::Atom));
+	SAMSON::getActiveDocument()->getNodes(nodeIndexer, SBNode::Atom);
 
 	// start the undoable operation
 	SAMSON::beginHolding("Pushed atoms");
@@ -225,7 +225,7 @@ void SEAtomPusherEditor::pushAtoms() {
 
 void SEAtomPusherEditor::mouseMoveEvent(QMouseEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 	SBPosition3 nodePosition;
@@ -244,14 +244,14 @@ void SEAtomPusherEditor::mouseMoveEvent(QMouseEvent* event) {
 
 void SEAtomPusherEditor::mouseDoubleClickEvent(QMouseEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 }
 
 void SEAtomPusherEditor::wheelEvent(QWheelEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 	int angle = event->delta();
@@ -271,38 +271,38 @@ void SEAtomPusherEditor::wheelEvent(QWheelEvent* event) {
 
 void SEAtomPusherEditor::keyPressEvent(QKeyEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 }
 
 void SEAtomPusherEditor::keyReleaseEvent(QKeyEvent* event) {
 
-	// SAMSON Element generator pro tip: SAMSON redirects Qt events to the active editor. 
+	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
 }
 
 void SEAtomPusherEditor::onBaseEvent(SBBaseEvent* baseEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle base events
+	// SAMSON Extension generator pro tip: implement this function if you need to handle base events
 
 }
 
 void SEAtomPusherEditor::onDocumentEvent(SBDocumentEvent* documentEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle document events 
+	// SAMSON Extension generator pro tip: implement this function if you need to handle document events 
 
 }
 
 void SEAtomPusherEditor::onDynamicalEvent(SBDynamicalEvent* dynamicalEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle dynamical events 
+	// SAMSON Extension generator pro tip: implement this function if you need to handle dynamical events 
 
 }
 
 void SEAtomPusherEditor::onStructuralEvent(SBStructuralEvent* documentEvent) {
 	
-	// SAMSON Element generator pro tip: implement this function if you need to handle structural events
+	// SAMSON Extension generator pro tip: implement this function if you need to handle structural events
 
 }

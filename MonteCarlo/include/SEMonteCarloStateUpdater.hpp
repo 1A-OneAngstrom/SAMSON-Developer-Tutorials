@@ -4,7 +4,7 @@
 #include "SBRandom.hpp"
 #include "SAMSON.hpp"
 
-class SEMonteCarloStateUpdater : public SBSStateUpdaterParticleSystem {
+class SB_EXPORT SEMonteCarloStateUpdater : public SBSStateUpdaterParticleSystem {
 
 	SB_CLASS
 
@@ -40,7 +40,6 @@ public:
 	void														setTemperature(SBQuantity::temperature T);
 
 	//@}
-
 
 private:
 

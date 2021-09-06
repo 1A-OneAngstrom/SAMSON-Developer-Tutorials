@@ -28,7 +28,7 @@ void SEMonteCarloStateUpdaterProperties::loadSettings(SBGSettings *settings) {
 	double v = settings->loadDoubleValue("doubleSpinBoxTemperature", 1.0);
 	ui.doubleSpinBoxTemperature->setValue(v);
 
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
@@ -39,7 +39,7 @@ void SEMonteCarloStateUpdaterProperties::saveSettings(SBGSettings *settings) {
 	settings->saveValue("doubleSpinBoxTemperature", ui.doubleSpinBoxTemperature->value());
 	settings->saveValue("spinBoxNumberOfMovingParticles", ui.spinBoxNumberOfMovingParticles->value());
 
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
@@ -47,7 +47,7 @@ SBCContainerUUID SEMonteCarloStateUpdaterProperties::getUUID() const { return SB
 
 QPixmap SEMonteCarloStateUpdaterProperties::getLogo() const {
 
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your state updater.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/Icons/SEMonteCarloStateUpdaterPropertiesIcon.png"));
@@ -56,7 +56,7 @@ QPixmap SEMonteCarloStateUpdaterProperties::getLogo() const {
 
 QString SEMonteCarloStateUpdaterProperties::getName() const {
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your state updater inside SAMSON
 
 	return "DevTutorial: Monte Carlo";
@@ -65,7 +65,7 @@ QString SEMonteCarloStateUpdaterProperties::getName() const {
 
 int SEMonteCarloStateUpdaterProperties::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -78,7 +78,7 @@ int SEMonteCarloStateUpdaterProperties::getFormat() const {
 
 QString SEMonteCarloStateUpdaterProperties::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this state updater in your work, please cite: <br/>"

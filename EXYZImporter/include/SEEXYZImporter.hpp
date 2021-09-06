@@ -7,9 +7,9 @@
 
 /// This class implements the functionality of the importer
 
-// SAMSON Element generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEEXYZImporterGUI class
+// SAMSON Extension generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEEXYZImporterGUI class
 
-class SEEXYZImporter : public SBIFileImporter {
+class SB_EXPORT SEEXYZImporter : public SBIFileImporter {
 
 	SB_CLASS
 
@@ -51,7 +51,7 @@ private:
 
 private:
 
-	bool														createCovalentBonds;
+	bool														createCovalentBonds = true;
 
 };
 

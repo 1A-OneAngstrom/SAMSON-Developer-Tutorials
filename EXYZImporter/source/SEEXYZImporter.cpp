@@ -19,7 +19,7 @@ SEEXYZImporter::~SEEXYZImporter() {
 
 std::string SEEXYZImporter::getFilter() const {
 
-	// SAMSON Element generator pro tip: modify this function to return the filter of the importer
+	// SAMSON Extension generator pro tip: modify this function to return the filter of the importer
 
 	return std::string("EXYZ format (*.exyz)");
 
@@ -27,7 +27,7 @@ std::string SEEXYZImporter::getFilter() const {
 
 std::string SEEXYZImporter::getExtension() const {
 
-	// SAMSON Element generator pro tip: modify this function to return the extension of the importer
+	// SAMSON Extension generator pro tip: modify this function to return the extension of the importer
 
 	return std::string("exyz");
 
@@ -167,7 +167,7 @@ bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocum
 
 bool SEEXYZImporter::importFromFile(const std::string& fileName, const SBList<std::string>* parameters, SBDDocumentFolder *preferredFolder) {
 
-	// SAMSON Element generator pro tip: modify this function to parse the contents of a file and add new nodes to SAMSON's data graph.
+	// SAMSON Extension generator pro tip: modify this function to parse the contents of a file and add new nodes to SAMSON's data graph.
 	// Please refer to tutorials for examples.
 
 	initializeParameters(parameters);
