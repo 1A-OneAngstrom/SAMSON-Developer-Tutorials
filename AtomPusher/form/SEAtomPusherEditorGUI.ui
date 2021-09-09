@@ -23,7 +23,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>SAMSON Element generator pro tip: modify me</string>
+      <string>SAMSON Extension generator pro tip: modify me</string>
      </property>
     </widget>
    </item>

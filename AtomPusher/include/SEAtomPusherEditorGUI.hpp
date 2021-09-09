@@ -8,10 +8,10 @@ class SEAtomPusherEditor;
 
 /// This class implements the GUI of the editor
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. 
+// SAMSON Extension generator pro tip: add GUI functionality in this class. 
 // The non-GUI functionality (and the mouse and keyboard event handling methods that are specific to the editor) should go in the SEAtomPusherEditor class
 
-class SEAtomPusherEditorGUI : public SBGWindowWidget {
+class SB_EXPORT SEAtomPusherEditorGUI : public SBGWindowWidget {
 
 	Q_OBJECT
 
@@ -54,7 +54,7 @@ public:
 private:
 
 	Ui::SEAtomPusherEditorGUIClass								ui;
-	SEAtomPusherEditor*											editor;
+	SEAtomPusherEditor*											editor{ nullptr };
 
 };
 

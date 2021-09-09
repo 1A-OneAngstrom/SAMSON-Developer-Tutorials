@@ -4,7 +4,7 @@
 
 SESpringsInteractionModel::SESpringsInteractionModel() : SBMInteractionModelParticleSystem(nullptr) {
 
-	// SAMSON Element generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
+	// SAMSON Extension generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
 
 	bondSpringStiffness = 1.0;
 
@@ -12,7 +12,7 @@ SESpringsInteractionModel::SESpringsInteractionModel() : SBMInteractionModelPart
 
 SESpringsInteractionModel::SESpringsInteractionModel(SBParticleSystem* particleSystem) : SBMInteractionModelParticleSystem(particleSystem) {
 
-	// SAMSON Element generator pro tip: implement this function if you want your interaction model to be applied to a particle system (the general case).
+	// SAMSON Extension generator pro tip: implement this function if you want your interaction model to be applied to a particle system (the general case).
 	// You might want to connect to various signals and handle the corresponding events (for example to erase this interaction model when the dynamical model it is applied to is erased).
 
 	bondSpringStiffness = 1.0;
@@ -21,13 +21,13 @@ SESpringsInteractionModel::SESpringsInteractionModel(SBParticleSystem* particleS
 
 SESpringsInteractionModel::~SESpringsInteractionModel() {
 
-	// SAMSON Element generator pro tip: disconnect from signals you might have connected to.
+	// SAMSON Extension generator pro tip: disconnect from signals you might have connected to.
 
 }
 
  bool SESpringsInteractionModel::isSerializable() const {
 
-	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
+	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Modify the line below to "return true;" if you want this interaction model be serializable (hence copyable, savable, etc.)
 
@@ -39,7 +39,7 @@ SESpringsInteractionModel::~SESpringsInteractionModel() {
 
 	SBMInteractionModelParticleSystem::serialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 
-	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
+	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Complete this function to serialize your interaction model.
 
@@ -49,7 +49,7 @@ void SESpringsInteractionModel::unserialize(SBCSerializer* serializer, const SBN
 
 	SBMInteractionModelParticleSystem::unserialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 	
-	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
+	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Complete this function to unserialize your interaction model.
 
@@ -57,14 +57,14 @@ void SESpringsInteractionModel::unserialize(SBCSerializer* serializer, const SBN
 
 void SESpringsInteractionModel::eraseImplementation() {
 
-	// SAMSON Element generator pro tip: modify this function when you need to perform special tasks when your interaction model is erased (e.g. disconnect from nodes you are connected to).
+	// SAMSON Extension generator pro tip: modify this function when you need to perform special tasks when your interaction model is erased (e.g. disconnect from nodes you are connected to).
 	// Important: this function must be undoable (i.e. only call undoable functions or add an undo command to the undo stack)
 
 }
 
 void SESpringsInteractionModel::initializeInteractions() {
 
-	// SAMSON Element generator pro tip: this function is called to initialize the energy and forces. Unless everything is computed from scratch at each
+	// SAMSON Extension generator pro tip: this function is called to initialize the energy and forces. Unless everything is computed from scratch at each
 	// time step in updateInteractions, you should implement this function to set your interaction model up.
 
 	// Initialize the bond springs model
@@ -91,7 +91,7 @@ void SESpringsInteractionModel::initializeBondSpringsModel() {
 	// Get the all the bonds in the active document
 
 	SBNodeIndexer nodeIndexer;
-	SAMSON::getActiveDocument()->getNodes(nodeIndexer, SBNode::IsType(SBNode::Bond));
+	SAMSON::getActiveDocument()->getNodes(nodeIndexer, SBNode::Bond);
 
 	// Initialize bond springs
 
@@ -128,7 +128,7 @@ void SESpringsInteractionModel::setBondSpringStiffness(double stiffness) { bondS
 
 void SESpringsInteractionModel::updateInteractions() {
 
-	// SAMSON Element generator pro tip: this function is called to update the energy and forces. It is the most important function of your interaction model. 
+	// SAMSON Extension generator pro tip: this function is called to update the energy and forces. It is the most important function of your interaction model. 
 	// Incremental interaction model algorithms take advantage of passive signalling functionalities of dynamical models, which store information about the degrees of freedom that have been updated,
 	// to only update the forces which changed since the previous time step.
 
@@ -196,14 +196,14 @@ void SESpringsInteractionModel::updateBondSpringsInteractions() {
 
 void SESpringsInteractionModel::display(RenderingPass renderingPass) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. 
+	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
 }
 
 void SESpringsInteractionModel::expandBounds(SBIAPosition3& bounds) const {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON to determine the model's spatial bounds. 
+	// SAMSON Extension generator pro tip: this function is called by SAMSON to determine the model's spatial bounds. 
 	// When this function returns, the bounds interval vector should contain the interaction model. 
 	// This should be implemented if your interaction model displays something in viewports. 
 
@@ -211,7 +211,7 @@ void SESpringsInteractionModel::expandBounds(SBIAPosition3& bounds) const {
 
 void SESpringsInteractionModel::collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON to determine your model's influence on ambient occlusion (in case your interaction model displays something in viewports).
+	// SAMSON Extension generator pro tip: this function is called by SAMSON to determine your model's influence on ambient occlusion (in case your interaction model displays something in viewports).
 	// Implement this function if you want your interaction model to occlude other objects in ambient occlusion calculations.
 	//
 	// The ambientOcclusionData represents a nCellsX x nCellsY x nCellsZ grid of occlusion densities over the spatial region (boxOrigin, boxSize).
@@ -229,24 +229,24 @@ void SESpringsInteractionModel::collectAmbientOcclusion(const SBPosition3& boxOr
 
 void SESpringsInteractionModel::onBaseEvent(SBBaseEvent* baseEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle base events
+	// SAMSON Extension generator pro tip: implement this function if you need to handle base events
 
 }
 
 void SESpringsInteractionModel::onDocumentEvent(SBDocumentEvent* documentEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle document events 
+	// SAMSON Extension generator pro tip: implement this function if you need to handle document events 
 
 }
 
 void SESpringsInteractionModel::onDynamicalEvent(SBDynamicalEvent* dynamicalEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle dynamical events 
+	// SAMSON Extension generator pro tip: implement this function if you need to handle dynamical events 
 
 }
 
 void SESpringsInteractionModel::onStructuralEvent(SBStructuralEvent* documentEvent) {
 	
-	// SAMSON Element generator pro tip: implement this function if you need to handle structural events
+	// SAMSON Extension generator pro tip: implement this function if you need to handle structural events
 
 }

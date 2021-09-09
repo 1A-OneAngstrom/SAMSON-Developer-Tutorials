@@ -2,7 +2,7 @@
 
 SESteepestDescentStateUpdater::SESteepestDescentStateUpdater(SBMDynamicalModelParticleSystem* d, SBMInteractionModelParticleSystem* i) : SBSStateUpdaterParticleSystem(d, i) {
 
-	// SAMSON Element generator pro tip: this constructor is called when initializing the state updater.
+	// SAMSON Extension generator pro tip: this constructor is called when initializing the state updater.
 
 	setName("DevTutorial: Steepest Descent");
 
@@ -87,14 +87,14 @@ void SESteepestDescentStateUpdater::updateState() {
 
 void SESteepestDescentStateUpdater::display(RenderingPass renderingPass) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. 
+	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
 }
 
 void SESteepestDescentStateUpdater::expandBounds(SBIAPosition3& bounds) const {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON to determine the model's spatial bounds. 
+	// SAMSON Extension generator pro tip: this function is called by SAMSON to determine the model's spatial bounds. 
 	// When this function returns, the bounds interval vector should contain the state updater. 
 	// This should be implemented if your state updater displays something in viewports. 
 
@@ -102,7 +102,7 @@ void SESteepestDescentStateUpdater::expandBounds(SBIAPosition3& bounds) const {
 
 void SESteepestDescentStateUpdater::collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON to determine your model's influence on ambient occlusion (in case your state updater displays something in viewports).
+	// SAMSON Extension generator pro tip: this function is called by SAMSON to determine your model's influence on ambient occlusion (in case your state updater displays something in viewports).
 	// Implement this function if you want your state updater to occlude other objects in ambient occlusion calculations.
 	//
 	// The ambientOcclusionData represents a nCellsX x nCellsY x nCellsZ grid of occlusion densities over the spatial region (boxOrigin, boxSize).

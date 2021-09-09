@@ -6,9 +6,9 @@
 
 /// This class implements the functionality of the app
 
-// SAMSON Element generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEAtomShakerAppGUI class
+// SAMSON Extension generator pro tip: add non-GUI functionality in this class. The GUI functionality should go in the SEAtomShakerAppGUI class
 
-class SEAtomShakerApp : public SBDApp {
+class SB_EXPORT SEAtomShakerApp : public SBDApp {
 
 	SB_CLASS
 

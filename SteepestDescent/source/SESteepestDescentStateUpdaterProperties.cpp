@@ -28,7 +28,7 @@ void SESteepestDescentStateUpdaterProperties::loadSettings(SBGSettings *settings
 	double v = settings->loadDoubleValue("StepSize", 1.0);
 	ui.doubleSpinBoxStepSize->setValue(v);
 
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
@@ -39,7 +39,7 @@ void SESteepestDescentStateUpdaterProperties::saveSettings(SBGSettings *settings
 	settings->saveValue("Steps", ui.spinBoxSteps->value());
 	settings->saveValue("StepSize", ui.doubleSpinBoxStepSize->value());
 
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
@@ -47,7 +47,7 @@ SBCContainerUUID SESteepestDescentStateUpdaterProperties::getUUID() const { retu
 
 QPixmap SESteepestDescentStateUpdaterProperties::getLogo() const {
 
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your state updater.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/Icons/SESteepestDescentStateUpdaterPropertiesIcon.png"));
@@ -56,7 +56,7 @@ QPixmap SESteepestDescentStateUpdaterProperties::getLogo() const {
 
 QString SESteepestDescentStateUpdaterProperties::getName() const {
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your state updater inside SAMSON
 
 	return "DevTutorial: Steepest Descent";
@@ -65,7 +65,7 @@ QString SESteepestDescentStateUpdaterProperties::getName() const {
 
 int SESteepestDescentStateUpdaterProperties::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -78,7 +78,7 @@ int SESteepestDescentStateUpdaterProperties::getFormat() const {
 
 QString SESteepestDescentStateUpdaterProperties::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this state updater in your work, please cite: <br/>"

@@ -27,7 +27,7 @@ SEEXYZExporter::~SEEXYZExporter() {
 
 std::string SEEXYZExporter::getFilter() const {
 
-	// SAMSON Element generator pro tip: modify this function to return the filter of the exporter
+	// SAMSON Extension generator pro tip: modify this function to return the filter of the exporter
 
 	return std::string("EXYZ format (*.exyz)");
 
@@ -35,7 +35,7 @@ std::string SEEXYZExporter::getFilter() const {
 
 std::string SEEXYZExporter::getExtension() const {
 
-	// SAMSON Element generator pro tip: modify this function to return the extension of the exporter
+	// SAMSON Extension generator pro tip: modify this function to return the extension of the exporter
 
 	return std::string("exyz");
 
@@ -43,17 +43,23 @@ std::string SEEXYZExporter::getExtension() const {
 
 bool SEEXYZExporter::exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const SBList<std::string>* parameters) {
 
-	// SAMSON Element generator pro tip: modify this function to export the nodes contained in nodeIndexer to a file.
+	// SAMSON Extension generator pro tip: modify this function to export the nodes contained in nodeIndexer to a file.
 	// Please refer to tutorials for examples.
 
 	// retrieve all atoms
 
 	SBNodeIndexer atomIndexer;
-	SB_FOR(SBNode* node, nodeIndexer) node->getNodes(atomIndexer, SBNode::IsType(SBNode::Atom));
+	SB_FOR(SBNode * node, nodeIndexer) {
+
+		node->getNodes(atomIndexer, SBNode::Atom);
+		// the line above produces the same result as the line below which uses the SBNode::IsType() predicate but it is optimized for getting nodes based on node types
+		//node->getNodes(atomIndexer, SBNode::IsType(SBNode::Atom));
+
+	}
 
 	// create file
 
-	ofstream file;
+	std::ofstream file;
 	file.open(fileName.c_str());
 
 	// write the header

@@ -9,9 +9,9 @@
 
 /// This class implements the GUI of the interaction model
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SESpringsInteractionModel class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SESpringsInteractionModel class
 
-class SESpringsInteractionModelProperties : public SBGDataGraphNodeProperties {
+class SB_EXPORT SESpringsInteractionModelProperties : public SBGDataGraphNodeProperties {
 
 	SB_CLASS
 	Q_OBJECT

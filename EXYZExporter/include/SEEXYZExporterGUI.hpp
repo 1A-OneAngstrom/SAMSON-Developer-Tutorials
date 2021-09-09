@@ -8,9 +8,9 @@ class SEEXYZExporter;
 
 /// This class implements the GUI of the exporter
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEEXYZExporter class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEEXYZExporter class
 
-class SEEXYZExporterGUI : public SBGFileExporter {
+class SB_EXPORT SEEXYZExporterGUI : public SBGFileExporter {
 
 	Q_OBJECT
 
@@ -19,7 +19,7 @@ public:
 	/// \name Constructors and destructors
 	//@{
 
-	SEEXYZExporterGUI(SEEXYZExporter* t);																			///< Constructs a GUI for the exporter
+	SEEXYZExporterGUI(SEEXYZExporter* t);																								///< Constructs a GUI for the exporter
 	~SEEXYZExporterGUI();																												///< Destructs the GUI of the exporter
 
 	//@}
@@ -45,8 +45,8 @@ public:
 	///\name Settings
 	//@{
 
-	void														loadSettings(SBGSettings* settings);										///< Load GUI settings
-	void														saveSettings(SBGSettings* settings);										///< Save GUI settings
+	void														loadSettings(SBGSettings* settings);									///< Load GUI settings
+	void														saveSettings(SBGSettings* settings);									///< Save GUI settings
 
 	//@}
 

@@ -19,7 +19,7 @@ void SECenterOfMassAppGUI::loadSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
 }
 
@@ -27,7 +27,7 @@ void SECenterOfMassAppGUI::saveSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
 }
 
@@ -35,7 +35,7 @@ SBCContainerUUID SECenterOfMassAppGUI::getUUID() const { return SBCContainerUUID
 
 QPixmap SECenterOfMassAppGUI::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your app.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/icons/SECenterOfMassAppIcon.png"));
@@ -44,7 +44,7 @@ QPixmap SECenterOfMassAppGUI::getLogo() const {
 
 QString SECenterOfMassAppGUI::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your app inside SAMSON
 
 	return "DevTutorial: Center of mass";
@@ -53,7 +53,7 @@ QString SECenterOfMassAppGUI::getName() const {
 
 int SECenterOfMassAppGUI::getFormat() const { 
 	
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -66,7 +66,7 @@ int SECenterOfMassAppGUI::getFormat() const {
 
 QString SECenterOfMassAppGUI::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this app in your work, please cite: <br/>"

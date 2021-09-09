@@ -20,7 +20,7 @@ void SEAtomPusherEditorGUI::loadSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so your editor can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your editor can save its GUI state from one session to the next
 
 }
 
@@ -28,7 +28,7 @@ void SEAtomPusherEditorGUI::saveSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so your editor can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your editor can save its GUI state from one session to the next
 
 }
 
@@ -36,7 +36,7 @@ SBCContainerUUID SEAtomPusherEditorGUI::getUUID() const { return SBCContainerUUI
 
 QPixmap SEAtomPusherEditorGUI::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your editor.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/icons/SEAtomPusherEditorIcon.png"));
@@ -45,7 +45,7 @@ QPixmap SEAtomPusherEditorGUI::getLogo() const {
 
 QString SEAtomPusherEditorGUI::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your editor inside SAMSON
 
 	return "DevTutorial: Atom pusher";
@@ -54,7 +54,7 @@ QString SEAtomPusherEditorGUI::getName() const {
 
 int SEAtomPusherEditorGUI::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -67,7 +67,7 @@ int SEAtomPusherEditorGUI::getFormat() const {
 
 QString SEAtomPusherEditorGUI::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this editor in your work, please cite: <br/>"

@@ -246,6 +246,10 @@ public:
 
 	void							setValue (const double &v) { value = v; }
 
+    /// \brief Sets the value to zero
+
+    void							setZero() { value = 0.0; }
+
     /// \brief Returns the scale
 
 	const std::vector<int>&			getScale () const { return scale; }
@@ -703,6 +707,19 @@ public:
 
     /// \name Useful functions
     //@{
+
+	/// \brief Returns a linear interpolation between two physical quantities \p q0 and \p q1 for a parameter \p alpha in the closed unit interval [0, 1].
+
+	static SBDQuantityWrapper<System>							fromLinearInterpolation(const SBDQuantityWrapper<System>& q0, const SBDQuantityWrapper<System>& q1, double alpha) {
+
+		if (q0.getExponent() != q1.getExponent()) throw std::runtime_error("Cannot produce a linear interpolation from quantities of different units.");
+
+		if (alpha < 0.0) return q0;
+		if (alpha > 1.0) return q1;
+
+		return (1.0 - alpha) * q0 + alpha * q1;
+
+	}
 
     /*template <class Quantity>
     std::string getNameOrSymbol(bool fullName = false) {

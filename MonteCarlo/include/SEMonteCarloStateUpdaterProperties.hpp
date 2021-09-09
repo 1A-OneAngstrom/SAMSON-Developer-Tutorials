@@ -9,9 +9,9 @@
 
 /// This class implements the property window of the state updater
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEMonteCarloStateUpdater class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEMonteCarloStateUpdater class
 
-class SEMonteCarloStateUpdaterProperties : public SBGDataGraphNodeProperties {
+class SB_EXPORT SEMonteCarloStateUpdaterProperties : public SBGDataGraphNodeProperties {
 
 	SB_CLASS
 	Q_OBJECT

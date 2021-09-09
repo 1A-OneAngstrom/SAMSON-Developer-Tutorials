@@ -19,7 +19,7 @@ void SEAtomShakerAppGUI::loadSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
 	ui.doubleSpinBoxMaximumDistance->setValue(settings->loadDoubleValue("MaximumDistance", 1.0));
 
@@ -29,7 +29,7 @@ void SEAtomShakerAppGUI::saveSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so your app can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
 	settings->saveValue("MaximumDistance", ui.doubleSpinBoxMaximumDistance->value());
 
@@ -39,7 +39,7 @@ SBCContainerUUID SEAtomShakerAppGUI::getUUID() const { return SBCContainerUUID( 
 
 QPixmap SEAtomShakerAppGUI::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your app.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/icons/SEAtomShakerAppIcon.png"));
@@ -48,7 +48,7 @@ QPixmap SEAtomShakerAppGUI::getLogo() const {
 
 QString SEAtomShakerAppGUI::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your app inside SAMSON
 
 	return "DevTutorial: Atom shaker";
@@ -57,7 +57,7 @@ QString SEAtomShakerAppGUI::getName() const {
 
 int SEAtomShakerAppGUI::getFormat() const { 
 	
-	// SAMSON Element generator pro tip: modify these default settings if you want more options (see the documentation of SBGWindow)
+	// SAMSON Extension generator pro tip: modify these default settings if you want more options (see the documentation of SBGWindow)
 	
 	return SBGWindow::Savable | SBGWindow::Lockable | SBGWindow::Citable;
 

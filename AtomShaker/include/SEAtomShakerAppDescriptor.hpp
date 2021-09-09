@@ -7,13 +7,13 @@
 
 // Class descriptor
 
-// SAMSON Element generator pro tip: complete this descriptor to expose this class to SAMSON and other SAMSON Elements
+// SAMSON Extension generator pro tip: complete this descriptor to expose this class to SAMSON and other SAMSON Extensions
 
 SB_CLASS_BEGIN(SEAtomShakerApp);
 
 	SB_CLASS_TYPE(SBCClass::App);
 	SB_CLASS_DESCRIPTION("DevTutorial: Atom shaker");
-	SB_CLASS_VERSION_NUMBER("0.10.0");
+	SB_CLASS_VERSION_NUMBER("2.0.0");
 
 	SB_FACTORY_BEGIN;
 

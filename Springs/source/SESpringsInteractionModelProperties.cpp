@@ -24,7 +24,7 @@ void SESpringsInteractionModelProperties::loadSettings( SBGSettings *settings ) 
 
 	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 	double bondSpringStiffness = settings->loadDoubleValue("bondSpringStiffness", 1.0);
 	ui.doubleSpinBoxSpringStiffness->setValue(bondSpringStiffness);
@@ -36,7 +36,7 @@ void SESpringsInteractionModelProperties::saveSettings( SBGSettings *settings ) 
 
 	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 	settings->saveValue("bondSpringStiffness", ui.doubleSpinBoxSpringStiffness->value());
 
@@ -46,7 +46,7 @@ SBCContainerUUID SESpringsInteractionModelProperties::getUUID() const { return S
 
 QPixmap SESpringsInteractionModelProperties::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your interaction model.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/Icons/SESpringsInteractionModelPropertiesIcon.png"));
@@ -55,7 +55,7 @@ QPixmap SESpringsInteractionModelProperties::getLogo() const {
 
 QString SESpringsInteractionModelProperties::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your interaction model inside SAMSON
 
 	return "DevTutorial: Springs properties";
@@ -64,7 +64,7 @@ QString SESpringsInteractionModelProperties::getName() const {
 
 int SESpringsInteractionModelProperties::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -77,7 +77,7 @@ int SESpringsInteractionModelProperties::getFormat() const {
 
 QString SESpringsInteractionModelProperties::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this interaction model in your work, please cite: <br/>"

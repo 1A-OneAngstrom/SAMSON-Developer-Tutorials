@@ -2,51 +2,41 @@
 #include "SAMSON.hpp"
 #include "SBElementTable.hpp"
 
+#include <QOpenGLShaderProgram>
+
+
+QOpenGLFunctions_3_2_Core* SEVanDerWaalsVisualModel::gl = nullptr;
 
 SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel() {
 
-	// SAMSON Element generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
+	// SAMSON Extension generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
 
-	minimumRadiusFactor = 0.0f;
-	maximumRadiusFactor = 3.0f;
-	radiusFactorSingleStep = 0.1f;
-	radiusFactor = 1.0f; // set a default radius factor
+	if (!gl) {
 
-	opacity = 1.0f;
+		gl = new QOpenGLFunctions_3_2_Core();
+		gl->initializeOpenGLFunctions();
 
-	numberOfAtoms = 0;
-	positionData = nullptr;
-	radiusData = nullptr;
-	colorData = nullptr;
-	flagData = nullptr;
-	nodeIndexData = nullptr;
+	}
 
 }
 
 SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeIndexer) {
 
-	// SAMSON Element generator pro tip: implement this function if you want your visual model to be applied to a set of data graph nodes.
+	// SAMSON Extension generator pro tip: implement this function if you want your visual model to be applied to a set of data graph nodes.
 	// You might want to connect to various signals and handle the corresponding events. For example, if your visual model represents a sphere positioned at
 	// the center of mass of a group of atoms, you might want to connect to the atoms' base signals (e.g. to update the center of mass when an atom is erased) and
 	// the atoms' structural signals (e.g. to update the center of mass when an atom is moved).
 
-	minimumRadiusFactor = 0.0f;
-	maximumRadiusFactor = 3.0f;
-	radiusFactorSingleStep = 0.1f;
-	radiusFactor = 1.0f; // set a default radius factor
+	if (!gl) {
 
-	opacity = 1.0f;
+		gl = new QOpenGLFunctions_3_2_Core();
+		gl->initializeOpenGLFunctions();
 
-	numberOfAtoms = 0;
-	positionData = nullptr;
-	radiusData = nullptr;
-	colorData = nullptr;
-	flagData = nullptr;
-	nodeIndexData = nullptr;
+	}
 
 	SBNodeIndexer temporaryIndexer;
 	SB_FOR(SBNode* node, nodeIndexer)
-		node->getNodes(temporaryIndexer, SBNode::IsType(SBNode::Atom));
+		node->getNodes(temporaryIndexer, SBNode::Atom);
 
 	SB_FOR(SBNode* node, temporaryIndexer)
 		atomIndexer.addReferenceTarget(node);
@@ -59,21 +49,21 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 
 SEVanDerWaalsVisualModel::~SEVanDerWaalsVisualModel() {
 
-	// SAMSON Element generator pro tip: disconnect from signals you might have connected to.
+	// SAMSON Extension generator pro tip: disconnect from signals you might have connected to.
 
 	// clean up the memory
 
-	delete[] positionData;
-	delete[] radiusData;
-	delete[] colorData;
-	delete[] flagData;
-	delete[] nodeIndexData;
+	if (positionData) delete[] positionData;
+	if (radiusData) delete[] radiusData;
+	if (colorData) delete[] colorData;
+	if (flagData) delete[] flagData;
+	if (nodeIndexData) delete[] nodeIndexData;
 
 }
 
 bool SEVanDerWaalsVisualModel::isSerializable() const {
 
-	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
+	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Modify the line below to "return true;" if you want this visual model be serializable (hence copyable, savable, etc.)
 
@@ -87,7 +77,7 @@ void SEVanDerWaalsVisualModel::serialize(SBCSerializer* serializer, const SBNode
 
 	SBMVisualModel::serialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 
-	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
+	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 
 	// Write the radius factor
@@ -96,9 +86,10 @@ void SEVanDerWaalsVisualModel::serialize(SBCSerializer* serializer, const SBNode
 
 	// Write opacity
 
-	if (classVersionNumber >= SBVersionNumber(0, 10, 0)) {
+	if (classVersionNumber >= SBVersionNumber(0, 10, 0) && sdkVersionNumber < SBVersionNumber(2, 0, 0)) {
 
 		// This attribute was introduced in the class v. 0.10.0
+		// Starting from SAMSON SDK 2.0.0 opacity/transparency are node attributes and serialized with a model/node
 
 		serializer->writeUnsignedIntElement("opacity", getOpacity());
 
@@ -142,7 +133,7 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 
 	SBMVisualModel::unserialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 	
-	// SAMSON Element generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
+	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 
 	// Read the radius factor
@@ -151,9 +142,10 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 
 	// Read opacity
 
-	if (classVersionNumber >= SBVersionNumber(0, 10, 0)) {
+	if (classVersionNumber >= SBVersionNumber(0, 10, 0) && sdkVersionNumber < SBVersionNumber(2, 0, 0)) {
 
 		// This attribute was introduced in the class v. 0.10.0
+		// Starting from SAMSON SDK 2.0.0 opacity/transparency are node attributes and serialized with a model/node
 
 		setOpacity(serializer->readUnsignedIntElement());
 
@@ -194,7 +186,7 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 
 void SEVanDerWaalsVisualModel::eraseImplementation() {
 
-	// SAMSON Element generator pro tip: modify this function when you need to perform special tasks when your visual model is erased (e.g. disconnect from nodes you are connected to).
+	// SAMSON Extension generator pro tip: modify this function when you need to perform special tasks when your visual model is erased (e.g. disconnect from nodes you are connected to).
 	// Important: this function must be undoable (i.e. only call undoable functions or add an undo command to the undo stack)
 
 }
@@ -263,10 +255,12 @@ void SEVanDerWaalsVisualModel::updateDisplayData() {
 
 void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON during the main rendering loop. This is the main function of your visual model. 
+	const float inheritedOpacity = getInheritedOpacity();
+
+	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. This is the main function of your visual model. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
-	if (renderingPass == SBNode::RenderingPass::OpaqueGeometry) {
+	if (renderingPass == SBNode::RenderingPass::OpaqueGeometry && (inheritedOpacity == 1.0f)) {
 
 		// update display data arrays
 
@@ -290,7 +284,7 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 			if (material) {
 
 				// if a material is applied to the visual model use its color scheme
-				material->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+				material->getColorScheme()->getColor(colorData + 4 * i, currentAtom(), currentAtom()->getPosition());
 
 			}
 			else if (currentAtom->getMaterial()) {
@@ -306,9 +300,6 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 			}
 
-			// set opacity
-			colorData[4 * i + 3] = opacity;
-
 			// fill the flag array based on the combination of the flags for the visual model and the current atom
 			flagData[i] = currentAtom->getInheritedFlags() | getInheritedFlags();
 
@@ -317,6 +308,70 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 		// display spheres for atoms
 
 		SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true);
+
+	}
+	else if ((renderingPass == SBNode::RenderingPass::TransparentGeometry) && (inheritedOpacity != 1.0f)) {
+
+		// update display data arrays
+
+		updateDisplayData();
+
+		// retreive the pointer to the material applied to the visual model
+
+		SBNodeMaterial* material = getMaterial();
+
+		// fill in the arrays
+
+		for (unsigned int i = 0; i < numberOfAtoms; i++) {
+
+			SBPointer<SBAtom> currentAtom = atomIndexer[i];
+			// check if the atom is not null
+			if (!currentAtom.isValid()) continue;
+			// check if the atom is not erased
+			if (currentAtom->isErased()) continue;
+
+			// fill the color array based on the material applied to the visual model, if any
+			if (material) {
+
+				// if a material is applied to the visual model use its color scheme
+				material->getColorScheme()->getColor(colorData + 4 * i, currentAtom(), currentAtom()->getPosition());
+
+			}
+			else if (currentAtom->getMaterial()) {
+
+				// else if a material is applied to the current atom use its color scheme
+				currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+
+			}
+			else {
+
+				// else set the default color based on CPK color
+				memcpy(&colorData[4 * i], SBElementTable::getElement(currentAtom->getElementType()).getColorCPK(), 4 * sizeof(float));
+
+			}
+
+			// fill the flag array based on the combination of the flags for the visual model and the current atom
+			flagData[i] = currentAtom->getInheritedFlags() | getInheritedFlags();
+
+		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
+
+		if (numberOfAtoms) {
+
+			gl->glColorMask(false, false, false, false);
+
+			SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true, inheritedOpacity);
+
+			gl->glColorMask(true, true, true, true);
+
+			SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true, inheritedOpacity);
+
+		}
+
+		glDisable(GL_BLEND);
 
 	}
 	else if (renderingPass == SBNode::RenderingPass::ShadowingGeometry) {
@@ -363,14 +418,14 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 void SEVanDerWaalsVisualModel::expandBounds(SBIAPosition3& bounds) const {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON to determine the model's spatial bounds. 
+	// SAMSON Extension generator pro tip: this function is called by SAMSON to determine the model's spatial bounds. 
 	// When this function returns, the bounds interval vector should contain the visual model. 
 
 }
 
 void SEVanDerWaalsVisualModel::collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData) {
 
-	// SAMSON Element generator pro tip: this function is called by SAMSON to determine your model's influence on ambient occlusion.
+	// SAMSON Extension generator pro tip: this function is called by SAMSON to determine your model's influence on ambient occlusion.
 	// Implement this function if you want your visual model to occlude other objects in ambient occlusion calculations.
 	//
 	// The ambientOcclusionData represents a nCellsX x nCellsY x nCellsZ grid of occlusion densities over the spatial region (boxOrigin, boxSize).
@@ -388,19 +443,19 @@ void SEVanDerWaalsVisualModel::collectAmbientOcclusion(const SBPosition3& boxOri
 
 void SEVanDerWaalsVisualModel::onBaseEvent(SBBaseEvent* baseEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle base events (e.g. when a node for which you provide a visual representation emits a base signal, such as when it is erased)
+	// SAMSON Extension generator pro tip: implement this function if you need to handle base events (e.g. when a node for which you provide a visual representation emits a base signal, such as when it is erased)
 
 }
 
 void SEVanDerWaalsVisualModel::onDocumentEvent(SBDocumentEvent* documentEvent) {
 
-	// SAMSON Element generator pro tip: implement this function if you need to handle document events 
+	// SAMSON Extension generator pro tip: implement this function if you need to handle document events 
 
 }
 
 void SEVanDerWaalsVisualModel::onStructuralEvent(SBStructuralEvent* documentEvent) {
 	
-	// SAMSON Element generator pro tip: implement this function if you need to handle structural events (e.g. when a structural node for which you provide a visual representation is updated)
+	// SAMSON Extension generator pro tip: implement this function if you need to handle structural events (e.g. when a structural node for which you provide a visual representation is updated)
 
 }
 
@@ -432,32 +487,3 @@ const float&	SEVanDerWaalsVisualModel::getMinimumRadiusFactor() const { return m
 const float&	SEVanDerWaalsVisualModel::getMaximumRadiusFactor() const { return maximumRadiusFactor; }
 const float&	SEVanDerWaalsVisualModel::getRadiusFactorSingleStep() const { return radiusFactorSingleStep; }
 std::string		SEVanDerWaalsVisualModel::getRadiusFactorSuffix() const { return std::string(""); }
-
-unsigned int SEVanDerWaalsVisualModel::getOpacity() const { return static_cast<unsigned int>(opacity * 100.0f); }
-void SEVanDerWaalsVisualModel::setOpacity(unsigned int opacity) {
-
-	float prevValue = this->opacity;
-
-	if (hasOpacityRange()) {
-
-		if      (opacity < getMinimumOpacity()) this->opacity = static_cast<float>(getMinimumOpacity()) / 100.0f;
-		else if (opacity > getMaximumOpacity()) this->opacity = static_cast<float>(getMaximumOpacity()) / 100.0f;
-		else this->opacity = static_cast<float>(opacity) / 100.0f;
-
-	}
-	else
-		this->opacity = static_cast<float>(opacity) / 100.0f;
-
-	if (prevValue != this->opacity)  {
-
-		// request re-rendering of the viewport
-		SAMSON::requestViewportUpdate();
-
-	}
-
-}
-bool			SEVanDerWaalsVisualModel::hasOpacityRange() const { return true; }
-unsigned int	SEVanDerWaalsVisualModel::getMinimumOpacity() const { return 0; }
-unsigned int	SEVanDerWaalsVisualModel::getMaximumOpacity() const { return 100; }
-unsigned int	SEVanDerWaalsVisualModel::getOpacitySingleStep() const { return 1; }
-std::string		SEVanDerWaalsVisualModel::getOpacitySuffix() const { return std::string("%"); }

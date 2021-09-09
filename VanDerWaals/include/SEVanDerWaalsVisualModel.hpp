@@ -7,10 +7,12 @@
 #include "SBStructuralEvent.hpp"
 #include "SBAtom.hpp"
 
+#include <QOpenGLFunctions_3_2_Core>
+
 
 /// This class implements a visual model
 
-class SEVanDerWaalsVisualModel : public SBMVisualModel {
+class SB_EXPORT SEVanDerWaalsVisualModel : public SBMVisualModel {
 
 	SB_CLASS
 
@@ -75,44 +77,31 @@ public :
 
 	//@}
 
-	/// \name Opacity
-	//@{
-
-	void														setOpacity(unsigned int opacity);
-	unsigned int												getOpacity() const;
-	bool														hasOpacityRange() const;
-	unsigned int												getMinimumOpacity() const;
-	unsigned int												getMaximumOpacity() const;
-	unsigned int												getOpacitySingleStep() const;
-	std::string													getOpacitySuffix() const;
-
-	//@}
-
 private:
 
 	SBPointerIndexer<SBAtom>									atomIndexer;
 
-	float														radiusFactor;															///< The radius factor
-	float														minimumRadiusFactor;
-	float														maximumRadiusFactor;
-	float														radiusFactorSingleStep;
-
-	float														opacity;																///< Opacity
+	float														radiusFactor = 1.0f;													///< The radius factor
+	float														minimumRadiusFactor = 0.1f;
+	float														maximumRadiusFactor = 2.5f;
+	float														radiusFactorSingleStep = 0.1f;
 
 	/// \name Display data
 	//@{
 
 	void														updateDisplayData();													///< Updates polyhedra display data
 
-	unsigned int												numberOfAtoms;
+	unsigned int												numberOfAtoms = 0;
 
-	float*														positionData;
-	float*														radiusData;
-	float*														colorData;
-	unsigned int*												flagData;
-	unsigned int*												nodeIndexData;
+	float*														positionData{ nullptr };
+	float*														radiusData{ nullptr };
+	float*														colorData{ nullptr };
+	unsigned int*												flagData{ nullptr };
+	unsigned int*												nodeIndexData{ nullptr };
 
 	//@}
+
+	static QOpenGLFunctions_3_2_Core*							gl;
 
 };
 

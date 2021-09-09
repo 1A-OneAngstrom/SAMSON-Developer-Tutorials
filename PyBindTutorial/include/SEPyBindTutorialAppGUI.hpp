@@ -10,7 +10,7 @@ class SEPyBindTutorialApp;
 
 /// This class implements the GUI of the app
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEPyBindTutorialApp class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEPyBindTutorialApp class
 
 class SEPyBindTutorialAppGUI : public SBGApp {
 

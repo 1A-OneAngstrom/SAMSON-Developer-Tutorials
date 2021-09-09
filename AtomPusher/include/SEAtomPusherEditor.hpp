@@ -11,7 +11,7 @@
 
 /// This class implements an editor
 
-class SEAtomPusherEditor : public SBGEditor {
+class SB_EXPORT SEAtomPusherEditor : public SBGEditor {
 
 	SB_CLASS
 	Q_OBJECT

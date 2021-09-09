@@ -9,12 +9,12 @@
 
 /// This class implements the property window of the visual model
 
-// SAMSON Element generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEVanDerWaalsVisualModel class
+// SAMSON Extension generator pro tip: add GUI functionality in this class. The non-GUI functionality should go in the SEVanDerWaalsVisualModel class
 
-// SAMSON Element generator pro tip: if you do not want to have a property window associated to you visual model, do not expose it in the descriptor. 
+// SAMSON Extension generator pro tip: if you do not want to have a property window associated to you visual model, do not expose it in the descriptor. 
 // Precisely, remove the line SB_ELEMENT_CLASS(SEVanDerWaalsVisualModelProperties); from the file SEVanDerWaalsDescriptor.cpp
 
-class SEVanDerWaalsVisualModelProperties : public SBGDataGraphNodeProperties {
+class SB_EXPORT SEVanDerWaalsVisualModelProperties : public SBGDataGraphNodeProperties {
 
 	SB_CLASS
 	Q_OBJECT
@@ -76,7 +76,6 @@ public slots:
 	//@{
 
 	void														onRadiusFactorChanged(double radiusFactor);
-	void														onOpacityValueChanged(int value);
 
 	//@}
 

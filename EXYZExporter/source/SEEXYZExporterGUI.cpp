@@ -20,7 +20,7 @@ void SEEXYZExporterGUI::loadSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 	
-	// SAMSON Element generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
 
 }
 
@@ -28,7 +28,7 @@ void SEEXYZExporterGUI::saveSettings( SBGSettings *settings ) {
 
 	if ( settings == nullptr ) return;
 
-	// SAMSON Element generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
+	// SAMSON Extension generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
 
 }
 
@@ -36,7 +36,7 @@ SBCContainerUUID SEEXYZExporterGUI::getUUID() const { return SBCContainerUUID( "
 
 QPixmap SEEXYZExporterGUI::getLogo() const { 
 	
-	// SAMSON Element generator pro tip: this icon will be visible in the GUI title bar. 
+	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your exporter.
 
 	return QPixmap(QString::fromStdString(SB_ELEMENT_PATH + "/Resource/icons/SEEXYZExporterIcon.png"));
@@ -45,7 +45,7 @@ QPixmap SEEXYZExporterGUI::getLogo() const {
 
 QString SEEXYZExporterGUI::getName() const { 
 
-	// SAMSON Element generator pro tip: this string will be the GUI title. 
+	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your exporter inside SAMSON
 
 	return "SEEXYZExporter"; 
@@ -54,7 +54,7 @@ QString SEEXYZExporterGUI::getName() const {
 
 int SEEXYZExporterGUI::getFormat() const {
 
-	// SAMSON Element generator pro tip: modify these default settings to configure the window
+	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
@@ -67,7 +67,7 @@ int SEEXYZExporterGUI::getFormat() const {
 
 QString SEEXYZExporterGUI::getCitation() const {
 
-	// SAMSON Element generator pro tip: modify this function to add citation information
+	// SAMSON Extension generator pro tip: modify this function to add citation information
 
 	return
 		"If you use this exporter in your work, please cite: <br/>"
