@@ -13,7 +13,7 @@ SB_CLASS_BEGIN(SEVanDerWaalsVisualModel);
 
 	SB_CLASS_TYPE(SBCClass::VisualModel);
 	SB_CLASS_DESCRIPTION("Dev tutorial: Van der Waals visual model");
-	SB_CLASS_VERSION_NUMBER("2.0.0");
+	SB_CLASS_VERSION_NUMBER("3.0.0");
 
 	SB_FACTORY_BEGIN;
 
@@ -24,7 +24,8 @@ SB_CLASS_BEGIN(SEVanDerWaalsVisualModel);
 
 	SB_INTERFACE_BEGIN;
 
-		SB_ATTRIBUTE_READ_WRITE_RANGE(const float&, SEVanDerWaalsVisualModel, RadiusFactor, "Radius factor", "Geometry");
+		SB_ATTRIBUTE_READ_ONLY(SBDDataGraphNodeMaterial*, SEVanDerWaalsVisualModel, Material, "Material", "Display");
+		SB_ATTRIBUTE_READ_WRITE_RANGE(const float&, SEVanDerWaalsVisualModel, RadiusFactor, "Radius factor", "Display");
 		SB_ATTRIBUTE_READ_WRITE_RESET_RANGE_SLIDER(unsigned int, SEVanDerWaalsVisualModel, Transparency, "Transparency", "Display");
 
 	SB_INTERFACE_END;
