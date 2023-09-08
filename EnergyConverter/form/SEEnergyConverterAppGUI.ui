@@ -133,7 +133,7 @@
   </connection>
   <connection>
    <sender>comboBoxLeft</sender>
-   <signal>currentIndexChanged(QString)</signal>
+   <signal>currentIndexChanged(int)</signal>
    <receiver>SEEnergyConverterAppGUIClass</receiver>
    <slot>onLeftChanged()</slot>
    <hints>
@@ -149,7 +149,7 @@
   </connection>
   <connection>
    <sender>comboBoxRight</sender>
-   <signal>currentIndexChanged(QString)</signal>
+   <signal>currentIndexChanged(int)</signal>
    <receiver>SEEnergyConverterAppGUIClass</receiver>
    <slot>onLeftChanged()</slot>
    <hints>

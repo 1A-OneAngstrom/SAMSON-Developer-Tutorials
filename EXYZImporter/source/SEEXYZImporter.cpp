@@ -34,28 +34,27 @@ std::string SEEXYZImporter::getExtension() const {
 }
 
 /// Parse parameters
-void SEEXYZImporter::parseParameters(const SBList<std::string>* cparameters) {
+void SEEXYZImporter::parseParameters(const std::unordered_map<std::string, SBValue>* parameters) {
 
-	SBList<std::string> *parameters = 0;
-	if (cparameters) parameters = new SBList<std::string>(*cparameters);
+	// initialize with default values
+	createCovalentBonds = true;
 
-	if ((*parameters->begin()) == "1")
-		createCovalentBonds = true;
-	else
-		createCovalentBonds = false;
-	parameters->pop_front();
+	if (parameters->find("createCovalentBonds") != parameters->end()) {
 
-	if (parameters) delete parameters;
+		const SBValue v = parameters->at("createCovalentBonds");
+		if (SB_CAN_CAST<bool>(v)) createCovalentBonds = SB_CAST<bool>(v);
+
+	}
 
 }
 
 /// This function initializes variables for the parser
-void SEEXYZImporter::initializeParameters(const SBList<std::string>* parameters) {
+void SEEXYZImporter::initializeParameters(const std::unordered_map<std::string, SBValue>* parameters) {
 
 	const int nparams = 1;	// total number of parameters
 
-	// no parameters or only one parameter "default" => take from form
-	if (!parameters || (parameters->size() == 1 && (*parameters->begin()) == "default") || parameters->size() != nparams) {
+	// no parameters or only one parameter "default" => take from the form
+	if (!parameters || (parameters->size() == 1 && (parameters->find("default") != parameters->end()))) {
 
 		// get parameters of the parser from the window
 		static_cast<SEEXYZImporterGUI*>(propertyDialog)->getParameters(createCovalentBonds);
@@ -165,7 +164,7 @@ bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocum
 
 }
 
-bool SEEXYZImporter::importFromFile(const std::string& fileName, const SBList<std::string>* parameters, SBDDocumentFolder *preferredFolder) {
+bool SEEXYZImporter::importFromFile(const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters, SBDDocumentFolder *preferredFolder) {
 
 	// SAMSON Extension generator pro tip: modify this function to parse the contents of a file and add new nodes to SAMSON's data graph.
 	// Please refer to tutorials for examples.

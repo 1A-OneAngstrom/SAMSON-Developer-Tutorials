@@ -33,7 +33,7 @@ public :
 	/// \name Parsing
 	//@{
 
-	virtual bool												exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const SBList<std::string>* parameters = 0);		///< Exports data from SAMSON to a file
+	virtual bool												exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters = nullptr);		///< Exports data from SAMSON to a file
 
 	//@}
 

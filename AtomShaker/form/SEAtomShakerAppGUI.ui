@@ -46,7 +46,7 @@
  <connections>
   <connection>
    <sender>pushButtonShake</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>SEAtomShakerAppGUIClass</receiver>
    <slot>onShakeAtoms()</slot>
    <hints>

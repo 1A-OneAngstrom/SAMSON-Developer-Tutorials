@@ -41,7 +41,7 @@ std::string SEEXYZExporter::getExtension() const {
 
 }
 
-bool SEEXYZExporter::exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const SBList<std::string>* parameters) {
+bool SEEXYZExporter::exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters) {
 
 	// SAMSON Extension generator pro tip: modify this function to export the nodes contained in nodeIndexer to a file.
 	// Please refer to tutorials for examples.

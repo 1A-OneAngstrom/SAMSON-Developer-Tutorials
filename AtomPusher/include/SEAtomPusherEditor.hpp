@@ -56,7 +56,7 @@ public :
 	/// \name Rendering
 	//@{
 
-	virtual void												display(RenderingPass renderingPass);									///< To display elements related to the editor
+	virtual void												display(SBNode::RenderingPass renderingPass);							///< To display elements related to the editor
 
 	//@}
 

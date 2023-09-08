@@ -95,7 +95,7 @@ void SECenterOfMassApp::computeCenterOfMass() {
 
 void SECenterOfMassApp::onStructuralEvent(SBStructuralEvent* event) {
 
-	if (event->getType() == SBStructuralEvent::ParticlePositionChanged) {
+	if (event->getType() == SBStructuralEvent::AtomPositionChanged) {
 
 		SBAtom* atom = static_cast<SBAtom*>(event->getSender());
 

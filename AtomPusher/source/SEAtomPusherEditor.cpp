@@ -94,12 +94,12 @@ void SEAtomPusherEditor::getActions(SBVector<SBAction*>& actionVector) {
 
 }
 
-void SEAtomPusherEditor::display(RenderingPass renderingPass) {
+void SEAtomPusherEditor::display(SBNode::RenderingPass renderingPass) {
 
 	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
-	if (renderingPass == SBGEditor::RenderingPass::OpaqueGeometry || renderingPass == SBGEditor::RenderingPass::ShadowingGeometry) {
+	if (renderingPass == SBNode::RenderingPass::OpaqueGeometry || renderingPass == SBNode::RenderingPass::ShadowingGeometry) {
 
 		float positionData[3];
 		float radiusData[1];
@@ -110,7 +110,7 @@ void SEAtomPusherEditor::display(RenderingPass renderingPass) {
 
 		radiusData[0] = static_cast<float>(sphereRadius.getValue());
 
-		if (renderingPass == SBGEditor::RenderingPass::OpaqueGeometry) {
+		if (renderingPass == SBNode::RenderingPass::OpaqueGeometry) {
 
 			float colorData[4];
 			unsigned int flagData[1];
@@ -139,7 +139,7 @@ void SEAtomPusherEditor::display(RenderingPass renderingPass) {
 			SAMSON::displaySpheres(1, positionData, radiusData, colorData, flagData);
 
 		}
-		else if (renderingPass == SBGEditor::RenderingPass::ShadowingGeometry) {
+		else if (renderingPass == SBNode::RenderingPass::ShadowingGeometry) {
 
 			// display for shadows
 
@@ -254,7 +254,7 @@ void SEAtomPusherEditor::wheelEvent(QWheelEvent* event) {
 	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
-	int angle = event->delta();
+	int angle = event->angleDelta().y();
 	sphereRadius = sphereRadius * pow(1.002, angle);
 	// check for the minimal size of the sphere
 	if (sphereRadius < SBQuantity::angstrom(0.1)) sphereRadius = SBQuantity::angstrom(0.1);
