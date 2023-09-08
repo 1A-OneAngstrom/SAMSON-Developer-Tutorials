@@ -5,6 +5,7 @@
 #include "SBBaseEvent.hpp"
 #include "SBDocumentEvent.hpp"
 #include "SBStructuralEvent.hpp"
+#include "SBAtom.hpp"
 #include "SBBond.hpp"
 
 
@@ -78,7 +79,7 @@ private:
 
 	void														updateBondSpringsInteractions();										///< update the bond spring interactions
 
-	SBPointerIndexer<SBStructuralParticle> const*				particleIndexer;
+	SBPointerIndexer<SBAtom> const*								particleIndexer;
 
 	double														bondSpringStiffness;													///< the stiffness of bond springs
 

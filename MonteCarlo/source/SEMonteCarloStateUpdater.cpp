@@ -24,7 +24,7 @@ SEMonteCarloStateUpdater::~SEMonteCarloStateUpdater() {
 
 void SEMonteCarloStateUpdater::updateState() {
 
-	SBPointerIndexer<SBStructuralParticle> const* particleIndexer = (*dynamicalModel)->getStructuralParticleIndexer();
+	SBPointerIndexer<SBAtom> const* particleIndexer = (*dynamicalModel)->getAtomIndexer();
 	unsigned int nParticles = particleIndexer->size(); // number of particles in the particle system
 
 	// check the maximum number of particles

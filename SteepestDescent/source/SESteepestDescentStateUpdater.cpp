@@ -17,7 +17,7 @@ SESteepestDescentStateUpdater::~SESteepestDescentStateUpdater() {
 
 void SESteepestDescentStateUpdater::updateState() {
 
-	SBPointerIndexer<SBStructuralParticle> const* particleIndexer = (*dynamicalModel)->getStructuralParticleIndexer();
+	SBPointerIndexer<SBAtom> const* particleIndexer = (*dynamicalModel)->getAtomIndexer();
 
 	const unsigned int nParticles = particleIndexer->size(); // number of particles in the particle system
 	const unsigned int nSteps = getNumberOfSteps(); // the number of iterations per interactive simulation step

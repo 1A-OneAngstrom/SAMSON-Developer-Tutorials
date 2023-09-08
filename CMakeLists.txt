@@ -141,11 +141,12 @@ INCLUDE ( SBPublicDefinitions )
 INCLUDE ( SDKDeveloperDefinitions )
 INCLUDE ( SDKFunctions )
 INCLUDE ( SDKVersion )
+INCLUDE ( SBOpenGLVersion )
 
 MESSAGE( " " )
 MESSAGE( "=======================================  CMAKE SUMMARY PATHS  ========================================" )
 MESSAGE( "     SAMSON_SDK_PATH            = ${CMAKE_SAMSON_SDK_PATH} ")
-MESSAGE( "     QT5_CMAKE_INCLUDE_DIR      = ${CMAKE_QT5_CMAKE_INCLUDE_DIR}" )
+MESSAGE( "     QT_CMAKE_INCLUDE_DIR      = ${CMAKE_QT_CMAKE_INCLUDE_DIR}" )
 IF( WIN32 )
 MESSAGE( "     WINSDK_LIB_DIR             = ${CMAKE_WINSDK_LIB_DIR}" )
 ENDIF( WIN32 )
@@ -158,44 +159,69 @@ FIND_PACKAGE ( SAMSONSDK REQUIRED )
 
 SET(CMAKE_AUTOMOC ON)
 
-FIND_PACKAGE(Qt5Core REQUIRED) 
-FIND_PACKAGE(Qt5Gui REQUIRED) 
-FIND_PACKAGE(Qt5LinguistTools REQUIRED) 
-FIND_PACKAGE(Qt5Multimedia REQUIRED) 
-FIND_PACKAGE(Qt5MultimediaWidgets REQUIRED)
-FIND_PACKAGE(Qt5Network REQUIRED)
-FIND_PACKAGE(Qt5OpenGL REQUIRED) 
-FIND_PACKAGE(Qt5PrintSupport REQUIRED)
-FIND_PACKAGE(Qt5Sql REQUIRED) 
-FIND_PACKAGE(Qt5Widgets REQUIRED)
-FIND_PACKAGE(Qt5Xml REQUIRED)
-
-INCLUDE_DIRECTORIES(${Qt5Core_INCLUDE_DIRS})  
-INCLUDE_DIRECTORIES(${Qt5Gui_INCLUDE_DIRS}) 
-INCLUDE_DIRECTORIES(${Qt5LinguistTools_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Multimedia_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5MultimediaWidgets_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Network_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5OpenGL_INCLUDE_DIRS}) 
-INCLUDE_DIRECTORIES(${Qt5PrintSupport_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Sql_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS}) 
-INCLUDE_DIRECTORIES(${Qt5Xml_INCLUDE_DIRS}) 
-
-SET( QT_LIBRARIES	${Qt5Core_LIBRARIES}  
-					${Qt5Gui_LIBRARIES} 
-					${Qt5LinguistTools_LIBRARIES}
-					${Qt5Multimedia_LIBRARIES} 
-					${Qt5MultimediaWidgets_LIBRARIES} 
-					${Qt5Network_LIBRARIES} 
-					${Qt5OpenGL_LIBRARIES} 
-					${Qt5PrintSupport_LIBRARIES}
-					${Qt5Sql_LIBRARIES} 
-					${Qt5Widgets_LIBRARIES}
-					${Qt5Xml_LIBRARIES} 
+SET(QT_FRAMEWORKS
+	Core
+	Core5Compat
+	Gui
+	LinguistTools
+	Multimedia
+	MultimediaWidgets
+	Network
+	OpenGL
+	OpenGLWidgets
+	PrintSupport
+	Sql
+	Svg
+	WebChannel
+	WebEngineCore
+	WebEngineQuick
+	WebEngineWidgets
+	Widgets
+	Xml
 )
 
+foreach(FRAMEWORK ${QT_FRAMEWORKS})
+    FIND_PACKAGE(Qt6${FRAMEWORK} REQUIRED) 
+	INCLUDE_DIRECTORIES(${Qt6${FRAMEWORK}_INCLUDE_DIRS})
+	SET( QT_LIBRARIES ${QT_LIBRARIES} ${Qt6${FRAMEWORK}_LIBRARIES})
+
+endforeach()
+
 FIND_PACKAGE ( OpenGL )
+
+set(QT_V 6)
+
+if(QT_V EQUAL 6)
+    
+    MESSAGE("OVERLOADING QT5 functions.")
+
+    function(qt5_wrap_ui outfiles)
+        message("OVERLOADED VERSION OF qt5_wrap_ui")
+        qt_wrap_ui("${outfiles}" ${ARGN})
+        set("${outfiles}" "${${outfiles}}" PARENT_SCOPE)
+    endfunction()
+    
+    
+    function(qt5_wrap_cpp outfiles)
+        message("OVERLOADED VERSION OF qt5_wrap_cpp")
+        qt_wrap_cpp("${outfiles}" ${ARGN})
+        set("${outfiles}" "${${outfiles}}" PARENT_SCOPE)
+    endfunction()
+    
+    function(qt5_add_resources)
+        message("OVERLOADED VERSION OF qt5_add_ressources")
+        qt_add_resources("${outfiles}" ${ARGN})
+        set("${outfiles}" "${${outfiles}}" PARENT_SCOPE)
+    endfunction()
+    
+    
+    function(qt5_add_translation outfiles)
+        message("OVERLOADED VERSION OF qt5_add_translation")
+        qt_add_translation("${outfiles}" ${ARGN})
+        set("${outfiles}" "${${outfiles}}" PARENT_SCOPE)
+    endfunction()
+    
+endif()
 
 ############################
 # SAMSON Extension folders #

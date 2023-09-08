@@ -5,18 +5,13 @@
 #include <QOpenGLShaderProgram>
 
 
-QOpenGLFunctions_3_2_Core* SEVanDerWaalsVisualModel::gl = nullptr;
+SB_OPENGL_FUNCTIONS* SEVanDerWaalsVisualModel::gl = nullptr;
 
 SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel() {
 
 	// SAMSON Extension generator pro tip: this default constructor is called when unserializing the node, so it should perform all default initializations.
 
-	if (!gl) {
-
-		gl = new QOpenGLFunctions_3_2_Core();
-		gl->initializeOpenGLFunctions();
-
-	}
+	if (!gl) gl = SAMSON::getOpenGLFunctions();
 
 }
 
@@ -27,12 +22,7 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 	// the center of mass of a group of atoms, you might want to connect to the atoms' base signals (e.g. to update the center of mass when an atom is erased) and
 	// the atoms' structural signals (e.g. to update the center of mass when an atom is moved).
 
-	if (!gl) {
-
-		gl = new QOpenGLFunctions_3_2_Core();
-		gl->initializeOpenGLFunctions();
-
-	}
+	if (!gl) gl = SAMSON::getOpenGLFunctions();
 
 	SBNodeIndexer temporaryIndexer;
 	SB_FOR(SBNode* node, nodeIndexer)
@@ -266,7 +256,7 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 		updateDisplayData();
 
-		// retreive the pointer to the material applied to the visual model
+		// retrieve the pointer to the material applied to the visual model
 
 		SBNodeMaterial* material = getMaterial();
 
@@ -316,7 +306,7 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 		updateDisplayData();
 
-		// retreive the pointer to the material applied to the visual model
+		// retrieve the pointer to the material applied to the visual model
 
 		SBNodeMaterial* material = getMaterial();
 

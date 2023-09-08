@@ -7,7 +7,7 @@
 #include "SBStructuralEvent.hpp"
 #include "SBAtom.hpp"
 
-#include <QOpenGLFunctions_3_2_Core>
+#include "SBGRenderOpenGLFunctions.hpp"
 
 
 /// This class implements a visual model
@@ -100,8 +100,8 @@ private:
 	unsigned int*												nodeIndexData{ nullptr };
 
 	//@}
-
-	static QOpenGLFunctions_3_2_Core*							gl;
+	
+	static SB_OPENGL_FUNCTIONS*									gl;
 
 };
 

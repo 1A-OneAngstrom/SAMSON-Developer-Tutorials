@@ -34,16 +34,16 @@ public :
 	/// \name Parsing
 	//@{
 
-	virtual bool												importFromFile(const std::string& fileName, const SBList<std::string>* parameters = 0, SBDDocumentFolder* preferredFolder = 0);			///< Imports data into SAMSON from a file
+	virtual bool												importFromFile(const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters = nullptr, SBDDocumentFolder* preferredFolder = nullptr);			///< Imports data into SAMSON from a file
 
 	//@}
 
 private:
 
-	void														initializeParameters(const SBList<std::string>* parameters);			///< Initializes import parameters
-	void														parseParameters(const SBList<std::string>* parameters);					///< Parse the parameters list
+	void														initializeParameters(const std::unordered_map<std::string, SBValue>* parameters);		///< Initializes import parameters
+	void														parseParameters(const std::unordered_map<std::string, SBValue>* parameters);			///< Parse the parameters list
 
-	bool														parseEXYZ(const std::string& fileName, SBDDocumentFolder* preferredFolder = 0);	///< Parse the format
+	bool														parseEXYZ(const std::string& fileName, SBDDocumentFolder* preferredFolder = nullptr);	///< Parse the format
 
 	// Add to SAMSON's data graph
 

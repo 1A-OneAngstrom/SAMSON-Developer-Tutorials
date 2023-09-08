@@ -86,7 +86,7 @@ void SESpringsInteractionModel::initializeBondSpringsModel() {
 
 	// Initialize the set of atoms: the selected atoms are stored in particleIndexer
 
-	particleIndexer = (*particleSystem)->getStructuralParticleIndexer();
+	particleIndexer = (*particleSystem)->getAtomIndexer();
 
 	// Get the all the bonds in the active document
 

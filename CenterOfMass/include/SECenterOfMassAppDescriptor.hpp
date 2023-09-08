@@ -12,8 +12,10 @@
 SB_CLASS_BEGIN(SECenterOfMassApp);
 
 	SB_CLASS_TYPE(SBCClass::App);
-
-		SB_CLASS_DESCRIPTION("DevTutorial: Center of mass");
+	SB_CLASS_DESCRIPTION("DevTutorial: Center of mass");
+	SB_CLASS_PUBLIC_NAME("DevTutorial: Center of mass");
+	SB_CLASS_TOOL_TIP("DevTutorial: Center of mass tooltip.");
+	SB_CLASS_GUI_UUID("9E140A22-134A-8C41-EDB5-57D896016345");
 
 	SB_FACTORY_BEGIN;
 
