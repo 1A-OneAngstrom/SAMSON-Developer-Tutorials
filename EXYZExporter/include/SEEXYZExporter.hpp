@@ -12,7 +12,7 @@ class SB_EXPORT SEEXYZExporter : public SBIFileExporter {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{

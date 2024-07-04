@@ -250,11 +250,14 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. This is the main function of your visual model. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
 
-	if (renderingPass == SBNode::RenderingPass::OpaqueGeometry && (inheritedOpacity == 1.0f)) {
+	if (renderingPass == SBNode::RenderingPass::Setup) {
 
 		// update display data arrays
 
 		updateDisplayData();
+
+	}
+	else if (renderingPass == SBNode::RenderingPass::OpaqueGeometry && (inheritedOpacity == 1.0f)) {
 
 		// retrieve the pointer to the material applied to the visual model
 
@@ -280,7 +283,7 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 			else if (currentAtom->getMaterial()) {
 
 				// else if a material is applied to the current atom use its color scheme
-				currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+				currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom(), currentAtom()->getPosition());
 
 			}
 			else {
@@ -297,14 +300,10 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 		// display spheres for atoms
 
-		SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true);
+		if (numberOfAtoms) SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData);
 
 	}
 	else if ((renderingPass == SBNode::RenderingPass::TransparentGeometry) && (inheritedOpacity != 1.0f)) {
-
-		// update display data arrays
-
-		updateDisplayData();
 
 		// retrieve the pointer to the material applied to the visual model
 
@@ -330,7 +329,7 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 			else if (currentAtom->getMaterial()) {
 
 				// else if a material is applied to the current atom use its color scheme
-				currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom());
+				currentAtom->getMaterial()->getColorScheme()->getColor(colorData + 4 * i, currentAtom(), currentAtom()->getPosition());
 
 			}
 			else {
@@ -345,43 +344,29 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 		}
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_DEPTH_TEST);
-
 		if (numberOfAtoms) {
 
 			gl->glColorMask(false, false, false, false);
 
-			SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true, inheritedOpacity);
+			SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, SBSpatialTransform::identity, inheritedOpacity);
 
 			gl->glColorMask(true, true, true, true);
 
-			SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, true, inheritedOpacity);
+			SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, false, SBSpatialTransform::identity, inheritedOpacity);
 
 		}
-
-		glDisable(GL_BLEND);
 
 	}
 	else if (renderingPass == SBNode::RenderingPass::ShadowingGeometry) {
 
 		// display for shadows
 
-		// update display data arrays
-
-		updateDisplayData();
-
-		SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, nullptr, nullptr, true, true);
+		if (numberOfAtoms) SAMSON::displaySpheres(numberOfAtoms, positionData, radiusData, colorData, flagData, true);
 
 	}
 	else if (renderingPass == SBNode::RenderingPass::SelectableGeometry) {
 
 		// display for selection
-
-		// update display data arrays
-
-		updateDisplayData();
 
 		// fill in the arrays
 
@@ -400,7 +385,7 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 		// display spheres for atoms
 
-		SAMSON::displaySpheresSelection(numberOfAtoms, positionData, radiusData, nodeIndexData);
+		if (numberOfAtoms) SAMSON::displaySpheresSelection(numberOfAtoms, positionData, radiusData, nodeIndexData);
 
 	}
 

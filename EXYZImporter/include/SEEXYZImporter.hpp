@@ -13,7 +13,7 @@ class SB_EXPORT SEEXYZImporter : public SBIFileImporter {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{
@@ -51,7 +51,7 @@ private:
 
 private:
 
-	bool														createCovalentBonds = true;
+	bool														createCovalentBonds{ true };
 
 };
 

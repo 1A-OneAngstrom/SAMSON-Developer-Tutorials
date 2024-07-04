@@ -16,7 +16,7 @@ class SB_EXPORT SEVanDerWaalsVisualModel : public SBMVisualModel {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{
@@ -81,17 +81,17 @@ private:
 
 	SBPointerIndexer<SBAtom>									atomIndexer;
 
-	float														radiusFactor = 1.0f;													///< The radius factor
-	float														minimumRadiusFactor = 0.1f;
-	float														maximumRadiusFactor = 2.5f;
-	float														radiusFactorSingleStep = 0.1f;
+	float														radiusFactor{ 1.0f };													///< The radius factor
+	float														minimumRadiusFactor{ 0.1f };
+	float														maximumRadiusFactor{ 2.5f };
+	float														radiusFactorSingleStep{ 0.1f };
 
 	/// \name Display data
 	//@{
 
-	void														updateDisplayData();													///< Updates polyhedra display data
+	void														updateDisplayData();													///< Updates display data
 
-	unsigned int												numberOfAtoms = 0;
+	unsigned int												numberOfAtoms{ 0 };
 
 	float*														positionData{ nullptr };
 	float*														radiusData{ nullptr };

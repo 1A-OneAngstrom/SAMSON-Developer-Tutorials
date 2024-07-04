@@ -13,7 +13,7 @@
 
 SB_ELEMENT_DESCRIPTION("This SAMSON Extension demonstrates Van der Waals visual model.");
 SB_ELEMENT_DOCUMENTATION("Resource/Documentation/doc.html");
-SB_ELEMENT_VERSION_NUMBER("3.0.0");
+SB_ELEMENT_VERSION_NUMBER("6.0.0");
 
 SB_ELEMENT_CLASSES_BEGIN;
 
