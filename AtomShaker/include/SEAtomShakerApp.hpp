@@ -12,7 +12,7 @@ class SB_EXPORT SEAtomShakerApp : public SBDApp {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{

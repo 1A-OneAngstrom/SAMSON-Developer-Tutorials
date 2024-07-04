@@ -14,7 +14,7 @@ class SB_EXPORT SECenterOfMassApp : public SBDApp {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{

@@ -15,7 +15,7 @@ class SESpringsInteractionModel : public SBMInteractionModelParticleSystem {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{
