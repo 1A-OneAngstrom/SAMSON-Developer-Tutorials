@@ -1,8 +1,8 @@
 # EXYZ Importer
 
-Please, refer to the [Importer tutorial](https://documentation.samson-connect.net/developers/latest/page_tutorial_importing.html).
+Please, refer to the [Importer tutorial](https://documentation.samson-connect.net/developers/latest/tutorials/importing/).
 
-This SAMSON Element demonstrates how to implement an importer on an example of a simple XYZ-importer for files of the following format:
+This SAMSON Extension demonstrates how to implement an [importer](https://documentation.samson-connect.net/developers/latest/importers/) on an example of a simple XYZ-importer for files of the following format:
 
 1. The 1st line: the number of atoms in the file.
 2. The 2nd line: arbitraty header line.
@@ -25,6 +25,6 @@ H -8.382 9.481 7.521
 H -7.182 10.599 8.021
 ```
 
-To test this importer, you can export any system from SAMSON (*File menu \ Save as...*) in XYZ format and change the extension from `.xyz` to `.exyz`.
+To test this importer, you can export any system from SAMSON (*File > Save as...*) in XYZ format and change the extension from `.xyz` to `.exyz`.
 
-**Note:** SAMSON already has an XYZ Importer which is installed by default. 
+**Note:** SAMSON already has an XYZ Importer which is installed by default.

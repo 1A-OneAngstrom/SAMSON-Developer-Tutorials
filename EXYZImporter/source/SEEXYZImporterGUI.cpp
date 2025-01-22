@@ -4,9 +4,9 @@
 #include "SBGWindow.hpp"
 #include <QShortcut>
 
-SEEXYZImporterGUI::SEEXYZImporterGUI( SEEXYZImporter* t ) : SBGFileImporter( t ) {
+SEEXYZImporterGUI::SEEXYZImporterGUI(SEEXYZImporter* t) : SBGFileImporter(t) {
 
-	ui.setupUi( this );
+	ui.setupUi(this);
 
 }
 
@@ -16,19 +16,19 @@ SEEXYZImporterGUI::~SEEXYZImporterGUI() {
 
 SEEXYZImporter* SEEXYZImporterGUI::getImporter() const { return static_cast<SEEXYZImporter*>(importer); }
 
-void SEEXYZImporterGUI::loadSettings( SBGSettings *settings ) {
+void SEEXYZImporterGUI::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
+	if (settings == nullptr) return;
+
 	// SAMSON Extension generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
-	ui.checkBoxCreateCovalentBonds->setChecked( settings->loadBoolValue("checkBoxCreateCovalentBonds", true) );
+	ui.checkBoxCreateCovalentBonds->setChecked(settings->loadBoolValue("checkBoxCreateCovalentBonds", true));
 
 }
 
-void SEEXYZImporterGUI::saveSettings( SBGSettings *settings ) {
+void SEEXYZImporterGUI::saveSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so your importer can save its GUI state from one session to the next
 
@@ -36,10 +36,10 @@ void SEEXYZImporterGUI::saveSettings( SBGSettings *settings ) {
 
 }
 
-SBCContainerUUID SEEXYZImporterGUI::getUUID() const { return SBCContainerUUID( "25D11718-9241-65A2-2875-6DBF998792DB" );}
+SBCContainerUUID SEEXYZImporterGUI::getUUID() const { return SBCContainerUUID("25D11718-9241-65A2-2875-6DBF998792DB"); }
 
-QPixmap SEEXYZImporterGUI::getLogo() const { 
-	
+QPixmap SEEXYZImporterGUI::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your importer.
 
@@ -47,7 +47,7 @@ QPixmap SEEXYZImporterGUI::getLogo() const {
 
 }
 
-QString SEEXYZImporterGUI::getName() const { 
+QString SEEXYZImporterGUI::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your importer inside SAMSON
@@ -69,18 +69,7 @@ int SEEXYZImporterGUI::getFormat() const {
 
 }
 
-QString SEEXYZImporterGUI::getCitation() const {
-
-	// SAMSON Extension generator pro tip: modify this function to add citation information
-
-	return
-		"If you use this importer in your work, please cite: <br/>"
-		"<br/>"
-		"[1] <a href=\"https://www.samson-connect.net\">https://www.samson-connect.net</a><br/>";
-
-}
-
-void SEEXYZImporterGUI::getParameters(bool &createCovalentBonds) {
+void SEEXYZImporterGUI::getParameters(bool& createCovalentBonds) {
 
 	createCovalentBonds = ui.checkBoxCreateCovalentBonds->isChecked();
 

@@ -20,8 +20,12 @@ SEEXYZExporter::~SEEXYZExporter() {
 
 	// remove the options window
 
-	//propertyDialog->saveDefaultSettings();
-	//delete propertyDialog;
+	if (propertyDialog) {
+
+		propertyDialog->saveDefaultSettings();
+		delete propertyDialog;
+
+	}
 
 }
 

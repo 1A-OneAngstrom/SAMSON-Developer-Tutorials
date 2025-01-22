@@ -16,20 +16,18 @@ public:
 	/// \name Simulation
 	//@{
 
-	virtual void												updateState();
+	virtual void												updateState() override;
 	
 	//@}
 
 	/// \name Rendering
 	//@{
 
-	virtual void												display();																///< Displays the state updater
-	virtual void												displayForShadow();														///< Displays the state updater for shadow purposes
-	virtual void												displayForSelection();													///< Displays the state updater for selection purposes
+	virtual void												display(SBNode::RenderingPass renderingPass) override;					///< Displays the state updater
 
-	virtual void												expandBounds(SBIAPosition3& bounds) const;								///< Expands the bounds to make sure the state updater fits inside them
+	virtual void												expandBounds(SBIAPosition3& bounds) const override;						///< Expands the bounds to make sure the state updater fits inside them
 
-	virtual void												collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData);		///< To collect ambient occlusion data
+	virtual void												collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData) override;		///< To collect ambient occlusion data
 
 	//@}
 
@@ -44,12 +42,12 @@ public:
 private:
 
 	// Monte Carlo variables
-	unsigned int												numberOfRejects;
-	unsigned int												numberOfTrials;
+	unsigned int												numberOfRejects{ 0 };
+	unsigned int												numberOfTrials{ 0 };
 	SBRandom													randomNumberGenerator;
 
 	// Metropolis variables
-	unsigned int												numberOfMovingParticles;
+	unsigned int												numberOfMovingParticles{ 0 };
 	SBQuantity::angstrom										maximumDisplacement;
 	SBQuantity::temperature										temperature;
 

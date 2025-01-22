@@ -15,7 +15,7 @@ void exposeCustomStructuralModel(py::module& m) {
 
 	/* Since the SBStructuralModel class is based on the SBStructuralModel class,
 	 * you do not need to create python bindings for functionality of the SBStructuralModel class,
-	 * because they are already exposed thanks to the Python Scripting Element.
+	 * because they are already exposed thanks to the Python Scripting Extension.
 	 */
 
 	// The py::class_ creates bindings for a C++ class
@@ -26,7 +26,7 @@ void exposeCustomStructuralModel(py::module& m) {
 			>
 			c(m,													/* pybind11::module */
 			  "CustomStructuralModel",								/* the class name in python*/
-			  R"(This class describes a custom structural model from SEPyBindTutorial Element)" /* the docstring */
+			  R"(This class describes a custom structural model from SEPyBindTutorial Extension)" /* the docstring */
 			  );
 
 	// constructors

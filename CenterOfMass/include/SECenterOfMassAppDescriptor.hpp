@@ -1,5 +1,5 @@
-/// \headerfile SBProxy.hpp "SBProxy.hpp"
-#include "SBProxy.hpp"
+/// \headerfile SAMSON.hpp "SAMSON.hpp"
+#include "SAMSON.hpp"
 
 /// \headerfile SECenterOfMassApp.hpp "SECenterOfMassApp.hpp"
 #include "SECenterOfMassApp.hpp"
@@ -16,6 +16,7 @@ SB_CLASS_BEGIN(SECenterOfMassApp);
 	SB_CLASS_PUBLIC_NAME("DevTutorial: Center of mass");
 	SB_CLASS_TOOL_TIP("DevTutorial: Center of mass tooltip.");
 	SB_CLASS_GUI_UUID("9E140A22-134A-8C41-EDB5-57D896016345");
+	SB_CLASS_ICON_FILE_NAME(SB_ELEMENT_PATH + "/Resource/icons/SECenterOfMassAppIcon.png");
 
 	SB_FACTORY_BEGIN;
 

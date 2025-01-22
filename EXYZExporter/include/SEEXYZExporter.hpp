@@ -25,15 +25,15 @@ public:
 	/// \name Properties
 	//@{
 
-	virtual std::string											getFilter() const;														///< Returns the filter of the exporter
-	virtual std::string											getExtension() const;													///< Returns the extension of the exporter
+	virtual std::string											getFilter() const override;												///< Returns the filter of the exporter
+	virtual std::string											getExtension() const override;											///< Returns the extension of the exporter
 
 	//@}
 
 	/// \name Parsing
 	//@{
 
-	virtual bool												exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters = nullptr);		///< Exports data from SAMSON to a file
+	virtual bool												exportToFile(const SBNodeIndexer& nodeIndexer, const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters = nullptr) override;		///< Exports data from SAMSON to a file
 
 	//@}
 

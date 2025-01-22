@@ -1,6 +1,5 @@
 # AtomShaker
 
-This SAMSON Element demonstrates how to create a simple App with GUI that shakes atoms in SAMSON.
+This SAMSON Extension demonstrates how to create a simple [app](https://documentation.samson-connect.net/developers/latest/apps/) with GUI that shakes atoms in SAMSON.
 
-Please, refer to the [Atom shaker tutorial](https://documentation.samson-connect.net/developers/latest/page_tutorial_atom_shaker.html).
- 
+Please, refer to the [Programming new Apps: Atom shaker](https://documentation.samson-connect.net/developers/latest/tutorials/atom-shaker/) tutorial.

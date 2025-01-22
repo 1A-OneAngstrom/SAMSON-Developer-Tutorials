@@ -1,8 +1,8 @@
 # Springs
 
-This SAMSON Element demonstrates how to create a simple Bond Springs Interaction Model.
+This SAMSON Extension demonstrates how to create a simple Bond Springs [interaction model](https://documentation.samson-connect.net/developers/latest/modeling-and-simulation/#interaction-models).
 
-Please, refer to the [Springs interaction model tutorial](https://documentation.samson-connect.net/developers/latest/page_tutorial_spring_interaction_model.html).
+Please, refer to the [Programming new force fields: Springs interaction model](https://documentation.samson-connect.net/developers/latest/tutorials/spring-interaction-model/) tutorial.
 
 ![Springs Interaction Model](resource/DevTutorials-Springs1.png "Add Simulator and choose the Interaction Model")
 

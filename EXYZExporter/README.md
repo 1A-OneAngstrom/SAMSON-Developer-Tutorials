@@ -1,8 +1,8 @@
 # EXYZ Exporter
 
-Please, refer to the [Exporter tutorial](https://documentation.samson-connect.net/developers/latest/page_tutorial_exporting.html).
+Please, refer to the [Exporter tutorial](https://documentation.samson-connect.net/developers/latest/tutorials/exporting/).
 
-This SAMSON Element demonstrates how to implement an exporter on an example of a simple XYZ-exporter for files of the following format:
+This SAMSON Extension demonstrates how to implement an [exporter](https://documentation.samson-connect.net/developers/latest/exporters/) on an example of a simple XYZ-exporter for files of the following format:
 
 1. The 1st line: the number of atoms in the file.
 2. The 2nd line: arbitraty header line.
@@ -25,6 +25,6 @@ H -8.382 9.481 7.521
 H -7.182 10.599 8.021
 ```
 
-To test this exporter, you can export any system from SAMSON (*File menu \ Save*, *File menu \ Save as...*, *File menu \ Save selection as...*) into this format.
+To test this exporter, you can export any system from SAMSON (*File > Save*, *File > Save as...*, *File > Save selection as...*) into this format.
 
-**Note:** SAMSON already has an XYZ Exporter which is installed by default. 
+**Note:** SAMSON already has an XYZ Exporter which is installed by default.

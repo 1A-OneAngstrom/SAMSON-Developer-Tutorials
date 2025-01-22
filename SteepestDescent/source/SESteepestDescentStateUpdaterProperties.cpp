@@ -20,7 +20,7 @@ SESteepestDescentStateUpdaterProperties::~SESteepestDescentStateUpdaterPropertie
 
 }
 
-void SESteepestDescentStateUpdaterProperties::loadSettings(SBGSettings *settings) {
+void SESteepestDescentStateUpdaterProperties::loadSettings(SBGSettings* settings) {
 
 	if (settings == nullptr) return;
 
@@ -32,7 +32,7 @@ void SESteepestDescentStateUpdaterProperties::loadSettings(SBGSettings *settings
 
 }
 
-void SESteepestDescentStateUpdaterProperties::saveSettings(SBGSettings *settings) {
+void SESteepestDescentStateUpdaterProperties::saveSettings(SBGSettings* settings) {
 
 	if (settings == nullptr) return;
 
@@ -93,7 +93,7 @@ void SESteepestDescentStateUpdaterProperties::onStepSizeChanged(double d) { stat
 bool SESteepestDescentStateUpdaterProperties::setup() {
 
 	SBNodeIndexer nodeIndexer;
-	SB_FOR(SBNode* node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SESteepestDescentStateUpdater") && SBNode::GetElement() == std::string("SESteepestDescent") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
+	SB_FOR(SBNode * node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SESteepestDescentStateUpdater") && SBNode::GetElement() == std::string("SESteepestDescent") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
 
 	if (nodeIndexer.size() == 1) {
 
@@ -136,7 +136,7 @@ SESteepestDescentStateUpdaterProperties::Observer::~Observer() {}
 void SESteepestDescentStateUpdaterProperties::Observer::onBaseEvent(SBBaseEvent* baseEvent) {
 
 	if (baseEvent->getType() == SBBaseEvent::NodeEraseBegin) properties->hide();
-	
+
 }
 
 void SESteepestDescentStateUpdaterProperties::Observer::onStateUpdaterEvent(SBStateUpdaterEvent* stateUpdaterEvent) {

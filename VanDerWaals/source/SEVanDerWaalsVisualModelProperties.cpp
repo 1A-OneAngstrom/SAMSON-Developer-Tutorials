@@ -6,7 +6,7 @@
 SEVanDerWaalsVisualModelProperties::SEVanDerWaalsVisualModelProperties() {
 
 	visualModel = 0;
-	ui.setupUi( this );
+	ui.setupUi(this);
 	observer = new Observer(this);
 
 }
@@ -20,26 +20,26 @@ SEVanDerWaalsVisualModelProperties::~SEVanDerWaalsVisualModelProperties() {
 
 }
 
-void SEVanDerWaalsVisualModelProperties::loadSettings( SBGSettings *settings ) {
+void SEVanDerWaalsVisualModelProperties::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
-	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
-
-}
-
-void SEVanDerWaalsVisualModelProperties::saveSettings( SBGSettings *settings ) {
-
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
-SBCContainerUUID SEVanDerWaalsVisualModelProperties::getUUID() const { return SBCContainerUUID( "91E8D450-7244-19EA-2987-C60D6159D39F" );}
+void SEVanDerWaalsVisualModelProperties::saveSettings(SBGSettings* settings) {
 
-QPixmap SEVanDerWaalsVisualModelProperties::getLogo() const { 
-	
+	if (settings == nullptr) return;
+
+	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
+
+}
+
+SBCContainerUUID SEVanDerWaalsVisualModelProperties::getUUID() const { return SBCContainerUUID("91E8D450-7244-19EA-2987-C60D6159D39F"); }
+
+QPixmap SEVanDerWaalsVisualModelProperties::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your visual model.
 
@@ -47,7 +47,7 @@ QPixmap SEVanDerWaalsVisualModelProperties::getLogo() const {
 
 }
 
-QString SEVanDerWaalsVisualModelProperties::getName() const { 
+QString SEVanDerWaalsVisualModelProperties::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your visual model inside SAMSON
@@ -83,7 +83,7 @@ QString SEVanDerWaalsVisualModelProperties::getCitation() const {
 bool SEVanDerWaalsVisualModelProperties::setup() {
 
 	SBNodeIndexer nodeIndexer;
-	SB_FOR(SBNode* node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEVanDerWaalsVisualModel") && SBNode::GetElement() == std::string("SEVanDerWaals") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
+	SB_FOR(SBNode * node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEVanDerWaalsVisualModel") && SBNode::GetElement() == std::string("SEVanDerWaals") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
 
 	if (nodeIndexer.size() == 1) {
 
@@ -137,10 +137,10 @@ void SEVanDerWaalsVisualModelProperties::Observer::onBaseEvent(SBBaseEvent* base
 void SEVanDerWaalsVisualModelProperties::Observer::onVisualEvent(SBVisualEvent* visualEvent) {
 
 	if (visualEvent->getType() == SBVisualEvent::VisualModelChanged) {
-		
+
 		// SAMSON Extension generator pro tip: modify this function if the property window
 		// needs to be updated when the VisualModelChanged event is sent
-				
+
 	}
 
 }

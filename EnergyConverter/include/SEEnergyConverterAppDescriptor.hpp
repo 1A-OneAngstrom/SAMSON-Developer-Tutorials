@@ -1,5 +1,5 @@
-/// \headerfile SBProxy.hpp "SBProxy.hpp"
-#include "SBProxy.hpp"
+/// \headerfile SAMSON.hpp "SAMSON.hpp"
+#include "SAMSON.hpp"
 
 /// \headerfile SEEnergyConverterApp.hpp "SEEnergyConverterApp.hpp"
 #include "SEEnergyConverterApp.hpp"
@@ -16,6 +16,7 @@ SB_CLASS_BEGIN(SEEnergyConverterApp);
 	SB_CLASS_PUBLIC_NAME("DevTutorial: Energy converter");
 	SB_CLASS_TOOL_TIP("DevTutorial: Energy converter tooltip.");
 	SB_CLASS_GUI_UUID("19EDF709-C04F-AF56-8B21-C0FC96B004E5");
+	SB_CLASS_ICON_FILE_NAME(SB_ELEMENT_PATH + "/Resource/icons/SEEnergyConverterAppIcon.png");
 
 	SB_FACTORY_BEGIN;
 

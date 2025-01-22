@@ -81,9 +81,9 @@ SET ( SAMSON_INCLUDE_PATH "${CMAKE_SAMSON_SDK_PATH}/include/" )
 # VERSION_HASH information : New since SAMSON 0.8.0
 #
 # The maximum size of this variable is 63 Bytes ie char[63].
-# We can embed into elements file one string to identify it. Usualy we put the git commit hash or the svn revision number inside.
+# We can embed into the extension file one string to identify it. Usualy we put the git commit hash or the svn revision number inside.
 # The information is relevant only if the working copy is up to date and if everything is commited
-# If you upload your element on samson-connect, you will see this information next to your element inside My SAMSON->My Factory->Edit Element.
+# If you upload your extension on samson-connect.net, you will see this information next to your extension inside Accound > Developed extensions.
 
 # you can choose either git either svn either nothing
 SET ( USE_GIT 1 )
@@ -229,13 +229,15 @@ endif()
 
 ADD_SUBDIRECTORY( AtomShaker )
 ADD_SUBDIRECTORY( AtomPusher )
-ADD_SUBDIRECTORY( EnergyConverter )
+ADD_SUBDIRECTORY( Barycenter )
 ADD_SUBDIRECTORY( CenterOfMass )
-ADD_SUBDIRECTORY( EXYZImporter )
+ADD_SUBDIRECTORY( EnergyConverter )
 ADD_SUBDIRECTORY( EXYZExporter )
+ADD_SUBDIRECTORY( EXYZImporter )
 ADD_SUBDIRECTORY( VanDerWaals )
 ADD_SUBDIRECTORY( Springs )
 ADD_SUBDIRECTORY( SteepestDescent )
 ADD_SUBDIRECTORY( MonteCarlo )
+ADD_SUBDIRECTORY( PathGenerator )
 
 #ADD_SUBDIRECTORY( PyBindTutorial )
