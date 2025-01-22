@@ -6,7 +6,7 @@
 SESpringsInteractionModelProperties::SESpringsInteractionModelProperties() {
 
 	interactionModel = nullptr;
-	ui.setupUi( this );
+	ui.setupUi(this);
 	observer = new Observer(this);
 
 }
@@ -20,10 +20,10 @@ SESpringsInteractionModelProperties::~SESpringsInteractionModelProperties() {
 
 }
 
-void SESpringsInteractionModelProperties::loadSettings( SBGSettings *settings ) {
+void SESpringsInteractionModelProperties::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
+	if (settings == nullptr) return;
+
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 	double bondSpringStiffness = settings->loadDoubleValue("bondSpringStiffness", 1.0);
@@ -32,9 +32,9 @@ void SESpringsInteractionModelProperties::loadSettings( SBGSettings *settings ) 
 
 }
 
-void SESpringsInteractionModelProperties::saveSettings( SBGSettings *settings ) {
+void SESpringsInteractionModelProperties::saveSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
@@ -42,10 +42,10 @@ void SESpringsInteractionModelProperties::saveSettings( SBGSettings *settings ) 
 
 }
 
-SBCContainerUUID SESpringsInteractionModelProperties::getUUID() const { return SBCContainerUUID( "CED9EEE7-CC43-7555-521D-DA3E7CDBD16E" );}
+SBCContainerUUID SESpringsInteractionModelProperties::getUUID() const { return SBCContainerUUID("CED9EEE7-CC43-7555-521D-DA3E7CDBD16E"); }
 
-QPixmap SESpringsInteractionModelProperties::getLogo() const { 
-	
+QPixmap SESpringsInteractionModelProperties::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your interaction model.
 
@@ -53,7 +53,7 @@ QPixmap SESpringsInteractionModelProperties::getLogo() const {
 
 }
 
-QString SESpringsInteractionModelProperties::getName() const { 
+QString SESpringsInteractionModelProperties::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your interaction model inside SAMSON
@@ -89,7 +89,7 @@ QString SESpringsInteractionModelProperties::getCitation() const {
 bool SESpringsInteractionModelProperties::setup() {
 
 	SBNodeIndexer nodeIndexer;
-	SB_FOR(SBNode* node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SESpringsInteractionModel") && SBNode::GetElement() == std::string("SESprings") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
+	SB_FOR(SBNode * node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SESpringsInteractionModel") && SBNode::GetElement() == std::string("SESprings") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
 
 	if (nodeIndexer.size() == 1) {
 

@@ -20,7 +20,7 @@ SEMonteCarloStateUpdaterProperties::~SEMonteCarloStateUpdaterProperties() {
 
 }
 
-void SEMonteCarloStateUpdaterProperties::loadSettings(SBGSettings *settings) {
+void SEMonteCarloStateUpdaterProperties::loadSettings(SBGSettings* settings) {
 
 	if (settings == nullptr) return;
 
@@ -32,7 +32,7 @@ void SEMonteCarloStateUpdaterProperties::loadSettings(SBGSettings *settings) {
 
 }
 
-void SEMonteCarloStateUpdaterProperties::saveSettings(SBGSettings *settings) {
+void SEMonteCarloStateUpdaterProperties::saveSettings(SBGSettings* settings) {
 
 	if (settings == nullptr) return;
 
@@ -105,7 +105,7 @@ void SEMonteCarloStateUpdaterProperties::onTemperatureChanged(double d) {
 bool SEMonteCarloStateUpdaterProperties::setup() {
 
 	SBNodeIndexer nodeIndexer;
-	SB_FOR(SBNode* node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEMonteCarloStateUpdater") && SBNode::GetElement() == std::string("SEMonteCarlo") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
+	SB_FOR(SBNode * node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEMonteCarloStateUpdater") && SBNode::GetElement() == std::string("SEMonteCarlo") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
 
 	if (nodeIndexer.size() == 1) {
 
@@ -148,7 +148,7 @@ SEMonteCarloStateUpdaterProperties::Observer::~Observer() {}
 void SEMonteCarloStateUpdaterProperties::Observer::onBaseEvent(SBBaseEvent* baseEvent) {
 
 	if (baseEvent->getType() == SBBaseEvent::NodeEraseBegin) properties->hide();
-	
+
 }
 
 void SEMonteCarloStateUpdaterProperties::Observer::onStateUpdaterEvent(SBStateUpdaterEvent* stateUpdaterEvent) {

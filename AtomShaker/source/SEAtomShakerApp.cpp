@@ -33,7 +33,7 @@ void SEAtomShakerApp::shakeAtoms(const SBQuantity::length& distance) {
 	// turn the holding mechanism on
 	SAMSON::beginHolding("Shake atoms");
 
-	SB_FOR(SBNode* node, nodeIndexer) {
+	SB_FOR(SBNode * node, nodeIndexer) {
 
 		SBAtom* currentAtom = static_cast<SBAtom*>(node);
 		SBPosition3 position = currentAtom->getPosition();

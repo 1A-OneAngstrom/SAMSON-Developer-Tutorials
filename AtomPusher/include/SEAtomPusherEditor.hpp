@@ -29,49 +29,52 @@ public:
 	/// \name Identity
 	//@{
 
-	virtual SBCContainerUUID									getUUID() const;														///< Returns the widget UUID
-	virtual QString												getName() const;														///< Returns the class name
-	virtual QString												getDescription() const;													///< Returns the menu item text
-	virtual QPixmap												getLogo() const;														///< Returns the pixmap logo
-	virtual QKeySequence										getShortcut() const;													///< Returns the shorcut
-	virtual QString												getToolTip() const;														///< Returns the tool tip
+	virtual SBCContainerUUID									getUUID() const override;												///< Returns the widget UUID
+	virtual QString												getName() const override;												///< Returns the class name
+	virtual QString												getDescription() const override;										///< Returns the menu item text
+	virtual QPixmap												getLogo() const override;												///< Returns the pixmap logo
+	virtual QKeySequence										getShortcut() const override;											///< Returns the shortcut
+	virtual QString												getToolTip() const override;											///< Returns the tool tip
 
 	//@}
 
 	/// \name Editing
 	//@{
 
-	virtual void												beginEditing();															///< Called when editing is about to begin
-	virtual void												endEditing();															///< Called when editing is about to end
+	virtual void												beginEditing() override;												///< Called when editing is about to begin
+	virtual void												endEditing() override;													///< Called when editing is about to end
 
 	//@}
 
 	/// \name Actions
 	//@{
 
-	virtual void												getActions(SBVector<SBAction*>& actionVector);							///< Gets the editor's actions
+	virtual bool												isSelectionDependent() const override;									///< Returns true when the editor's context menu actions depend on the current selection
+
+	virtual void												getQuickAccessActions(SBVector<SBGAction*>& actionVector) override;		///< Returns the editor's quick access actions 
+	virtual void												getContextMenuActions(SBVector<SBGAction*>& actionVector) override;		///< Returns the editor's context menu actions
 
 	//@}
 
 	/// \name Rendering
 	//@{
 
-	virtual void												display(SBNode::RenderingPass renderingPass);							///< To display elements related to the editor
+	virtual void												display(SBNode::RenderingPass renderingPass) override;					///< To display elements related to the editor
 
 	//@}
 
 	/// \name GUI Events
 	//@{
 
-	virtual void												mousePressEvent(QMouseEvent* event);									///< Handles mouse press event
-	virtual void												mouseReleaseEvent(QMouseEvent* event);									///< Handles mouse release event
-	virtual void												mouseMoveEvent(QMouseEvent* event);										///< Handles mouse move event
-	virtual void												mouseDoubleClickEvent(QMouseEvent* event);								///< Handles mouse double click event
+	virtual void												mousePressEvent(QMouseEvent* event) override;							///< Handles mouse press event
+	virtual void												mouseReleaseEvent(QMouseEvent* event) override;							///< Handles mouse release event
+	virtual void												mouseMoveEvent(QMouseEvent* event) override;							///< Handles mouse move event
+	virtual void												mouseDoubleClickEvent(QMouseEvent* event) override;						///< Handles mouse double click event
 
-	virtual void												wheelEvent(QWheelEvent* event);											///< Handles wheel event
+	virtual void												wheelEvent(QWheelEvent* event) override;								///< Handles wheel event
 
-	virtual void												keyPressEvent(QKeyEvent* event);										///< Handles key press event
-	virtual void												keyReleaseEvent(QKeyEvent* event);										///< Handles key release event
+	virtual void												keyPressEvent(QKeyEvent* event) override;								///< Handles key press event
+	virtual void												keyReleaseEvent(QKeyEvent* event) override;								///< Handles key release event
 
 	//@}
 
@@ -96,7 +99,7 @@ public:
 
 	SBPosition3													spherePosition;
 	SBQuantity::length											sphereRadius;
-	bool														sphereIsActive;
+	bool														sphereIsActive{ false };
 
 };
 

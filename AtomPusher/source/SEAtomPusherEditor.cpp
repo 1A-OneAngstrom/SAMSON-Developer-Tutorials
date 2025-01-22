@@ -86,9 +86,25 @@ void SEAtomPusherEditor::endEditing() {
 
 }
 
-void SEAtomPusherEditor::getActions(SBVector<SBAction*>& actionVector) {
+bool SEAtomPusherEditor::isSelectionDependent() const {
 
-	// SAMSON Extension generator pro tip: SAMSON calls this function to show the user actions associated to your editor in context menus.
+	// SAMSON Extension generator pro tip: return true when the editor's context menu actions depend on the current selection
+
+	return false;
+
+}
+
+void SEAtomPusherEditor::getQuickAccessActions(SBVector<SBAction*>& actionVector) {
+
+	// SAMSON Extension generator pro tip: SAMSON calls this function to determine which actions should be shown to the user for quick access (typically in the viewport).
+	// Append actions to the actionVector if necessary.
+	// Please refer to tutorials for examples.
+
+}
+
+void SEAtomPusherEditor::getContextMenuActions(SBVector<SBAction*>& actionVector) {
+
+	// SAMSON Extension generator pro tip: SAMSON calls this function to determine which actions should be shown to the user actions in the context menu.
 	// Append actions to the actionVector if necessary.
 	// Please refer to tutorials for examples.
 
@@ -201,7 +217,7 @@ void SEAtomPusherEditor::pushAtoms() {
 		if (!atom.isValid()) continue;
 
 		// get the atom's position
-		SBPosition3 atomPosition = atom->getPosition();
+		const SBPosition3& atomPosition = atom->getPosition();
 		// compute the vector from the sphere's centers to the atom's center
 		SBPosition3 vectorFromSphereCenter = atomPosition - spherePosition;
 		// set the min distance between centers of the sphere and the atom by summing their radii
@@ -254,10 +270,11 @@ void SEAtomPusherEditor::wheelEvent(QWheelEvent* event) {
 	// SAMSON Extension generator pro tip: SAMSON redirects Qt events to the active editor. 
 	// Implement this function to handle this event with your editor.
 
-	int angle = event->angleDelta().y();
+	const int angle = event->angleDelta().y();
 	sphereRadius = sphereRadius * pow(1.002, angle);
 	// check for the minimal size of the sphere
-	if (sphereRadius < SBQuantity::angstrom(0.1)) sphereRadius = SBQuantity::angstrom(0.1);
+	if (sphereRadius < SBQuantity::angstrom(0.1))
+		sphereRadius = SBQuantity::angstrom(0.1);
 
 	SAMSON::requestViewportUpdate();
 

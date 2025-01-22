@@ -13,14 +13,14 @@ namespace py = pybind11;
 // create python bindings for the CustomStructuralGroup class and its functionality
 void exposeCustomStructuralGroup(py::module& m) {
 
-	/* Since the CustomStructuralGroup class is based on the CustomStructuralGroup class,
-	 * you do not need to create python bindings for functionality of the CustomStructuralGroup class,
-	 * because they are already exposed thanks to the Python Scripting Element.
+	/* Since the CustomStructuralGroup class is based on the SBStructuralGroup class,
+	 * you do not need to create python bindings for functionality of the SBStructuralGroup class,
+	 * because they are already exposed thanks to the Python Scripting Extension.
 	 */
 	py::class_<CustomStructuralGroup,
 			std::unique_ptr<CustomStructuralGroup, py::nodelete>,
 			SBStructuralGroup> c(m, "CustomStructuralGroup",
-								 R"(This class describes a custom structural group from SEPyBindTutorial Element)");
+								 R"(This class describes a custom structural group from SEPyBindTutorial Extension)");
 
 	// constructors
 

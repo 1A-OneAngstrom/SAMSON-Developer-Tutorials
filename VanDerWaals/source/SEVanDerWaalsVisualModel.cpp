@@ -25,10 +25,10 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 	if (!gl) gl = SAMSON::getOpenGLFunctions();
 
 	SBNodeIndexer temporaryIndexer;
-	SB_FOR(SBNode* node, nodeIndexer)
+	SB_FOR(SBNode * node, nodeIndexer)
 		node->getNodes(temporaryIndexer, SBNode::Atom);
 
-	SB_FOR(SBNode* node, temporaryIndexer)
+	SB_FOR(SBNode * node, temporaryIndexer)
 		atomIndexer.addReferenceTarget(node);
 
 	temporaryIndexer.clear();
@@ -58,7 +58,7 @@ bool SEVanDerWaalsVisualModel::isSerializable() const {
 	// Modify the line below to "return true;" if you want this visual model be serializable (hence copyable, savable, etc.)
 
 	return true;
-	
+
 }
 
 void SEVanDerWaalsVisualModel::serialize(SBCSerializer* serializer, const SBNodeIndexer& nodeIndexer, const SBVersionNumber& sdkVersionNumber, const SBVersionNumber& classVersionNumber) const {
@@ -122,7 +122,7 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 	// Unserialization of the parent class
 
 	SBMVisualModel::unserialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
-	
+
 	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 
@@ -174,7 +174,7 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 
 }
 
-void SEVanDerWaalsVisualModel::eraseImplementation() {
+void SEVanDerWaalsVisualModel::onErase() {
 
 	// SAMSON Extension generator pro tip: modify this function when you need to perform special tasks when your visual model is erased (e.g. disconnect from nodes you are connected to).
 	// Important: this function must be undoable (i.e. only call undoable functions or add an undo command to the undo stack)
@@ -429,7 +429,7 @@ void SEVanDerWaalsVisualModel::onDocumentEvent(SBDocumentEvent* documentEvent) {
 }
 
 void SEVanDerWaalsVisualModel::onStructuralEvent(SBStructuralEvent* documentEvent) {
-	
+
 	// SAMSON Extension generator pro tip: implement this function if you need to handle structural events (e.g. when a structural node for which you provide a visual representation is updated)
 
 }
@@ -441,7 +441,7 @@ void SEVanDerWaalsVisualModel::setRadiusFactor(const float& r) {
 
 	if (hasRadiusFactorRange()) {
 
-		if      (radiusFactor < getMinimumRadiusFactor()) radiusFactor = getMinimumRadiusFactor();
+		if (radiusFactor < getMinimumRadiusFactor()) radiusFactor = getMinimumRadiusFactor();
 		else if (radiusFactor > getMaximumRadiusFactor()) radiusFactor = getMaximumRadiusFactor();
 		else radiusFactor = r;
 
@@ -458,7 +458,7 @@ void SEVanDerWaalsVisualModel::setRadiusFactor(const float& r) {
 
 }
 bool			SEVanDerWaalsVisualModel::hasRadiusFactorRange() const { return true; }
-const float&	SEVanDerWaalsVisualModel::getMinimumRadiusFactor() const { return minimumRadiusFactor; }
-const float&	SEVanDerWaalsVisualModel::getMaximumRadiusFactor() const { return maximumRadiusFactor; }
-const float&	SEVanDerWaalsVisualModel::getRadiusFactorSingleStep() const { return radiusFactorSingleStep; }
+const float& SEVanDerWaalsVisualModel::getMinimumRadiusFactor() const { return minimumRadiusFactor; }
+const float& SEVanDerWaalsVisualModel::getMaximumRadiusFactor() const { return maximumRadiusFactor; }
+const float& SEVanDerWaalsVisualModel::getRadiusFactorSingleStep() const { return radiusFactorSingleStep; }
 std::string		SEVanDerWaalsVisualModel::getRadiusFactorSuffix() const { return std::string(""); }

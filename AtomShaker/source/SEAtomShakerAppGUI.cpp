@@ -3,9 +3,9 @@
 #include "SAMSON.hpp"
 #include "SBGWindow.hpp"
 
-SEAtomShakerAppGUI::SEAtomShakerAppGUI( SEAtomShakerApp* t ) : SBGApp( t ) {
+SEAtomShakerAppGUI::SEAtomShakerAppGUI(SEAtomShakerApp* t) : SBGApp(t) {
 
-	ui.setupUi( this );
+	ui.setupUi(this);
 
 }
 
@@ -15,19 +15,19 @@ SEAtomShakerAppGUI::~SEAtomShakerAppGUI() {
 
 SEAtomShakerApp* SEAtomShakerAppGUI::getApp() const { return static_cast<SEAtomShakerApp*>(SBGApp::getApp()); }
 
-void SEAtomShakerAppGUI::loadSettings( SBGSettings *settings ) {
+void SEAtomShakerAppGUI::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
+	if (settings == nullptr) return;
+
 	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
 	ui.doubleSpinBoxMaximumDistance->setValue(settings->loadDoubleValue("MaximumDistance", 1.0));
 
 }
 
-void SEAtomShakerAppGUI::saveSettings( SBGSettings *settings ) {
+void SEAtomShakerAppGUI::saveSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
@@ -35,10 +35,10 @@ void SEAtomShakerAppGUI::saveSettings( SBGSettings *settings ) {
 
 }
 
-SBCContainerUUID SEAtomShakerAppGUI::getUUID() const { return SBCContainerUUID( "8B972823-F315-E2BF-2D51-9AE1DD24F333" );}
+SBCContainerUUID SEAtomShakerAppGUI::getUUID() const { return SBCContainerUUID("8B972823-F315-E2BF-2D51-9AE1DD24F333"); }
 
-QPixmap SEAtomShakerAppGUI::getLogo() const { 
-	
+QPixmap SEAtomShakerAppGUI::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your app.
 
@@ -46,7 +46,7 @@ QPixmap SEAtomShakerAppGUI::getLogo() const {
 
 }
 
-QString SEAtomShakerAppGUI::getName() const { 
+QString SEAtomShakerAppGUI::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your app inside SAMSON
@@ -55,10 +55,10 @@ QString SEAtomShakerAppGUI::getName() const {
 
 }
 
-int SEAtomShakerAppGUI::getFormat() const { 
-	
+int SEAtomShakerAppGUI::getFormat() const {
+
 	// SAMSON Extension generator pro tip: modify these default settings if you want more options (see the documentation of SBGWindow)
-	
+
 	return SBGWindow::Savable | SBGWindow::Lockable | SBGWindow::Citable;
 
 }

@@ -3,9 +3,9 @@
 #include "SAMSON.hpp"
 #include "SBGWindow.hpp"
 
-SEEnergyConverterAppGUI::SEEnergyConverterAppGUI( SEEnergyConverterApp* t ) : SBGApp( t ) {
+SEEnergyConverterAppGUI::SEEnergyConverterAppGUI(SEEnergyConverterApp* t) : SBGApp(t) {
 
-	ui.setupUi( this );
+	ui.setupUi(this);
 
 }
 
@@ -15,26 +15,26 @@ SEEnergyConverterAppGUI::~SEEnergyConverterAppGUI() {
 
 SEEnergyConverterApp* SEEnergyConverterAppGUI::getApp() const { return static_cast<SEEnergyConverterApp*>(SBGApp::getApp()); }
 
-void SEEnergyConverterAppGUI::loadSettings( SBGSettings *settings ) {
+void SEEnergyConverterAppGUI::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
-	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
-
-}
-
-void SEEnergyConverterAppGUI::saveSettings( SBGSettings *settings ) {
-
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
 
 }
 
-SBCContainerUUID SEEnergyConverterAppGUI::getUUID() const { return SBCContainerUUID( "19EDF709-C04F-AF56-8B21-C0FC96B004E5" );}
+void SEEnergyConverterAppGUI::saveSettings(SBGSettings* settings) {
 
-QPixmap SEEnergyConverterAppGUI::getLogo() const { 
-	
+	if (settings == nullptr) return;
+
+	// SAMSON Extension generator pro tip: complete this function so your app can save its GUI state from one session to the next
+
+}
+
+SBCContainerUUID SEEnergyConverterAppGUI::getUUID() const { return SBCContainerUUID("19EDF709-C04F-AF56-8B21-C0FC96B004E5"); }
+
+QPixmap SEEnergyConverterAppGUI::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your app.
 
@@ -42,7 +42,7 @@ QPixmap SEEnergyConverterAppGUI::getLogo() const {
 
 }
 
-QString SEEnergyConverterAppGUI::getName() const { 
+QString SEEnergyConverterAppGUI::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your app inside SAMSON
@@ -51,15 +51,15 @@ QString SEEnergyConverterAppGUI::getName() const {
 
 }
 
-int SEEnergyConverterAppGUI::getFormat() const { 
-	
+int SEEnergyConverterAppGUI::getFormat() const {
+
 	// SAMSON Extension generator pro tip: modify these default settings to configure the window
 	//
 	// SBGWindow::Savable : let users save and load interface settings (implement loadSettings and saveSettings)
 	// SBGWindow::Lockable : let users lock the window on top
 	// SBGWindow::Resizable : let users resize the window
 	// SBGWindow::Citable : let users obtain citation information (implement getCitation)
-	
+
 	return (SBGWindow::Savable | SBGWindow::Lockable | SBGWindow::Resizable | SBGWindow::Citable);
 
 }
@@ -72,7 +72,7 @@ QString SEEnergyConverterAppGUI::getCitation() const {
 		"If you use this app in your work, please cite: <br/>"
 		"<br/>"
 		"[1] <a href=\"https://www.samson-connect.net\">https://www.samson-connect.net</a><br/>";
-	
+
 }
 
 void SEEnergyConverterAppGUI::onLeftChanged() {

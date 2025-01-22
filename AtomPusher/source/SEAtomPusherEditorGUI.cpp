@@ -5,7 +5,7 @@
 
 SEAtomPusherEditorGUI::SEAtomPusherEditorGUI(SEAtomPusherEditor* editor) {
 
-	ui.setupUi( this );
+	ui.setupUi(this);
 	this->editor = editor;
 
 }
@@ -16,26 +16,26 @@ SEAtomPusherEditorGUI::~SEAtomPusherEditorGUI() {
 
 SEAtomPusherEditor* SEAtomPusherEditorGUI::getEditor() const { return editor; }
 
-void SEAtomPusherEditorGUI::loadSettings( SBGSettings *settings ) {
+void SEAtomPusherEditorGUI::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
-	// SAMSON Extension generator pro tip: complete this function so your editor can save its GUI state from one session to the next
-
-}
-
-void SEAtomPusherEditorGUI::saveSettings( SBGSettings *settings ) {
-
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so your editor can save its GUI state from one session to the next
 
 }
 
-SBCContainerUUID SEAtomPusherEditorGUI::getUUID() const { return SBCContainerUUID( "BEF377BE-83A1-B62F-B669-AB84273886B6" );}
+void SEAtomPusherEditorGUI::saveSettings(SBGSettings* settings) {
 
-QPixmap SEAtomPusherEditorGUI::getLogo() const { 
-	
+	if (settings == nullptr) return;
+
+	// SAMSON Extension generator pro tip: complete this function so your editor can save its GUI state from one session to the next
+
+}
+
+SBCContainerUUID SEAtomPusherEditorGUI::getUUID() const { return SBCContainerUUID("BEF377BE-83A1-B62F-B669-AB84273886B6"); }
+
+QPixmap SEAtomPusherEditorGUI::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your editor.
 
@@ -43,7 +43,7 @@ QPixmap SEAtomPusherEditorGUI::getLogo() const {
 
 }
 
-QString SEAtomPusherEditorGUI::getName() const { 
+QString SEAtomPusherEditorGUI::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your editor inside SAMSON

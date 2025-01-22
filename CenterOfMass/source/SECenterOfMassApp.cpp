@@ -16,7 +16,7 @@ SECenterOfMassApp::~SECenterOfMassApp() {
 	if (positionArray) delete[] positionArray;
 
 	// disconnect from atoms
-	SB_FOR(SBAtom* atom, atomIndexer)
+	SB_FOR(SBAtom * atom, atomIndexer)
 		atom->disconnectStructuralSignalFromSlot(this, SB_SLOT(&SECenterOfMassApp::onStructuralEvent));
 
 	getGUI()->saveDefaultSettings();
@@ -34,7 +34,7 @@ void SECenterOfMassApp::computeCenterOfMass() {
 
 	// disconnect from atoms
 
-	SB_FOR(SBAtom* atom, atomIndexer)
+	SB_FOR(SBAtom * atom, atomIndexer)
 		atom->disconnectStructuralSignalFromSlot(this, SB_SLOT(&SECenterOfMassApp::onStructuralEvent));
 
 	// get selected nodes and find atoms
@@ -64,16 +64,16 @@ void SECenterOfMassApp::computeCenterOfMass() {
 	// store pointers to atoms
 
 	atomIndexer.clear();
-	SB_FOR(SBNode* node, temporaryIndexer) atomIndexer.addReferenceTarget(node);
+	SB_FOR(SBNode * node, temporaryIndexer) atomIndexer.addReferenceTarget(node);
 	temporaryIndexer.clear();
 
 	// connect to atoms
 
 	positionArray = new SBPosition3[atomIndexer.size()];
-	SB_FOR(SBAtom* atom, atomIndexer)
+	SB_FOR(SBAtom * atom, atomIndexer)
 		positionArray[atomIndexer.getIndex(atom)] = atom->getPosition();
 
-	SB_FOR(SBAtom* atom, atomIndexer)
+	SB_FOR(SBAtom * atom, atomIndexer)
 		atom->connectStructuralSignalToSlot(this, SB_SLOT(&SECenterOfMassApp::onStructuralEvent));
 
 	// compute the center of mass
@@ -82,7 +82,7 @@ void SECenterOfMassApp::computeCenterOfMass() {
 
 	centerOfMass.setZero();
 
-	SB_FOR(SBAtom* atom, atomIndexer)
+	SB_FOR(SBAtom * atom, atomIndexer)
 		centerOfMass += atom->getPosition();
 
 	centerOfMass /= static_cast<double>(atomIndexer.size());

@@ -23,6 +23,9 @@ build
 # Prerequisites
 *.d
 
+# Generated UI files
+*_ui.py
+
 # Compiled Object files
 *.slo
 *.lo

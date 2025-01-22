@@ -35,7 +35,7 @@ public:
 	virtual SBCContainerUUID									getUUID() const;														///< Returns the widget UUID
 	virtual QString												getName() const;														///< Returns the widget name (used as a title for the embedding window)
 	virtual QPixmap												getLogo() const;														///< Returns the widget logo
-	int															getFormat() const;														///< Returns the widget format
+	virtual int													getFormat() const;														///< Returns the widget format
 	virtual QString												getCitation() const;													///< Returns the citation information
 
 	//@}

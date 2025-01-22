@@ -12,8 +12,12 @@ SEEXYZImporter::SEEXYZImporter() {
 
 SEEXYZImporter::~SEEXYZImporter() {
 
-	propertyDialog->saveDefaultSettings();
-	delete propertyDialog;
+	if (propertyDialog) {
+
+		propertyDialog->saveDefaultSettings();
+		delete propertyDialog;
+
+	}
 
 }
 
@@ -69,7 +73,7 @@ void SEEXYZImporter::initializeParameters(const std::unordered_map<std::string, 
 
 }
 
-bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentFolder *preferredFolder) {
+bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentFolder* preferredFolder) {
 
 	// get file lines
 
@@ -109,9 +113,9 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentFolder *p
 		if (element != SBElement::Unknown) {
 
 			SBAtom* newAtom = new SBAtom(element,
-										 SBQuantity::angstrom(x),
-										 SBQuantity::angstrom(y),
-										 SBQuantity::angstrom(z));
+				SBQuantity::angstrom(x),
+				SBQuantity::angstrom(y),
+				SBQuantity::angstrom(z));
 			newAtom->setSerialNumber(currentSerialNumber++);
 			structuralModel->getStructuralRoot()->addChild(newAtom);
 
@@ -126,7 +130,7 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentFolder *p
 
 	// add data to the data graph
 
-	if ( !addToDataGraph(structuralModel, preferredFolder) ) {
+	if (!addToDataGraph(structuralModel, preferredFolder)) {
 
 		std::string msg = "EXYZImporter: ";
 		msg += "Could not add to the data graph " + fileName;
@@ -142,7 +146,7 @@ bool SEEXYZImporter::parseEXYZ(const std::string& fileName, SBDDocumentFolder *p
 
 }
 
-bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocumentFolder *preferredFolder) {
+bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocumentFolder* preferredFolder) {
 
 	SAMSON::beginHolding("Import EXYZ model");						// start the undoable operation
 
@@ -164,7 +168,7 @@ bool SEEXYZImporter::addToDataGraph(SBStructuralModel* structuralModel, SBDDocum
 
 }
 
-bool SEEXYZImporter::importFromFile(const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters, SBDDocumentFolder *preferredFolder) {
+bool SEEXYZImporter::importFromFile(const std::string& fileName, const std::unordered_map<std::string, SBValue>* parameters, SBDDocumentFolder* preferredFolder) {
 
 	// SAMSON Extension generator pro tip: modify this function to parse the contents of a file and add new nodes to SAMSON's data graph.
 	// Please refer to tutorials for examples.
@@ -173,7 +177,7 @@ bool SEEXYZImporter::importFromFile(const std::string& fileName, const std::unor
 
 	// check if file exists and valid
 
-	QString qfileName = QString::fromStdString(fileName);
+	const QString qfileName = QString::fromStdString(fileName);
 	QFileInfo checkFile(qfileName);
 
 	// check the file

@@ -1,5 +1,5 @@
-/// \headerfile SBProxy.hpp "SBProxy.hpp"
-#include "SBProxy.hpp"
+/// \headerfile SAMSON.hpp "SAMSON.hpp"
+#include "SAMSON.hpp"
 
 /// \headerfile SEAtomShakerApp.hpp "SEAtomShakerApp.hpp"
 #include "SEAtomShakerApp.hpp"
@@ -16,6 +16,7 @@ SB_CLASS_BEGIN(SEAtomShakerApp);
 	SB_CLASS_PUBLIC_NAME("DevTutorial: Atom shaker");
 	SB_CLASS_TOOL_TIP("DevTutorial: Atom shaker tooltip.");
 	SB_CLASS_GUI_UUID("8B972823-F315-E2BF-2D51-9AE1DD24F333");
+	SB_CLASS_ICON_FILE_NAME(SB_ELEMENT_PATH + "/Resource/icons/SEAtomShakerAppIcon.png");
 	SB_CLASS_VERSION_NUMBER("2.0.0");
 
 	SB_FACTORY_BEGIN;

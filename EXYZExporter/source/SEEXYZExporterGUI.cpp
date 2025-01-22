@@ -4,9 +4,9 @@
 #include "SBGWindow.hpp"
 #include <QShortcut>
 
-SEEXYZExporterGUI::SEEXYZExporterGUI( SEEXYZExporter* t ) : SBGFileExporter( t ) {
+SEEXYZExporterGUI::SEEXYZExporterGUI(SEEXYZExporter* t) : SBGFileExporter(t) {
 
-	ui.setupUi( this );
+	ui.setupUi(this);
 
 }
 
@@ -16,26 +16,26 @@ SEEXYZExporterGUI::~SEEXYZExporterGUI() {
 
 SEEXYZExporter* SEEXYZExporterGUI::getExporter() const { return static_cast<SEEXYZExporter*>(exporter); }
 
-void SEEXYZExporterGUI::loadSettings( SBGSettings *settings ) {
+void SEEXYZExporterGUI::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
-	// SAMSON Extension generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
-
-}
-
-void SEEXYZExporterGUI::saveSettings( SBGSettings *settings ) {
-
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
 
 }
 
-SBCContainerUUID SEEXYZExporterGUI::getUUID() const { return SBCContainerUUID( "FF55FF0A-2D36-5FEE-0133-69BEAB5D44F9" );}
+void SEEXYZExporterGUI::saveSettings(SBGSettings* settings) {
 
-QPixmap SEEXYZExporterGUI::getLogo() const { 
-	
+	if (settings == nullptr) return;
+
+	// SAMSON Extension generator pro tip: complete this function so your exporter can save its GUI state from one session to the next
+
+}
+
+SBCContainerUUID SEEXYZExporterGUI::getUUID() const { return SBCContainerUUID("FF55FF0A-2D36-5FEE-0133-69BEAB5D44F9"); }
+
+QPixmap SEEXYZExporterGUI::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your exporter.
 
@@ -43,12 +43,12 @@ QPixmap SEEXYZExporterGUI::getLogo() const {
 
 }
 
-QString SEEXYZExporterGUI::getName() const { 
+QString SEEXYZExporterGUI::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your exporter inside SAMSON
 
-	return "SEEXYZExporter"; 
+	return "SEEXYZExporter";
 
 }
 
@@ -62,16 +62,5 @@ int SEEXYZExporterGUI::getFormat() const {
 	// SBGWindow::Citable : let users obtain citation information (implement getCitation)
 
 	return (SBGWindow::Lockable);
-
-}
-
-QString SEEXYZExporterGUI::getCitation() const {
-
-	// SAMSON Extension generator pro tip: modify this function to add citation information
-
-	return
-		"If you use this exporter in your work, please cite: <br/>"
-		"<br/>"
-		"[1] <a href=\"https://www.samson-connect.net\">https://www.samson-connect.net</a><br/>";
 
 }

@@ -13,7 +13,7 @@ class SEPyBindTutorialApp : public SBDApp {
 
 	SB_CLASS
 
-public :
+public:
 
 	/// \name Constructors and destructors
 	//@{

@@ -25,17 +25,17 @@ SESpringsInteractionModel::~SESpringsInteractionModel() {
 
 }
 
- bool SESpringsInteractionModel::isSerializable() const {
+bool SESpringsInteractionModel::isSerializable() const {
 
 	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Modify the line below to "return true;" if you want this interaction model be serializable (hence copyable, savable, etc.)
 
 	return false;
-	
+
 }
 
- void SESpringsInteractionModel::serialize(SBCSerializer* serializer, const SBNodeIndexer& nodeIndexer, const SBVersionNumber& sdkVersionNumber, const SBVersionNumber& classVersionNumber) const {
+void SESpringsInteractionModel::serialize(SBCSerializer* serializer, const SBNodeIndexer& nodeIndexer, const SBVersionNumber& sdkVersionNumber, const SBVersionNumber& classVersionNumber) const {
 
 	SBMInteractionModelParticleSystem::serialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
 
@@ -48,14 +48,14 @@ SESpringsInteractionModel::~SESpringsInteractionModel() {
 void SESpringsInteractionModel::unserialize(SBCSerializer* serializer, const SBNodeIndexer& nodeIndexer, const SBVersionNumber& sdkVersionNumber, const SBVersionNumber& classVersionNumber) {
 
 	SBMInteractionModelParticleSystem::unserialize(serializer, nodeIndexer, sdkVersionNumber, classVersionNumber);
-	
+
 	// SAMSON Extension generator pro tip: serialization is used in SAMSON to e.g. save documents, copy nodes, etc. 
 	// Please refer to the SDK documentation for more information.
 	// Complete this function to unserialize your interaction model.
 
 }
 
-void SESpringsInteractionModel::eraseImplementation() {
+void SESpringsInteractionModel::onErase() {
 
 	// SAMSON Extension generator pro tip: modify this function when you need to perform special tasks when your interaction model is erased (e.g. disconnect from nodes you are connected to).
 	// Important: this function must be undoable (i.e. only call undoable functions or add an undo command to the undo stack)
@@ -95,7 +95,7 @@ void SESpringsInteractionModel::initializeBondSpringsModel() {
 
 	// Initialize bond springs
 
-	SB_FOR(SBNode* node, nodeIndexer) {
+	SB_FOR(SBNode * node, nodeIndexer) {
 
 		SBPointer<SBBond> bond = static_cast<SBBond*>(node);
 		if (!bond.isValid()) continue;
@@ -246,7 +246,7 @@ void SESpringsInteractionModel::onDynamicalEvent(SBDynamicalEvent* dynamicalEven
 }
 
 void SESpringsInteractionModel::onStructuralEvent(SBStructuralEvent* documentEvent) {
-	
+
 	// SAMSON Extension generator pro tip: implement this function if you need to handle structural events
 
 }

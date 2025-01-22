@@ -14,18 +14,18 @@ public:
 	/// \name Simulation
 	//@{
 
-	virtual void												updateState();
+	virtual void												updateState() override;
 	
 	//@}
 
 	/// \name Rendering
 	//@{
 
-	virtual void												display(RenderingPass renderingPass);									///< Displays the state updater
+	virtual void												display(RenderingPass renderingPass) override;							///< Displays the state updater
 
-	virtual void												expandBounds(SBIAPosition3& bounds) const;								///< Expands the bounds to make sure the state updater fits inside them
+	virtual void												expandBounds(SBIAPosition3& bounds) const override;						///< Expands the bounds to make sure the state updater fits inside them
 
-	virtual void												collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData);		///< To collect ambient occlusion data
+	virtual void												collectAmbientOcclusion(const SBPosition3& boxOrigin, const SBPosition3& boxSize, unsigned int nCellsX, unsigned int nCellsY, unsigned int nCellsZ, float* ambientOcclusionData) override;		///< To collect ambient occlusion data
 
 	//@}
 

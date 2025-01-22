@@ -25,7 +25,7 @@ SEMonteCarloStateUpdater::~SEMonteCarloStateUpdater() {
 void SEMonteCarloStateUpdater::updateState() {
 
 	SBPointerIndexer<SBAtom> const* particleIndexer = (*dynamicalModel)->getAtomIndexer();
-	unsigned int nParticles = particleIndexer->size(); // number of particles in the particle system
+	const unsigned int nParticles = particleIndexer->size(); // number of particles in the particle system
 
 	// check the maximum number of particles
 	numberOfMovingParticles = (numberOfMovingParticles > nParticles) ? nParticles : numberOfMovingParticles;
@@ -60,8 +60,8 @@ void SEMonteCarloStateUpdater::updateState() {
 
 		// create the random displacement normalized by the maximumDisplacement
 		SBPosition3 displacement((randomNumberGenerator.randDouble1() - 0.5) * maximumDisplacement,
-								 (randomNumberGenerator.randDouble1() - 0.5) * maximumDisplacement,
-								 (randomNumberGenerator.randDouble1() - 0.5) * maximumDisplacement);
+			(randomNumberGenerator.randDouble1() - 0.5) * maximumDisplacement,
+			(randomNumberGenerator.randDouble1() - 0.5) * maximumDisplacement);
 
 		SBPosition3 newPosition = currentPosition + displacement;
 
@@ -80,8 +80,8 @@ void SEMonteCarloStateUpdater::updateState() {
 	if (newEnergy > currentEnergy) {
 
 		double p = randomNumberGenerator.randDouble1();
-		double b = exp( ( (currentEnergy - newEnergy) /
-						  ((*SBConstant::boltzmannConstant) * temperature) ).getValue() );
+		double b = exp(((currentEnergy - newEnergy) /
+			((*SBConstant::boltzmannConstant) * temperature)).getValue());
 
 		// check the probability
 		if (p > b) {
@@ -110,15 +110,14 @@ void SEMonteCarloStateUpdater::updateState() {
 	if (numberOfTrials == 100) {
 
 		// check the rejects ratio
-		if ( static_cast<double>(numberOfRejects) / static_cast<double>(numberOfTrials) > 0.5 ) {
+		if (static_cast<double>(numberOfRejects) / static_cast<double>(numberOfTrials) > 0.5) {
 
 			// rejects constitute to more than a half of trials
 
 			// decrease the maximum displacement
 			maximumDisplacement *= 0.95;
 			// but not less than 0.01 Å
-			maximumDisplacement = (maximumDisplacement > SBQuantity::angstrom(0.01)) ?
-						SBQuantity::angstrom(0.01) : maximumDisplacement;
+			maximumDisplacement = (maximumDisplacement > SBQuantity::angstrom(0.01)) ? SBQuantity::angstrom(0.01) : maximumDisplacement;
 
 		}
 		else {
@@ -138,30 +137,10 @@ void SEMonteCarloStateUpdater::updateState() {
 
 }
 
-void SEMonteCarloStateUpdater::display() {
+void SEMonteCarloStateUpdater::display(SBNode::RenderingPass renderingPass) {
 
 	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop. 
 	// Implement this function to display things in SAMSON, for example thanks to the utility functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-}
-
-void SEMonteCarloStateUpdater::displayForShadow() {
-
-	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop in order to compute shadows. 
-	// Implement this function if your state updater displays things in viewports, so that your state updater can cast shadows
-	// to other objects in SAMSON, for example thanks to the utility
-	// functions provided by SAMSON (e.g. displaySpheres, displayTriangles, etc.)
-
-}
-
-void SEMonteCarloStateUpdater::displayForSelection() {
-
-	// SAMSON Extension generator pro tip: this function is called by SAMSON during the main rendering loop in order to perform object picking.
-	// Instead of rendering colors, your state updater is expected to write the index of a data graph node (obtained with getIndex()).
-	// Implement this function so that your state updater can be selected (if you render its own index) or can be used to select other objects (if you render 
-	// the other objects' indices), for example thanks to the utility functions provided by SAMSON (e.g. displaySpheresSelection, displayTrianglesSelection, etc.)
-	// This should be implemented if your state updater displays something in viewports (and you want the user to be able to select your state updater
-	// by picking its visual representation in viewports). 
 
 }
 
@@ -193,11 +172,11 @@ void SEMonteCarloStateUpdater::collectAmbientOcclusion(const SBPosition3& boxOri
 
 void SEMonteCarloStateUpdater::setNumberOfMovingParticles(int n) {
 
-	numberOfMovingParticles = n < 1 ? numberOfMovingParticles : n;
+	numberOfMovingParticles = (n < 1 ? numberOfMovingParticles : n);
 
 }
-void SEMonteCarloStateUpdater::setTemperature(SBQuantity::temperature T){
+void SEMonteCarloStateUpdater::setTemperature(SBQuantity::temperature T) {
 
-	temperature = T < SBQuantity::temperature(0.0) ? temperature : T;
+	temperature = (T < SBQuantity::temperature(0.0) ? temperature : T);
 
 }
