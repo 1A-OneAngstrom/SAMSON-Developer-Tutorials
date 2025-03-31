@@ -44,4 +44,4 @@ See [SAMSON Developer Guide - Tutorials](https://documentation.samson-connect.ne
 
 ### Python bindings
 
-- [PyBindTutorial](PyBindTutorial) - how to create python bindings for a SAMSON Extension. **Note:** Python path needs to be specified when building this extension. Due to this prerequisite, it is disabled by default. To enable it, uncomment the `ADD_SUBDIRECTORY( PyBindTutorial )` line in the root `CMakeLists.txt` file.
+- [PyBindTutorial](PyBindTutorial) - how to create python bindings for a SAMSON Extension. **Note:** Python path needs to be specified when building this extension. Due to this prerequisite, it is disabled by default. To enable it, uncomment the `ADD_SUBDIRECTORY( PyBindTutorial )` line in the root `CMakeLists.txt` file. See [PyBindTutorial/README.md](PyBindTutorial/README.md).

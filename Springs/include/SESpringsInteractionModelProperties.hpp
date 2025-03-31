@@ -63,7 +63,7 @@ public:
 		void														onBaseEvent(SBBaseEvent* baseEvent);									///< Base event management
 		void														onInteractionEvent(SBInteractionEvent* interactionEvent);				///< Interaction event management
 
-		SESpringsInteractionModelProperties* properties;
+		SESpringsInteractionModelProperties*						properties;
 
 	};
 

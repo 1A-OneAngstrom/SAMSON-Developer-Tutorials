@@ -58,7 +58,7 @@ public:
 		void														onBaseEvent(SBBaseEvent* baseEvent);									///< Base event management
 		void														onStateUpdaterEvent(SBStateUpdaterEvent* stateUpdaterEvent);			///< State updater event management
 
-		SEMonteCarloStateUpdaterProperties* properties;
+		SEMonteCarloStateUpdaterProperties*							properties;
 
 	};
 

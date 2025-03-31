@@ -5,7 +5,7 @@
 
 SEVanDerWaalsVisualModelProperties::SEVanDerWaalsVisualModelProperties() {
 
-	visualModel = 0;
+	visualModel = nullptr;
 	ui.setupUi(this);
 	observer = new Observer(this);
 
@@ -125,7 +125,7 @@ void SEVanDerWaalsVisualModelProperties::onRadiusFactorChanged(double radiusFact
 
 }
 
-SEVanDerWaalsVisualModelProperties::Observer::Observer(SEVanDerWaalsVisualModelProperties* properties) { this->properties = properties; }
+SEVanDerWaalsVisualModelProperties::Observer::Observer(SEVanDerWaalsVisualModelProperties* properties) : properties(properties) {}
 SEVanDerWaalsVisualModelProperties::Observer::~Observer() {}
 
 void SEVanDerWaalsVisualModelProperties::Observer::onBaseEvent(SBBaseEvent* baseEvent) {

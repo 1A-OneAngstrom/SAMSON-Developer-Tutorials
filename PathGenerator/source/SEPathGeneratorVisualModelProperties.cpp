@@ -5,8 +5,8 @@
 
 SEPathGeneratorVisualModelProperties::SEPathGeneratorVisualModelProperties() {
 
-	visualModel = 0;
-	ui.setupUi( this );
+	visualModel = nullptr;
+	ui.setupUi(this);
 	observer = new Observer(this);
 
 }
@@ -22,24 +22,24 @@ SEPathGeneratorVisualModelProperties::~SEPathGeneratorVisualModelProperties() {
 
 void SEPathGeneratorVisualModelProperties::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
+	if (settings == nullptr) return;
+
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
 void SEPathGeneratorVisualModelProperties::saveSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
-SBCContainerUUID SEPathGeneratorVisualModelProperties::getUUID() const { return SBCContainerUUID( "DF4F4338-C8C8-DABE-2820-1CB94BAB2AB3" );}
+SBCContainerUUID SEPathGeneratorVisualModelProperties::getUUID() const { return SBCContainerUUID("DF4F4338-C8C8-DABE-2820-1CB94BAB2AB3"); }
 
-QPixmap SEPathGeneratorVisualModelProperties::getLogo() const { 
-	
+QPixmap SEPathGeneratorVisualModelProperties::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your visual model.
 
@@ -47,12 +47,12 @@ QPixmap SEPathGeneratorVisualModelProperties::getLogo() const {
 
 }
 
-QString SEPathGeneratorVisualModelProperties::getName() const { 
+QString SEPathGeneratorVisualModelProperties::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your visual model inside SAMSON
 
-	return "SEPathGeneratorVisualModel properties"; 
+	return "SEPathGeneratorVisualModel properties";
 
 }
 
@@ -83,7 +83,7 @@ QString SEPathGeneratorVisualModelProperties::getCitation() const {
 bool SEPathGeneratorVisualModelProperties::setup() {
 
 	SBNodeIndexer nodeIndexer;
-	SB_FOR(SBNode* node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEPathGeneratorVisualModel") && SBNode::GetElement() == std::string("SEPathGenerator") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
+	SB_FOR(SBNode * node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEPathGeneratorVisualModel") && SBNode::GetElement() == std::string("SEPathGenerator") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
 
 	if (nodeIndexer.size() == 1) {
 
@@ -127,10 +127,10 @@ void SEPathGeneratorVisualModelProperties::Observer::onBaseEvent(SBBaseEvent* ba
 void SEPathGeneratorVisualModelProperties::Observer::onVisualEvent(SBVisualEvent* visualEvent) {
 
 	if (visualEvent->getType() == SBVisualEvent::VisualModelChanged) {
-		
+
 		// SAMSON Extension generator pro tip: modify this function if the property window
 		// needs to be updated when the VisualModelChanged event is sent
-				
+
 	}
 
 }

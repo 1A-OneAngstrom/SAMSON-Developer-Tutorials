@@ -33,6 +33,14 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 
 	temporaryIndexer.clear();
 
+	// connect to the base signals
+
+	SB_FOR(SBNode * node, atomIndexer) node->connectBaseSignalToSlot(this, SB_SLOT(&SEVanDerWaalsVisualModel::onBaseEvent));
+
+	// connect to the structural signals
+
+	SB_FOR(SBNode * node, atomIndexer) static_cast<SBAtom*>(node)->connectStructuralSignalToSlot(this, SB_SLOT(&SEVanDerWaalsVisualModel::onStructuralEvent));
+
 	SAMSON::setStatusMessage(QString("Van der Waals visual model: added for ") + QString::number(atomIndexer.size()), 0);
 
 }
@@ -40,6 +48,14 @@ SEVanDerWaalsVisualModel::SEVanDerWaalsVisualModel(const SBNodeIndexer& nodeInde
 SEVanDerWaalsVisualModel::~SEVanDerWaalsVisualModel() {
 
 	// SAMSON Extension generator pro tip: disconnect from signals you might have connected to.
+
+	// disconnect from the base signals
+
+	SB_FOR(SBNode * node, atomIndexer) node->disconnectBaseSignalFromSlot(this, SB_SLOT(&SEVanDerWaalsVisualModel::onBaseEvent));
+
+	// disconnect from the structural signals
+
+	SB_FOR(SBNode * node, atomIndexer) static_cast<SBAtom*>(node)->disconnectStructuralSignalFromSlot(this, SB_SLOT(&SEVanDerWaalsVisualModel::onStructuralEvent));
 
 	// clean up the memory
 
@@ -172,6 +188,8 @@ void SEVanDerWaalsVisualModel::unserialize(SBCSerializer* serializer, const SBNo
 
 	}
 
+	updateRequired = true;
+
 }
 
 void SEVanDerWaalsVisualModel::onErase() {
@@ -182,6 +200,8 @@ void SEVanDerWaalsVisualModel::onErase() {
 }
 
 void SEVanDerWaalsVisualModel::updateDisplayData() {
+
+	updateRequired = false;
 
 	// modify the size of display data arrays if necessary
 
@@ -241,6 +261,8 @@ void SEVanDerWaalsVisualModel::updateDisplayData() {
 
 	}
 
+	changed();
+
 }
 
 void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
@@ -254,7 +276,8 @@ void SEVanDerWaalsVisualModel::display(RenderingPass renderingPass) {
 
 		// update display data arrays
 
-		updateDisplayData();
+		if (updateRequired)
+			updateDisplayData();
 
 	}
 	else if (renderingPass == SBNode::RenderingPass::OpaqueGeometry && (inheritedOpacity == 1.0f)) {
@@ -416,49 +439,121 @@ void SEVanDerWaalsVisualModel::collectAmbientOcclusion(const SBPosition3& boxOri
 
 }
 
-void SEVanDerWaalsVisualModel::onBaseEvent(SBBaseEvent* baseEvent) {
+class removeAtomCommand final : public SBCUndoCommand {
+
+public:
+
+	removeAtomCommand(SEVanDerWaalsVisualModel* visualModel, SBAtom* atom) { this->visualModel = visualModel; this->atom = atom; }
+	virtual ~removeAtomCommand() {}
+
+	virtual std::string getName() const override { return "Remove atom from visual model"; }
+
+	void redo() override { if (visualModel.isValid() && atom.isValid()) visualModel->atomIndexer.removeReferenceTarget(atom()); visualModel->updateRequired = true; }
+	void undo() override { if (visualModel.isValid() && atom.isValid()) visualModel->atomIndexer.addReferenceTarget(atom()); visualModel->updateRequired = true; }
+
+private:
+
+	SBPointer<SEVanDerWaalsVisualModel>							visualModel;
+	SBPointer<SBAtom>											atom;
+
+};
+
+void SEVanDerWaalsVisualModel::onBaseEvent(SBBaseEvent* event) {
 
 	// SAMSON Extension generator pro tip: implement this function if you need to handle base events (e.g. when a node for which you provide a visual representation emits a base signal, such as when it is erased)
 
+	switch (event->getType()) {
+
+	case SBBaseEvent::Type::NodeDeleteBegin:
+
+		SAMSON::disableHolding();
+		event->getSender()->disconnectBaseSignalFromSlot(this, SB_SLOT(&SEVanDerWaalsVisualModel::onBaseEvent));
+		SAMSON::enableHolding();
+
+		break;
+
+	case SBBaseEvent::Type::NodeEraseBegin:
+
+		if (SAMSON::isHolding()) SAMSON::hold(new removeAtomCommand(this, static_cast<SBAtom*>(event->getSender())));
+
+		atomIndexer.removeReferenceTarget(event->getSender());
+		updateRequired = true;
+
+		event->getSender()->disconnectBaseSignalFromSlot(this, SB_SLOT(&SEVanDerWaalsVisualModel::onBaseEvent));
+		if (atomIndexer.empty()) this->erase();
+		break;
+
+	case SBBaseEvent::Type::IndexChanged:
+	case SBBaseEvent::Type::MaterialAdded:
+	case SBBaseEvent::Type::MaterialChanged:
+	case SBBaseEvent::Type::MaterialRemoved:
+
+		updateRequired = true;
+		break;
+
+	default:
+		break;
+
+	}
+
 }
 
-void SEVanDerWaalsVisualModel::onDocumentEvent(SBDocumentEvent* documentEvent) {
+void SEVanDerWaalsVisualModel::onDocumentEvent(SBDocumentEvent* event) {
 
 	// SAMSON Extension generator pro tip: implement this function if you need to handle document events 
 
 }
 
-void SEVanDerWaalsVisualModel::onStructuralEvent(SBStructuralEvent* documentEvent) {
+void SEVanDerWaalsVisualModel::onStructuralEvent(SBStructuralEvent* event) {
 
 	// SAMSON Extension generator pro tip: implement this function if you need to handle structural events (e.g. when a structural node for which you provide a visual representation is updated)
 
+	switch (event->getType()) {
+
+	case SBStructuralEvent::Type::AtomPositionChanged:
+	case SBStructuralEvent::Type::AtomElementChanged:
+	case SBStructuralEvent::Type::CoarseGrainedColorChanged:
+	case SBStructuralEvent::Type::CoarseGrainedRadiusChanged:
+
+		updateRequired = true;
+		break;
+
+	default:
+		break;
+
+	}
+
 }
 
-const float& SEVanDerWaalsVisualModel::getRadiusFactor() const { return radiusFactor; }
-void SEVanDerWaalsVisualModel::setRadiusFactor(const float& r) {
+SB_HOLD_SET_IMPLEMENTATION(SEVanDerWaalsVisualModel, float, RadiusFactor, "radius factor");
 
-	float prevValue = radiusFactor;
+float SEVanDerWaalsVisualModel::getRadiusFactor() const { return radiusFactor; }
+void SEVanDerWaalsVisualModel::setRadiusFactor(const float value) {
 
+	float newValue = value;
 	if (hasRadiusFactorRange()) {
 
-		if (radiusFactor < getMinimumRadiusFactor()) radiusFactor = getMinimumRadiusFactor();
-		else if (radiusFactor > getMaximumRadiusFactor()) radiusFactor = getMaximumRadiusFactor();
-		else radiusFactor = r;
+		if (newValue < getMinimumRadiusFactor()) newValue = getMinimumRadiusFactor();
+		else if (newValue > getMaximumRadiusFactor()) newValue = getMaximumRadiusFactor();
 
 	}
-	else
-		radiusFactor = r;
 
-	if (radiusFactor != prevValue) {
+	if (this->radiusFactor != newValue) {
 
-		// request re-rendering of the viewport
-		SAMSON::requestViewportUpdate();
+		// make the operation undoable
+		SB_HOLD_SET(SEVanDerWaalsVisualModel, RadiusFactor, getRadiusFactor(), newValue, this);
+
+		this->radiusFactor = newValue;
+
+		updateRequired = true;
+		changed();	// emit the VisualModelChanged event leading to the request for the viewport update
 
 	}
 
 }
-bool			SEVanDerWaalsVisualModel::hasRadiusFactorRange() const { return true; }
-const float& SEVanDerWaalsVisualModel::getMinimumRadiusFactor() const { return minimumRadiusFactor; }
-const float& SEVanDerWaalsVisualModel::getMaximumRadiusFactor() const { return maximumRadiusFactor; }
-const float& SEVanDerWaalsVisualModel::getRadiusFactorSingleStep() const { return radiusFactorSingleStep; }
-std::string		SEVanDerWaalsVisualModel::getRadiusFactorSuffix() const { return std::string(""); }
+bool SEVanDerWaalsVisualModel::hasRadiusFactorRange() const { return true; }
+float SEVanDerWaalsVisualModel::getMinimumRadiusFactor() const { return 0.1f; }
+float SEVanDerWaalsVisualModel::getMaximumRadiusFactor() const { return 2.5f; }
+float SEVanDerWaalsVisualModel::getDefaultRadiusFactor() const { return 1.0f; }
+float SEVanDerWaalsVisualModel::getRadiusFactorSingleStep() const { return 0.1f; }
+std::string SEVanDerWaalsVisualModel::getRadiusFactorSuffix() const { return std::string(""); }

@@ -16,7 +16,6 @@ public:
 
 	//@}
 
-
 	/// \name Custom functions
 	//@{
 

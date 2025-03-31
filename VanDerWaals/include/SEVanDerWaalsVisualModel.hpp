@@ -58,37 +58,38 @@ public:
 	/// \name Events
 	//@{
 
-	virtual void												onBaseEvent(SBBaseEvent* baseEvent);									///< Handles base events
-	virtual void												onDocumentEvent(SBDocumentEvent* documentEvent);						///< Handles document events
-	virtual void												onStructuralEvent(SBStructuralEvent* documentEvent);					///< Handles structural events
+	virtual void												onBaseEvent(SBBaseEvent* event);									///< Handles base events
+	virtual void												onDocumentEvent(SBDocumentEvent* event);						///< Handles document events
+	virtual void												onStructuralEvent(SBStructuralEvent* event);					///< Handles structural events
 
 	//@}
 
 	/// \name Radius factor
 	//@{
 
-	const float&												getRadiusFactor() const;
-	void														setRadiusFactor(const float& r);
+	float														getRadiusFactor() const;
+	void														setRadiusFactor(float value);
 	bool														hasRadiusFactorRange() const;
-	const float&												getMinimumRadiusFactor() const;
-	const float&												getMaximumRadiusFactor() const;
-	const float&												getRadiusFactorSingleStep() const;
+	float														getMinimumRadiusFactor() const;
+	float														getMaximumRadiusFactor() const;
+	float														getDefaultRadiusFactor() const;
+	float														getRadiusFactorSingleStep() const;
 	std::string													getRadiusFactorSuffix() const;
 
 	//@}
 
 private:
 
+	friend class removeAtomCommand;
+
 	SBPointerIndexer<SBAtom>									atomIndexer;
 
 	float														radiusFactor{ 1.0f };													///< The radius factor
-	float														minimumRadiusFactor{ 0.1f };
-	float														maximumRadiusFactor{ 2.5f };
-	float														radiusFactorSingleStep{ 0.1f };
 
 	/// \name Display data
 	//@{
 
+	bool														updateRequired{ true };
 	void														updateDisplayData();													///< Updates display data
 
 	unsigned int												numberOfAtoms{ 0 };

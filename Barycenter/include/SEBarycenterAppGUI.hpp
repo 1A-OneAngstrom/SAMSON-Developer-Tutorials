@@ -27,7 +27,7 @@ public:
 	/// \name App
 	//@{
 
-	SEBarycenterApp*												getApp() const;														///< Returns a pointer to the app
+	SEBarycenterApp*											getApp() const;															///< Returns a pointer to the app
 
 	//@}
 
