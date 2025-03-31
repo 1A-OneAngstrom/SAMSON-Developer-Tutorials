@@ -129,7 +129,7 @@ void SESpringsInteractionModelProperties::updateEnergies() {
 
 }
 
-SESpringsInteractionModelProperties::Observer::Observer(SESpringsInteractionModelProperties* properties) { this->properties = properties; }
+SESpringsInteractionModelProperties::Observer::Observer(SESpringsInteractionModelProperties* properties) : properties(properties) {}
 SESpringsInteractionModelProperties::Observer::~Observer() {}
 
 void SESpringsInteractionModelProperties::Observer::onBaseEvent(SBBaseEvent* baseEvent) {

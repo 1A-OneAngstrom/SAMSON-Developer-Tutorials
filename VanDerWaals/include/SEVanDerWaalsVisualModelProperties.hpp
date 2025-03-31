@@ -66,7 +66,7 @@ public:
 		void														onBaseEvent(SBBaseEvent* baseEvent);								///< Base event management
 		void														onVisualEvent(SBVisualEvent* visualEvent);							///< Visual event management
 
-		SEVanDerWaalsVisualModelProperties* properties;
+		SEVanDerWaalsVisualModelProperties*							properties;
 
 	};
 

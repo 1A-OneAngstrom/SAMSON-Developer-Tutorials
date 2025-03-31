@@ -142,7 +142,7 @@ bool SEMonteCarloStateUpdaterProperties::setup(SBNode* node) {
 }
 
 
-SEMonteCarloStateUpdaterProperties::Observer::Observer(SEMonteCarloStateUpdaterProperties* properties) { this->properties = properties; }
+SEMonteCarloStateUpdaterProperties::Observer::Observer(SEMonteCarloStateUpdaterProperties* properties) : properties(properties) {}
 SEMonteCarloStateUpdaterProperties::Observer::~Observer() {}
 
 void SEMonteCarloStateUpdaterProperties::Observer::onBaseEvent(SBBaseEvent* baseEvent) {

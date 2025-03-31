@@ -5,8 +5,8 @@
 
 SEPathGeneratorNodeProperties::SEPathGeneratorNodeProperties() {
 
-	node = 0;
-	ui.setupUi( this );
+	node = nullptr;
+	ui.setupUi(this);
 	observer = new Observer(this);
 
 }
@@ -21,24 +21,24 @@ SEPathGeneratorNodeProperties::~SEPathGeneratorNodeProperties() {
 
 void SEPathGeneratorNodeProperties::loadSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
-	
+	if (settings == nullptr) return;
+
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
 void SEPathGeneratorNodeProperties::saveSettings(SBGSettings* settings) {
 
-	if ( settings == nullptr ) return;
+	if (settings == nullptr) return;
 
 	// SAMSON Extension generator pro tip: complete this function so this property window can save its GUI state from one session to the next
 
 }
 
-SBCContainerUUID SEPathGeneratorNodeProperties::getUUID() const { return SBCContainerUUID( "FEB4B82C-72B4-8972-4D04-7402AB02ED9D" );}
+SBCContainerUUID SEPathGeneratorNodeProperties::getUUID() const { return SBCContainerUUID("FEB4B82C-72B4-8972-4D04-7402AB02ED9D"); }
 
-QPixmap SEPathGeneratorNodeProperties::getLogo() const { 
-	
+QPixmap SEPathGeneratorNodeProperties::getLogo() const {
+
 	// SAMSON Extension generator pro tip: this icon will be visible in the GUI title bar. 
 	// Modify it to better reflect the purpose of your node.
 
@@ -46,12 +46,12 @@ QPixmap SEPathGeneratorNodeProperties::getLogo() const {
 
 }
 
-QString SEPathGeneratorNodeProperties::getName() const { 
+QString SEPathGeneratorNodeProperties::getName() const {
 
 	// SAMSON Extension generator pro tip: this string will be the GUI title. 
 	// Modify this function to have a user-friendly description of your node inside SAMSON
 
-	return "SEPathGeneratorNode properties"; 
+	return "SEPathGeneratorNode properties";
 
 }
 
@@ -82,7 +82,7 @@ QString SEPathGeneratorNodeProperties::getCitation() const {
 bool SEPathGeneratorNodeProperties::setup() {
 
 	SBNodeIndexer nodeIndexer;
-	SB_FOR(SBNode* node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEPathGeneratorNode") && SBNode::GetElement() == std::string("SEPathGenerator") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
+	SB_FOR(SBNode * node, *SAMSON::getActiveDocument()->getSelectedNodes()) node->getNodes(nodeIndexer, SBNode::GetClass() == std::string("SEPathGeneratorNode") && SBNode::GetElement() == std::string("SEPathGenerator") && SBNode::GetElementUUID() == SBUUID(SB_ELEMENT_UUID));
 
 	if (nodeIndexer.size() == 1) {
 

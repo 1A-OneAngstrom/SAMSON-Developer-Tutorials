@@ -130,7 +130,7 @@ bool SESteepestDescentStateUpdaterProperties::setup(SBNode* node) {
 }
 
 
-SESteepestDescentStateUpdaterProperties::Observer::Observer(SESteepestDescentStateUpdaterProperties* properties) { this->properties = properties; }
+SESteepestDescentStateUpdaterProperties::Observer::Observer(SESteepestDescentStateUpdaterProperties* properties) : properties(properties) {}
 SESteepestDescentStateUpdaterProperties::Observer::~Observer() {}
 
 void SESteepestDescentStateUpdaterProperties::Observer::onBaseEvent(SBBaseEvent* baseEvent) {

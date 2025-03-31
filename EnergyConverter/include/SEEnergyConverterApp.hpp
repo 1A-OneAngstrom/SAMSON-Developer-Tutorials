@@ -32,7 +32,7 @@ public:
 	/// \name Conversion
 	//@{
 
-	double																convert(const double sourceEnergy, const int sourceUnit, const int destinationUnit);
+	static double														convert(const double sourceEnergy, const int sourceUnit, const int destinationUnit);
 
 	//@}
 
